@@ -1,6 +1,7 @@
 import {items} from "$lib/data/items/items.js";
 import {Fuel} from "$lib/classes/items/Fuel.js";
 import {FullBottle} from "$lib/classes/items/FullBottle.js";
+import {Building} from "$lib/classes/buildings/Building.js";
 
 export class Item {
     _itemObj;
@@ -35,6 +36,14 @@ export class Item {
 
     toFullBottle() {
         return FullBottle.getFullBottleFromItem(this);
+    }
+
+    isBuilding() {
+        return Building.isItemBuilding(this.id);
+    }
+
+    toBuilding() {
+        return Building.getBuildingFromItemId(this.id)
     }
 
     static getItem(itemId) {
