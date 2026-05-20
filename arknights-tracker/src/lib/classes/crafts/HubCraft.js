@@ -1,0 +1,33 @@
+import {hubCrafts} from "$lib/data/crafts/hubCrafts.js";
+
+export class HubCraft {
+    _craftObj;
+
+    constructor(craftObj) {
+        this._craftObj = craftObj;
+    }
+
+    get id() {
+        return this._craftObj.id;
+    }
+
+    get ingredients() {
+        return this._craftObj.ingredients;
+    }
+
+    get outcomes() {
+        return this._craftObj.outcomes;
+    }
+
+    static getHubCraft(formulaId) {
+        let craftObj = hubCrafts[formulaId];
+
+        if (!craftObj) return null;
+
+        return new HubCraft(craftObj);
+    }
+
+    static isHubCraft(formulaId) {
+        return hubCrafts.hasOwnProperty(formulaId);
+    }
+}
