@@ -5,7 +5,7 @@ export class Fuel extends Item {
     _fuelObj;
 
     constructor(item, fuelObj) {
-        super(item._itemObj);
+        super(item);
 
         this._fuelObj = fuelObj;
     }

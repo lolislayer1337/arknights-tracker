@@ -7,7 +7,9 @@ export class Item {
     _itemObj;
 
     constructor(itemObj) {
-        this._itemObj = itemObj;
+        this._itemObj = itemObj instanceof Item ?
+            itemObj._itemObj :
+            itemObj;
     }
 
     get id() {

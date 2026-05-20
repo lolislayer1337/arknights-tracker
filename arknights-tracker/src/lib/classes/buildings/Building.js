@@ -5,7 +5,9 @@ export class Building {
     _buildingObj;
 
     constructor(buildingObj) {
-        this._buildingObj = buildingObj;
+        this._buildingObj = buildingObj instanceof Building ?
+            buildingObj._buildingObj :
+            buildingObj;
     }
 
     get id() {

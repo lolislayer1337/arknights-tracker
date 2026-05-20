@@ -5,7 +5,7 @@ export class FullBottle extends Item {
     _fullBottleObj;
 
     constructor(item, fullBottleObj) {
-        super(item._itemObj);
+        super(item);
 
         this._fullBottleObj = fullBottleObj;
     }
