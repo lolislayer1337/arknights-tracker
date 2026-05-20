@@ -1,5 +1,6 @@
 import {Building} from "$lib/classes/buildings/Building.js";
 import {miners} from "$lib/data/buildings/miners.js";
+import {Mining} from "$lib/classes/crafts/Mining.js";
 
 export class Miner extends Building {
     _minerObj;
@@ -10,7 +11,25 @@ export class Miner extends Building {
         this._minerObj = minerObj;
     }
 
-    // todo сделать свойства
+    get id() {
+        return this._minerObj.id;
+    }
+
+    get mineableItemIds() {
+        return Object.keys(this._minerObj.mineable);
+    }
+
+    isMineable(itemId) {
+        return this._minerObj.mineable.hasOwnProperty(itemId);
+    }
+
+    getMining(itemId) {
+        let mineableObj = this._minerObj.mineable[itemId];
+
+        if (!mineableObj) return null;
+
+        return new Mining(this.id, mineableObj);
+    }
 
     static getMiner(buildingId) {
         let building = Building.getBuilding(buildingId);
