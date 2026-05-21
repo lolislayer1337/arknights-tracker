@@ -10,7 +10,9 @@ export class PowerStation extends Building {
         this._powerStationObj = powerStationObj;
     }
 
-    // todo сделать свойства
+    get msPerRound() {
+        return this._powerStationObj.msPerRound;
+    }
 
     static getPowerStation(buildingId) {
         let building = Building.getBuilding(buildingId);
