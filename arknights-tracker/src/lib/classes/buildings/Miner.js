@@ -24,11 +24,7 @@ export class Miner extends Building {
     }
 
     getMiningFormula(itemId) {
-        let mineableObj = this._minerObj.mineable[itemId];
-
-        if (!mineableObj) return null;
-
-        return new MiningFormula(this.id, mineableObj);
+        return MiningFormula.getMiningFormula(this, itemId);
     }
 
     static getMiner(buildingId) {

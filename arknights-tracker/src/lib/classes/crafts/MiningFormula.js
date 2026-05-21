@@ -1,14 +1,18 @@
 export class MiningFormula {
-    _minerId;
+    _miner;
     _minableObj;
 
-    constructor(minerId, minableObj) {
-        this._minerId = minerId;
+    constructor(miner, minableObj) {
+        this._miner = miner;
         this._minableObj = minableObj;
     }
 
+    get miner() {
+        return this._miner;
+    }
+
     get minerId() {
-        return this._minerId;
+        return this._miner.id;
     }
 
     get miningItemId() {
@@ -29,5 +33,13 @@ export class MiningFormula {
 
     hasConsumeItem() {
         return this._minableObj.hasOwnProperty("consumeItem");
+    }
+
+    static getMiningFormula(miner, mineableItemId) {
+        if (!miner.isMineable(mineableItemId)) return null;
+
+        let mineableObj = miner._minerObj.mineable[mineableItemId];
+
+        return new MiningFormula(miner, mineableObj)
     }
 }
