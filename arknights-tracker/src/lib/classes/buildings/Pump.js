@@ -1,5 +1,6 @@
 import {Building} from "$lib/classes/buildings/Building.js";
 import {pumps} from "$lib/data/buildings/pumps.js";
+import {PumpingFormula} from "$lib/classes/crafts/PumpingFormula.js";
 
 export class Pump extends Building {
     _pumpObj;
@@ -10,7 +11,27 @@ export class Pump extends Building {
         this._pumpObj = pumpObj;
     }
 
-    // todo сделать свойства
+    get id() {
+        return this._pumpObj.id;
+    }
+
+    get pumpTimeMs() {
+        return this._pumpObj.pumpTimeMs;
+    }
+
+    get enableLiquidIds() {
+        return this._pumpObj.enableLiquidIds;
+    }
+
+    isLiquidEnable(liquidId) {
+        return this.enableLiquidIds.includes(liquidId);
+    }
+
+    getPumpingFormula(liquidId) {
+        if (!this.isLiquidEnable(liquidId)) return null;
+
+        return new PumpingFormula(this, liquidId);
+    }
 
     static getPump(buildingId) {
         let building = Building.getBuilding(buildingId);
