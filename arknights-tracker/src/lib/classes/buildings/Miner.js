@@ -11,10 +11,6 @@ export class Miner extends Building {
         this._minerObj = minerObj;
     }
 
-    get id() {
-        return this._minerObj.id;
-    }
-
     get mineableItemIds() {
         return Object.keys(this._minerObj.mineable);
     }

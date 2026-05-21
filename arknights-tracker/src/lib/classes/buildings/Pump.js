@@ -11,10 +11,6 @@ export class Pump extends Building {
         this._pumpObj = pumpObj;
     }
 
-    get id() {
-        return this._pumpObj.id;
-    }
-
     get pumpTimeMs() {
         return this._pumpObj.pumpTimeMs;
     }
