@@ -2,7 +2,7 @@
     import { t } from "$lib/i18n";
     import Icon from "$lib/components/Icons.svelte";
 
-    export let mode = "operators"; // "operators" | "weapons" | "equipment"
+    export let mode = "operators"; // "operators" | "weapons" | "equipment" | "items"
     export let sortField = "rarity";
     export let sortDirection = "desc";
     export let searchQuery = "";
@@ -102,11 +102,10 @@
     ];
     $: filterOptions = {
         rarity:
-            mode === "equipment"
-                ? [5, 4, 3, 2, 1]
-                : mode === "weapons"
-                  ? [6, 5, 4, 3]
-                  : [6, 5, 4],
+            mode === "items" ? [5, 4, 3, 2, 1]
+            : mode === "equipment" ? [5, 4, 3, 2, 1]
+            : mode === "weapons" ? [6, 5, 4, 3]
+            : [6, 5, 4],
         class: [
             "guard",
             "vanguard",
@@ -124,9 +123,17 @@
         partType: [0, 1, 2], // 0 = body, 1 = hand, 2 = edc
         pack: ["none", ...(availablePacks || [])],
         stats: hardcodedStats.filter((s) => s.toLowerCase() !== "def"),
+        itemGroup: ["nature", "gatherable", "product", "usable", "facility"]
     };
 
     export let filters = (() => {
+        if (mode === "items") {
+            return {
+                rarity: [5, 4, 3, 2, 1],
+                itemGroup: ["nature", "gatherable", "product", "usable", "facility"]
+            }
+        }
+
         if (mode === "equipment") {
             return {
                 rarity: [5, 4, 3, 2, 1],
@@ -139,7 +146,9 @@
                     3: [],
                 },
             };
-        } else if (mode === "weapons") {
+        }
+
+        if (mode === "weapons") {
             return {
                 rarity: [6, 5, 4, 3],
                 type: [
@@ -153,35 +162,34 @@
                 attr2: [...attr2Skills],
                 attr3: [...attr3Skills],
             };
-        } else {
-            return {
-                rarity: [6, 5, 4],
-                class: [
-                    "guard",
-                    "vanguard",
-                    "caster",
-                    "defender",
-                    "supporter",
-                    "striker",
-                ],
-                element: ["cryo", "physical", "nature", "heat", "electric"],
-                weapon: [
-                    "sword",
-                    "polearm",
-                    "artsUnit",
-                    "greatSword",
-                    "handcannon",
-                ],
-            };
         }
+
+        return {
+            rarity: [6, 5, 4],
+            class: [
+                "guard",
+                "vanguard",
+                "caster",
+                "defender",
+                "supporter",
+                "striker",
+            ],
+            element: ["cryo", "physical", "nature", "heat", "electric"],
+            weapon: [
+                "sword",
+                "polearm",
+                "artsUnit",
+                "greatSword",
+                "handcannon",
+            ],
+        };
     })();
 
     $: sortOptions =
-        mode === "equipment"
-            ? ["rarity"] //, "level", "partType", "pack"
-            : mode === "weapons"
-              ? ["rarity", "type"]
-              : ["rarity", "class", "element", "weapon"];
+        mode === "items" ? ["rarity", "itemGroup"]
+        : mode === "equipment" ? ["rarity"] //, "level", "partType", "pack"
+        : mode === "weapons" ? ["rarity", "type"]
+        : ["rarity", "class", "element", "weapon"];
 
     let isFilterOpen = false;
     let isSortDropdownOpen = false;
@@ -219,6 +227,7 @@
         partType: false,
         pack: false,
         stats: false,
+        itemGroup: false,
     };
 
     function toggleFilterGroup(groupKey) {
@@ -269,46 +278,57 @@
     }
 
     $: isFilterActive =
-        mode === "equipment"
-            ? filters.rarity?.length !== filterOptions.rarity.length ||
-              manualMode.rarity ||
-              filters.partType?.length !== filterOptions.partType.length ||
-              manualMode.partType ||
-              (filters.pack?.length > 0 &&
-                  filters.pack?.length !== filterOptions.pack.length) ||
-              manualMode.pack ||
-              (filters.stats &&
-                  (filters.stats.any?.length > 0 ||
-                      filters.stats[1]?.length > 0 ||
-                      filters.stats[2]?.length > 0 ||
-                      filters.stats[3]?.length > 0)) ||
-              manualMode.stats ||
-              showOwnedOnly
-            : mode === "weapons"
-              ? filters.rarity?.length !== filterOptions.rarity.length ||
-                manualMode.rarity ||
-                filters.type?.length !== filterOptions.type.length ||
-                manualMode.type ||
-                filters.attr1?.length !== filterOptions.attr1.length ||
-                manualMode.attr1 ||
-                filters.attr2?.length !== filterOptions.attr2.length ||
-                manualMode.attr2 ||
-                filters.attr3?.length !== filterOptions.attr3.length ||
-                manualMode.attr3 ||
-                showOwnedOnly
-              : filters.rarity?.length !== filterOptions.rarity.length ||
-                manualMode.rarity ||
-                filters.class?.length !== filterOptions.class.length ||
-                manualMode.class ||
-                filters.element?.length !== filterOptions.element.length ||
-                manualMode.element ||
-                filters.weapon?.length !== filterOptions.weapon.length ||
-                manualMode.weapon ||
-                showOwnedOnly;
+        mode === "items" ?
+            filters.rarity?.length !== filterOptions.rarity.length
+            || manualMode.rarity
+            || filters.itemGroup.length !== filterOptions.itemGroup.length
+            || manualMode.itemGroup
+        : mode === "equipment" ?
+            filters.rarity?.length !== filterOptions.rarity.length
+            || manualMode.rarity
+            || filters.partType?.length !== filterOptions.partType.length
+            || manualMode.partType
+            || (filters.pack?.length > 0
+                && filters.pack?.length !== filterOptions.pack.length)
+            || manualMode.pack
+            || (filters.stats
+                && (filters.stats.any?.length > 0
+                    || filters.stats[1]?.length > 0
+                    || filters.stats[2]?.length > 0
+                    || filters.stats[3]?.length > 0))
+            || manualMode.stats
+            || showOwnedOnly
+        : mode === "weapons" ?
+            filters.rarity?.length !== filterOptions.rarity.length
+            || manualMode.rarity
+            || filters.type?.length !== filterOptions.type.length
+            || manualMode.type
+            || filters.attr1?.length !== filterOptions.attr1.length
+            || manualMode.attr1
+            || filters.attr2?.length !== filterOptions.attr2.length
+            || manualMode.attr2
+            || filters.attr3?.length !== filterOptions.attr3.length
+            || manualMode.attr3
+            || showOwnedOnly
+        :
+            filters.rarity?.length !== filterOptions.rarity.length
+            || manualMode.rarity
+            || filters.class?.length !== filterOptions.class.length
+            || manualMode.class
+            || filters.element?.length !== filterOptions.element.length
+            || manualMode.element
+            || filters.weapon?.length !== filterOptions.weapon.length
+            || manualMode.weapon
+            || showOwnedOnly;
 
     function resetFilters() {
         manualMode = {};
-        if (mode === "equipment") {
+        if (mode === "items") {
+            filters = {
+                rarity: [...filterOptions.rarity],
+                itemGroup: [...filterOptions.itemGroup],
+            }
+        } else if (mode === "equipment") {
             filters = {
                 rarity: [...filterOptions.rarity],
                 partType: [...filterOptions.partType],
@@ -620,8 +640,9 @@
                                     </div>
                                     <span
                                         class="text-xs font-bold capitalize pointer-events-none"
-                                        >{$t(`classes.${cls}`) || cls}</span
-                                    >
+                                        >
+                                        {$t(`classes.${cls}`) || cls}
+                                    </span>
                                 </button>
                             {/each}
                         </div>
@@ -984,6 +1005,31 @@
                                         class="text-xs font-bold capitalize pointer-events-none"
                                         >{$t(`packs.${pack}`) || pack}</span
                                     >
+                                </button>
+                            {/each}
+                        </div>
+                    </div>
+                {/if}
+
+                {#if mode === "items"}
+                    <div>
+                        <button
+                            type="button"
+                            class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                            on:click={() => toggleFilterGroup("itemGroup")}
+                        >
+                            {$t("sort.itemGroup") || "Group"}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each filterOptions.itemGroup as group}
+                                <button
+                                    type="button"
+                                    class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer {getFilterClass('itemGroup', group)}"
+                                    on:click={() => toggleFilterItem("itemGroup", group)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {group}
+                                    </span>
                                 </button>
                             {/each}
                         </div>

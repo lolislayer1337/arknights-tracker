@@ -309,7 +309,8 @@
                         { path: "/operators", label: "sidebar.operators", icon: "operators" },
                         { path: "/weapons", label: "pages.weapons", icon: "weapons" },
                         { path: "/essences", label: "pages.essences", icon: "essence" },
-                        { path: "/equipment", label: "pages.equipment", icon: "edc" }
+                        { path: "/equipment", label: "pages.equipment", icon: "edc" },
+                        { path: "/recipes", label: "pages.recipes", icon: "noData" }
                     ] as item}
                         {#if item.type === "divider"}
                             <div class="h-px bg-gray-200 dark:bg-[#444444] my-1 mx-2"></div>

@@ -53,9 +53,15 @@ const initialOperatorFilters = {
     weapon: ["sword", "polearm", "artsUnit", "greatSword", "handcannon"],
 };
 
+const initialItemFilters = {
+    rarity: [5, 4, 3, 2, 1],
+    itemGroup: ["nature", "gatherable", "product", "usable", "facility"]
+};
+
 const initialManualMode = {
     rarity: false, partType: false, pack: false, stats: false,
-    class: false, element: false, weapon: false, type: false, attr1: false, attr2: false, attr3: false
+    class: false, element: false, weapon: false, type: false, attr1: false, attr2: false, attr3: false,
+    itemGroup: false
 };
 
 
@@ -73,3 +79,7 @@ export const operatorFilters = writable({ ...initialOperatorFilters });
 export const operatorManual = writable({ ...initialManualMode });
 export const operatorSearch = writable("");
 export const operatorOwnedOnly = writable(false);
+
+export const itemFilters = writable({ ...initialItemFilters });
+export const itemManual = writable({ ...initialManualMode });
+export const itemSearch = writable("");

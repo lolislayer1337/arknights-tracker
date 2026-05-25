@@ -330,7 +330,8 @@
     "weapons": "Weapons",
     "essences": "Essences",
     "changelog": "Changelog",
-    "equipment": "Equipment"
+    "equipment": "Equipment",
+    "recipes": "Recipes"
   },
   "events": {
     "voyage_to_the_stars": "Voyage to the Stars",
@@ -470,7 +471,8 @@
     "filters": "Filters",
     "stats": "Attributes",
     "slot": "Slot",
-    "pack": "Set"
+    "pack": "Set",
+    "itemGroup": "Group"
   },
   "menu": {
     "about": "About",
