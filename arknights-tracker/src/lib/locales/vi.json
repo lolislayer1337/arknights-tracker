@@ -25,7 +25,8 @@
     "privacyPolicy": "Chính sách bảo mật",
     "specialThanks": "Lời cảm ơn đặc biệt",
     "interactiveMap": "Bản đồ Tương tác (Open Endfield Map)",
-    "supportProject": "Ủng hộ Goyfield.moe"
+    "supportProject": "Ủng hộ Goyfield.moe",
+    "supportProjectShort": "Ủng hộ"
   },
   "page": {
     "title": "Hồ sơ Chiêu mộ",
@@ -243,6 +244,7 @@
   },
   "systemNames": {
     "total": "Tổng",
+    "banners": "Banner",
     "pull": "Lượt",
     "operator": "Đặc vụ",
     "pity": "Bảo hiểm",
@@ -265,7 +267,12 @@
     "noMaterialsNeeded": "Không cần vật liệu",
     "featuredCharacters": "Đặc vụ tiêu biểu",
     "new": "MỚI",
-    "version": "Phiên bản"
+    "version": "Phiên bản",
+    "weapons": "Vũ khí",
+    "operators": "Toán tử",
+    "versions": "Phiên bản",
+    "sortByRelease": "Theo ngày phát hành",
+    "sortByWait": "Theo số ngày không có rerun"
   },
   "status": {
     "won": "Thắng 50:50",
@@ -310,7 +317,9 @@
     "weapons": "Vũ khí",
     "essences": "Tinh chất",
     "changelog": "Nhật ký thay đổi",
-    "equipment": "Trang bị"
+    "equipment": "Trang bị",
+    "bannerHistory": "Lịch sử Banner",
+    "enemies": "Kẻ thù"
   },
   "events": {
     "voyage_to_the_stars": "Hành Trình Tới Các Vì Sao",
@@ -347,7 +356,7 @@
     "AICSupportPalmTopSavior": "Hỗ Trợ KPH: Cứu Tinh Lòng Bàn Tay",
     "etchspaceSalvageZone56": "Khu Dị Thể 5&6",
     "blitzOfVerdance": "Điểm Danh Cỏ Cây Oanh Toạc",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "Điểm Danh Khoảnh Khắc Lung Linh",
     "etchingsOfOurCosmicDreams": "Ảnh Chụp Nhanh: Khắc Ghi Giấc Mơ Vũ Trụ",
     "etchingsOfOurCosmicDreamsSignIn": "Điểm Danh Khắc Ghi Giấc Mơ Vũ Trụ",
     "pristineMonthlyPassTribute": "Quà Tặng Thẻ Tháng Tinh Khôi",
@@ -498,7 +507,14 @@
     "arms_offering": "Quà Tặng Vũ Khí",
     "editPotential": "Sửa tiềm năng",
     "featured_guarantee": "Đảm bảo",
-    "reset": "Đặt lại giá trị tiềm năng, tính toán sẽ dựa trên lịch sử gacha thực tế"
+    "reset": "Đặt lại giá trị tiềm năng, tính toán sẽ dựa trên lịch sử gacha thực tế",
+    "hp": "HP",
+    "atk": "Tấn Công",
+    "def": "Bảo Hộ",
+    "drops": "Xuất hiện",
+    "properties": "Tài sản",
+    "abilities": "Năng lực",
+    "vulnerable": "Yếu Đuối"
   },
   "bioValues": {
     "Unknown": "Không rõ"
@@ -834,7 +850,13 @@
       "onlyPc": "Chỉ khả dụng trên PC"
     },
     "noActiveCodes": "Không có mã hoạt động",
-    "noActiveBanners": "Không có Banner Hoạt động"
+    "noActiveBanners": "Không có Banner Hoạt động",
+    "activeEvents": "Sự kiện đang diễn ra",
+    "noActiveEvents": "Không có sự kiện nào",
+    "discordJoin": "Tham gia Discord",
+    "docsTitle": "Tài liệu Goyfield DEV",
+    "docsAuthor": "bởi @beetwooo_",
+    "goToTimeline": "Đến dòng thời gian sự kiện"
   },
   "characters": {
     "catcher": "Catcher",
@@ -863,7 +885,8 @@
     "tangtang": "Tangtang",
     "pogranichnik": "Pogranichnik",
     "rossi": "Rossi",
-    "zhuangfy": "Zhuang Fangyi"
+    "zhuangfy": "Zhuang Fangyi",
+    "zhuangFangyi": "Zhuang Fangyi"
   },
   "weaponsList": {
     "industry01": "Công Nghiệp 0.1",
@@ -1455,5 +1478,19 @@
     "Sub": "Thuộc Tính Phụ",
     "AllSkillDamageIncrease": "Tăng ST Tất Cả Kỹ Năng Gây Ra",
     "FireAndNaturalDamageIncrease": "Tăng ST Nhiệt và Tự Nhiên Gây Ra"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "Aggeloi",
+    "wiki_group_monster_landbreaker": "Landbreaker",
+    "wiki_group_monster_hongshan": "Hải Tặc Cangzei",
+    "wiki_group_monster_animal": "Động Vật Hoang Dã"
+  },
+  "resitances": {
+    "heatRez": "Kháng Nhiệt",
+    "elecrtoRez": "Kháng Điện",
+    "physRez": "Kháng Vật Lý",
+    "cryoRez": "Kháng Băng",
+    "narureRez": "Kháng Tự Nhiên",
+    "ephyrRez": "Kháng Æther"
   }
 }

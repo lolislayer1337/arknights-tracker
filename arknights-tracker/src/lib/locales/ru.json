@@ -40,7 +40,8 @@
     "privacyPolicy": "Политика конфиденциальности",
     "specialThanks": "Особые благодарности",
     "interactiveMap": "Интерактивная карта (Open Endfield Map)",
-    "supportProject": "Поддержать Goyfield.moe"
+    "supportProject": "Поддержать Goyfield.moe",
+    "supportProjectShort": "Поддержать"
   },
   "page": {
     "title": "Записи о найме",
@@ -260,6 +261,7 @@
   },
   "systemNames": {
     "total": "Всего",
+    "banners": "Баннеры",
     "pull": "Крутка",
     "operator": "Оператор",
     "pity": "Гарант",
@@ -282,7 +284,12 @@
     "featuredCharacters": "Представленные операторы",
     "noMaterialsNeeded": "Материалы не требуются",
     "new": "Новый",
-    "version": "Версия"
+    "version": "Версия",
+    "weapons": "Оружие",
+    "operators": "Оперативники",
+    "versions": "Версий",
+    "sortByRelease": "По релизам",
+    "sortByWait": "По числу дней без рерана"
   },
   "status": {
     "won": "Выигрыш 50:50",
@@ -329,7 +336,9 @@
     "weapons": "Оружие",
     "essences": "Эссенции",
     "changelog": "Журнал изменений",
-    "equipment": "Снаряжение"
+    "equipment": "Снаряжение",
+    "bannerHistory": "История баннеров",
+    "enemies": "Враги"
   },
   "events": {
     "voyage_to_the_stars": "Путешествие к звездам",
@@ -367,7 +376,7 @@
     "AICSupportPalmTopSavior": "Поддержка АПК: Карманное спасение",
     "etchspaceSalvageZone56": "Вылазка в Гравирпространство «Зона отклонения 5&6»",
     "blitzOfVerdance": "Вход «Цветущий блиц»",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "Вход «Блистательный миг»",
     "etchingsOfOurCosmicDreams": "Впишем в историю наши космические мечты",
     "etchingsOfOurCosmicDreamsSignIn": "Вход «Впишем в историю наши космические мечты»",
     "pristineMonthlyPassTribute": "Первозданное подношение месячного пропуска",
@@ -519,7 +528,14 @@
     "arms_offering": "Пополнение арсенала",
     "editPotential": "Изменить потенциалы",
     "featured_guarantee": "Гарантированно",
-    "reset": "Сбросить значение потенциалов"
+    "reset": "Сбросить значение потенциалов",
+    "hp": "ОЗ",
+    "atk": "Атака",
+    "def": "Защита",
+    "drops": "Добыча",
+    "properties": "Характеристики",
+    "abilities": "Умения",
+    "vulnerable": "Уязвимость"
   },
   "bioValues": {
     "Unknown": "Неизвестно"
@@ -859,7 +875,13 @@
       "onlyPc": "Доступно только на ПК"
     },
     "noActiveCodes": "Нет активных кодов",
-    "noActiveBanners": "Нет активных баннеров"
+    "noActiveBanners": "Нет активных баннеров",
+    "activeEvents": "Текущие события",
+    "noActiveEvents": "Нет активных событий",
+    "discordJoin": "Присоединиться к Discord",
+    "docsTitle": "Документация Goyfield DEV",
+    "docsAuthor": "by @beetwooo_",
+    "goToTimeline": "Перейти в ленту событий"
   },
   "characters": {
     "catcher": "Кэтчер",
@@ -888,7 +910,8 @@
     "tangtang": "Тантан",
     "pogranichnik": "Пограничник",
     "rossi": "Росси",
-    "zhuangfy": "Чжуан Фанъи"
+    "zhuangfy": "Чжуан Фанъи",
+    "zhuangFangyi": "Чжуан Фанъи"
   },
   "weaponsList": {
     "industry01": "Индустрия 0.1",
@@ -1480,5 +1503,19 @@
     "Sub": "Побочный показатель",
     "AllSkillDamageIncrease": "УРН от всех навыков",
     "FireAndNaturalDamageIncrease": "Тепловой и природный УРН"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "Аггелы",
+    "wiki_group_monster_landbreaker": "Землекрушители",
+    "wiki_group_monster_hongshan": "Разбойники-цанцзэй",
+    "wiki_group_monster_animal": "Дикая фауна"
+  },
+  "resitances": {
+    "heatRez": "Тепловая СОПР",
+    "elecrtoRez": "Электрическая СОПР",
+    "physRez": "Физическая СОПР",
+    "cryoRez": "Криогенная СОПР",
+    "narureRez": "Природная СОПР",
+    "ephyrRez": "Эфирная СОПР"
   }
 }

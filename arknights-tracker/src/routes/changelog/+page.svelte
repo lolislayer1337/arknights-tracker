@@ -1,14 +1,18 @@
 <script>
     import { t } from "$lib/i18n";
+    import { currentLocale } from '$lib/stores/locale';
     import { changelogData } from "$lib/data/versions.js";
     import { equipment } from "$lib/data/items/equipment.js";
     import { characters } from "$lib/data/characters.js";
     import { weapons } from "$lib/data/weapons.js";
+    import { banners } from "$lib/data/banners.js";
 
     import Select from "$lib/components/Select.svelte";
     import WeaponCard from "$lib/components/WeaponCard.svelte";
     import OperatorCard from "$lib/components/OperatorCard.svelte";
     import Icon from "$lib/components/Icons.svelte";
+    import Images from "$lib/components/Images.svelte";
+    import BannerModal from "$lib/components/BannerModal.svelte";
 
     $: versionOptions = changelogData
         .map((v) => ({
@@ -18,6 +22,7 @@
         .sort((a, b) => b.value.localeCompare(a.value, undefined, { numeric: true }));
 
     let selectedVersion = "";
+    let bannerForModal = null;
     
     $: if (!selectedVersion && versionOptions.length > 0) {
         selectedVersion = versionOptions[0].value;
@@ -46,6 +51,10 @@
         ...equipment[id],
     }));
 
+    $: displayBanners = banners
+        .filter((b) => b.version === selectedVersion)
+        .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+
     $: equipmentByPack = displayEquipment.reduce((acc, eq) => {
         const packName = eq.pack || "none";
         if (!acc[packName]) acc[packName] = [];
@@ -54,7 +63,30 @@
     }, {});
 
     $: packKeys = Object.keys(equipmentByPack).sort();
+
+    function formatBannerDate(dateStr, loc) {
+        if (!dateStr) return "";
+        try {
+        const onlyDate = dateStr.split(" ")[0]; 
+        const [year, month, day] = onlyDate.split("-").map(Number);
+        const dateObj = new Date(Date.UTC(year, month - 1, day));
+        if (isNaN(dateObj.getTime())) return onlyDate;
+        return new Intl.DateTimeFormat(loc || "ru", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+            timeZone: "UTC"
+        }).format(dateObj);
+        } catch (e) {
+        console.error("Format date error:", e);
+        return dateStr.split(" ")[0];
+        }
+    }
 </script>
+
+{#if bannerForModal}
+    <BannerModal banner={bannerForModal} on:close={() => (bannerForModal = null)} />
+{/if}
 
 <div class="max-w-[100%] max-h-[100%] justify-start min-h-screen">
     <div
@@ -79,6 +111,51 @@
     </div>
 
     <div class="w-full xl:w-[80%] pb-12 flex flex-col gap-3 relative">
+        {#if displayBanners.length > 0}
+            <div class="flex flex-col gap-3 animate-fadeIn">
+                <h3 class="text-2xl font-bold text-[#21272C] dark:text-[#E4E4E4] font-sdk flex items-center gap-2">
+                    {$t("systemNames.banners") || "Banners"}
+                </h3>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-5 justify-start mb-3">
+                    {#each displayBanners as banner (banner.id)}
+                        <div class="flex flex-col gap-2">
+                            <div
+                                role="button"
+                                tabindex="0"
+                                class="relative w-full aspect-[16/9] hover:outline-white hover:dark:outline-white transition-all duration-200 hover:outline-2 bg-gray-200 dark:bg-[#1E1E1E] rounded-xl overflow-hidden shadow-sm group cursor-pointer outline-none focus:ring-4 focus:ring-[#FACC15] select-none hover:shadow-lg"
+                                on:click={() => (bannerForModal = banner)}
+                                on:keydown={(e) => (e.key === "Enter" || e.key === " ") && (bannerForModal = banner)}
+                            >
+                                <Images 
+                                    id={banner.id} 
+                                    variant={banner.type === 'web' || banner.type === 'ingame' ? 'event-icon' : 'banner-icon'} 
+                                    className="w-full h-full object-cover" 
+                                    alt={banner.name} 
+                                />
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-80 pointer-events-none"></div>
+                                
+                                <div class="absolute top-2 right-2 px-1.5 py-0.5 bg-black/60 backdrop-blur-md rounded text-[9px] font-bold text-white uppercase tracking-wider border border-white/10 pointer-events-none">
+                                    {$t(`bannerTypes.${banner.type === 'weapon' ? 'weapon-all' : banner.type}`)}
+                                </div>
+                            </div>
+
+                            <div class="px-1 flex flex-col">
+                                <h4 class="font-bold font-sdk text-[#21272C] dark:text-[#FDFDFD] text-sm leading-tight truncate">
+                                    {$t(`banners.${banner.id}`) !== `banners.${banner.id}` ? $t(`banners.${banner.id}`) : banner.name}
+                                </h4>
+                                {#if banner.startTime}
+                                    <div class="text-[10px] font-nums font-medium text-gray-500 dark:text-[#B7B6B3] truncate mt-0.5">
+                                        {formatBannerDate(banner.startTime, $currentLocale)} — {banner.endTime ? formatBannerDate(banner.endTime, $currentLocale) : '∞'}
+                                    </div>
+                                {/if}
+                            </div>
+                        </div>
+                    {/each}
+                </div>
+            </div>
+        {/if}
+
         {#if displayCharacters.length > 0}
             <div class="flex flex-col gap-4 animate-fadeIn">
                 <h3
@@ -88,7 +165,7 @@
                 </h3>
 
                 <div
-                    class="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] md:grid-cols-[repeat(auto-fill,110px)] gap-6 justify-start"
+                    class="ml-1 grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] md:grid-cols-[repeat(auto-fill,110px)] gap-6 justify-start"
                 >
                     {#each displayCharacters as char (char.id)}
                         <div
@@ -135,7 +212,7 @@
                     {#each packKeys as packName}
                         <div class="flex flex-col gap-2">
                             <h4
-                                class="text-lg font-bold text-gray-500 dark:text-[#888] font-sdk"
+                                class="text-lg font-bold text-gray-600 dark:text-[#B7B6B3] font-sdk"
                             >
                                 {$t(`packs.${packName}`) || packName}
                             </h4>
@@ -160,7 +237,7 @@
             </div>
         {/if}
 
-        {#if displayCharacters.length === 0 && displayWeapons.length === 0 && displayEquipment.length === 0}
+        {#if displayBanners.length === 0 && displayCharacters.length === 0 && displayWeapons.length === 0 && displayEquipment.length === 0}
             <div
                 class="text-center py-20 text-gray-400 italic flex flex-col items-center justify-center bg-gray-50 dark:bg-[#2C2C2C] rounded-2xl border border-dashed border-gray-200 dark:border-[#444] animate-fadeIn"
             >

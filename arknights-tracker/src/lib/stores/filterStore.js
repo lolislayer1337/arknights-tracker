@@ -58,7 +58,6 @@ const initialManualMode = {
     class: false, element: false, weapon: false, type: false, attr1: false, attr2: false, attr3: false
 };
 
-
 export const equipmentFilters = writable({ ...initialEquipmentFilters });
 export const equipmentManual = writable({ ...initialManualMode });
 export const equipmentSearch = writable("");
@@ -73,3 +72,7 @@ export const operatorFilters = writable({ ...initialOperatorFilters });
 export const operatorManual = writable({ ...initialManualMode });
 export const operatorSearch = writable("");
 export const operatorOwnedOnly = writable(false);
+
+export const enemyFilters = writable({});
+export const enemySearch = writable("");
+export const enemyGroupMode = createPersistentStore('enemyGroupMode', true);

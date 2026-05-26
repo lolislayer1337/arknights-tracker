@@ -1,6 +1,6 @@
 <script>
     import { isDarkMode } from "$lib/stores/theme";
-    import { t } from "$lib/i18n"; // Импорт локализации
+    import { t } from "$lib/i18n";
 
     function toggleTheme() {
         $isDarkMode = !$isDarkMode;

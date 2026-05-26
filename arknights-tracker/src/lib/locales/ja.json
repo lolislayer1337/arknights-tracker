@@ -25,7 +25,8 @@
     "privacyPolicy": "プライバシーポリシー",
     "specialThanks": "スペシャルサンクス",
     "interactiveMap": "インタラクティブマップ (Open Endfield Map)",
-    "supportProject": "Goyfield.moeを支援する"
+    "supportProject": "Goyfield.moeを支援する",
+    "supportProjectShort": "支援する"
   },
   "page": {
     "title": "人材発掘",
@@ -243,6 +244,7 @@
   },
   "systemNames": {
     "total": "合計",
+    "banners": "ガチャ一覧",
     "pull": "回",
     "operator": "オペレーター",
     "pity": "現在数",
@@ -265,7 +267,12 @@
     "noMaterialsNeeded": "素材不要",
     "featuredCharacters": "ピックアップ",
     "new": "NEW",
-    "version": "バージョン"
+    "version": "バージョン",
+    "weapons": "武器",
+    "operators": "オペレーター",
+    "versions": "バージョン",
+    "sortByRelease": "実装日順",
+    "sortByWait": "復刻待ち日数順"
   },
   "status": {
     "won": "勝利 50:50",
@@ -310,7 +317,9 @@
     "weapons": "武器",
     "essences": "武器基質",
     "changelog": "更新履歴",
-    "equipment": "装備"
+    "equipment": "装備",
+    "bannerHistory": "バナー履歴",
+    "enemies": "敵"
   },
   "events": {
     "voyage_to_the_stars": "星々への航海",
@@ -348,7 +357,7 @@
     "AICSupportPalmTopSavior": "集成支援・小さな救いの星",
     "etchspaceSalvageZone56": "歪エリア5&6",
     "blitzOfVerdance": "春雷の息吹スタンプ",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "輝きの瞬間スタンプ",
     "etchingsOfOurCosmicDreams": "名を刻もう・記念撮影",
     "etchingsOfOurCosmicDreamsSignIn": "名を刻もうスタンプ",
     "pristineMonthlyPassTribute": "新・月パス特典",
@@ -499,7 +508,14 @@
     "arms_offering": "武庫・特典",
     "editPotential": "潜在を編集",
     "featured_guarantee": "確定",
-    "reset": "潜在をリセットします。計算は実際のガチャ履歴に基づきます"
+    "reset": "潜在をリセットします。計算は実際のガチャ履歴に基づきます",
+    "hp": "HP",
+    "atk": "攻撃力",
+    "def": "加護効果",
+    "drops": "入手可能",
+    "properties": "特性説明",
+    "abilities": "スキル",
+    "vulnerable": "クラッシュ"
   },
   "bioValues": {
     "Unknown": "不明"
@@ -835,7 +851,13 @@
       "onlyPc": "PCのみ"
     },
     "noActiveCodes": "有効なコードはありません",
-    "noActiveBanners": "開催中のバナーはありません"
+    "noActiveBanners": "開催中のバナーはありません",
+    "activeEvents": "開催中のイベント",
+    "noActiveEvents": "開催中のイベントはありません",
+    "discordJoin": "Discordに参加",
+    "docsTitle": "Goyfield DEV ドキュメント",
+    "docsAuthor": "by @beetwooo_",
+    "goToTimeline": "イベントタイムラインへ"
   },
   "characters": {
     "catcher": "キャッチャー",
@@ -864,7 +886,8 @@
     "tangtang": "タンタン",
     "pogranichnik": "ポグラニチニク",
     "rossi": "ロッシ",
-    "zhuangfy": "ゾアン・ファンイ"
+    "zhuangfy": "ゾアン・ファンイ",
+    "zhuangFangyi": "ゾアン・ファンイ"
   },
   "weaponsList": {
     "industry01": "工業零点一",
@@ -1456,5 +1479,19 @@
     "Sub": "サブ能力",
     "AllSkillDamageIncrease": "全スキルダメージUP",
     "FireAndNaturalDamageIncrease": "灼熱&自然ダメージUP"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "アンゲロス",
+    "wiki_group_monster_landbreaker": "ランドブレーカー",
+    "wiki_group_monster_hongshan": "滄賊",
+    "wiki_group_monster_animal": "野生の生物"
+  },
+  "resitances": {
+    "heatRez": "灼熱耐性",
+    "elecrtoRez": "電磁耐性",
+    "physRez": "物理耐性",
+    "cryoRez": "寒冷耐性",
+    "narureRez": "自然耐性",
+    "ephyrRez": "超域耐性"
   }
 }

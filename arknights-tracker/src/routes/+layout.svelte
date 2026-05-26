@@ -303,12 +303,14 @@
                         { path: "/", label: "sidebar.home", icon: "mainPage" },
                         { path: "/records", label: "sidebar.records", icon: "records" },
                         { path: "/events", label: "sidebar.events", icon: "timeline" },
+                        { path: "/history", label: "pages.bannerHistory", icon: "history" },
                         { path: "/settings", label: "sidebar.settings", icon: "settings" },
                         { type: "divider" },
                         { path: "/changelog", label: "pages.changelog", icon: "changelog" },
                         { path: "/operators", label: "sidebar.operators", icon: "operators" },
                         { path: "/weapons", label: "pages.weapons", icon: "weapons" },
                         { path: "/essences", label: "pages.essences", icon: "essence" },
+                        { path: "/enemies", label: "pages.enemies", icon: "hongshan" },
                         { path: "/equipment", label: "pages.equipment", icon: "edc" }
                     ] as item}
                         {#if item.type === "divider"}
@@ -347,7 +349,7 @@
                                 {#if !visuallyCollapsed}
                                     <span
                                         class="
-                                        text-lg leading-tight
+                                        text-lg leading-tight pr-2
                                         {isCurrent(item.path) &&
                                         (item.path === '/'
                                             ? $page.url.pathname === '/'
@@ -597,6 +599,29 @@
                             >
                                 {$t("footer.privacyPolicy")}
                             </button>
+                            <button
+                                on:click={() => (isDonateModalOpen = true)}
+                                class="text-left text-[15px] text-[#F9B90C] hover:text-[#d9a009] dark:hover:text-[#ffe28a] transition-colors flex items-center gap-1"
+                            >
+                                <Icons name="favorite" class="w-4 h-4" />
+                                {$t("footer.supportProject")}
+                            </button>
+                        </div>
+
+                        <div
+                            class="hidden md:block w-px min-h-[60px] bg-gray-300 dark:bg-[#444444]"
+                        ></div>
+
+                        <div class="flex flex-col gap-3 min-w-[200px]">
+                            <a
+                                href="https://goyfield-developers.github.io/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="flex items-center gap-1 text-left text-[15px] text-gray-400 dark:text-[#B7B6B3] hover:text-black dark:hover:text-white transition-colors"
+                            >
+                                {$t("home.docsTitle")}
+                                <Icons name="sendToLink" class="w-4 h-4" />
+                            </a>
                             <a
                                 href="https://opendfieldmap.org/"
                                 target="_blank"
@@ -606,13 +631,6 @@
                                 {$t("footer.interactiveMap")}
                                 <Icons name="sendToLink" class="w-4 h-4" />
                             </a>
-                            <button
-                                on:click={() => (isDonateModalOpen = true)}
-                                class="text-left text-[15px] text-[#F9B90C] hover:text-[#d9a009] dark:hover:text-[#ffe28a] transition-colors flex items-center gap-1"
-                            >
-                                <Icons name="favorite" class="w-4 h-4" />
-                                {$t("footer.supportProject")}
-                            </button>
                         </div>
                     </div>
                 </footer>

@@ -22,7 +22,8 @@
     "privacyPolicy": "Política de privacidad",
     "specialThanks": "Agradecimientos especiales",
     "interactiveMap": "Mapa Interactivo (Open Endfield Map)",
-    "supportProject": "Apoyar a Goyfield.moe"
+    "supportProject": "Apoyar a Goyfield.moe",
+    "supportProjectShort": "Apoyar"
   },
   "page": {
     "title": "Registros de Reclutamiento",
@@ -122,7 +123,7 @@
   "import": {
     "title": "Importar Historial de Reclutamiento",
     "overwriteStats": "Sobrescribir estadísticas de clasificación",
-"overwriteDesc": "Usa esta opción solo si tus estadísticas de clasificación están duplicadas o muestran números incorrectos. El sistema recalculará estrictamente tu clasificación a partir del historial de extracciones local.",
+    "overwriteDesc": "Usa esta opción solo si tus estadísticas de clasificación están duplicadas o muestran números incorrectos. El sistema recalculará estrictamente tu clasificación a partir del historial de extracciones local.",
     "delete_token_title": "Eliminar token",
     "importing": "Importando...",
     "waiting_response": "Esperando respuesta...",
@@ -242,6 +243,7 @@
   },
   "systemNames": {
     "total": "Total",
+    "banners": "Banner",
     "pull": "Tirada",
     "operator": "Operador",
     "pity": "Pity",
@@ -264,7 +266,12 @@
     "noMaterialsNeeded": "No requiere materiales",
     "featuredCharacters": "Operadores destacados",
     "version": "Versión",
-    "new": "NUEVO"
+    "new": "NUEVO",
+    "weapons": "Armas",
+    "operators": "Operadores",
+    "versions": "Versiones",
+    "sortByRelease": "Por lanzamiento",
+    "sortByWait": "Por días sin rerun"
   },
   "status": {
     "won": "Ganado 50:50",
@@ -309,7 +316,9 @@
     "weapons": "Armas",
     "essences": "Esencias",
     "changelog": "Registro de cambios",
-    "equipment": "Equipamiento"
+    "equipment": "Equipamiento",
+    "bannerHistory": "Historial de banners",
+    "enemies": "Enemigos"
   },
   "events": {
     "voyage_to_the_stars": "Viaje a las Estrellas",
@@ -348,7 +357,7 @@
     "AICSupportPalmTopSavior": "Soporte del CAI: Salvavidas de bolsillo",
     "etchspaceSalvageZone56": "Rescate de grabaespacio «Zona aberrante 5&6»",
     "blitzOfVerdance": "Inicio de sesión de Relámpago de verdor",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "Inicio de sesión de Momento resplandeciente",
     "etchingsOfOurCosmicDreams": "Instantánea: Grabados de nuestros sueños cósmicos",
     "etchingsOfOurCosmicDreamsSignIn": "Inicio de sesión de Grabados de nuestros sueños cósmicos",
     "pristineMonthlyPassTribute": "Tributo de Pase mensual Prístino",
@@ -499,7 +508,14 @@
     "arms_offering": "Ofrenda de armas",
     "featured_guarantee": "Garantizado",
     "editPotential": "Editar potencial",
-    "reset": "Restablecer valor de potencial, el cálculo se basará en el historial real de tiradas"
+    "reset": "Restablecer valor de potencial, el cálculo se basará en el historial real de tiradas",
+    "hp": "PV",
+    "atk": "Ataque",
+    "def": "Protección",
+    "drops": "Botín",
+    "properties": "Propiedades",
+    "abilities": "Habilidades",
+    "vulnerable": "Vulnerable"
   },
   "bioValues": {
     "Unknown": "Desconocido"
@@ -835,7 +851,13 @@
       "onlyPc": "Solo disponible en PC"
     },
     "noActiveCodes": "Sin códigos activos",
-    "noActiveBanners": "No hay Banners Activos"
+    "noActiveBanners": "No hay Banners Activos",
+    "activeEvents": "Eventos activos",
+    "noActiveEvents": "No hay eventos activos",
+    "discordJoin": "Unirse a Discord",
+    "docsTitle": "Documentación Goyfield DEV",
+    "docsAuthor": "por @beetwooo_",
+    "goToTimeline": "Ir a la línea de tiempo"
   },
   "characters": {
     "catcher": "Catcher",
@@ -864,7 +886,8 @@
     "tangtang": "Tangtang",
     "pogranichnik": "Pogranichnik",
     "rossi": "Rossi",
-    "zhuangfy": "Zhuang Fangyi"
+    "zhuangfy": "Zhuang Fangyi",
+    "zhuangFangyi": "Zhuang Fangyi"
   },
   "weaponsList": {
     "industry01": "Industria 0.1",
@@ -1456,5 +1479,19 @@
     "Sub": "Atributo secundario",
     "AllSkillDamageIncrease": "Bonificación de DAÑ de todas las habilidades infligido",
     "FireAndNaturalDamageIncrease": "Bonificación de DAÑ por calor y por naturaleza infligido"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "Aggeloi",
+    "wiki_group_monster_landbreaker": "Rompesuelos",
+    "wiki_group_monster_hongshan": "Piratas Cangzei",
+    "wiki_group_monster_animal": "Vida silvestre"
+  },
+  "resitances": {
+    "heatRez": "Resistencia al calor",
+    "elecrtoRez": "Resistencia Eléctrica",
+    "physRez": "Resistencia física",
+    "cryoRez": "Resistencia Criogénica",
+    "narureRez": "Resistencia natural",
+    "ephyrRez": "Resistencia al éter"
   }
 }

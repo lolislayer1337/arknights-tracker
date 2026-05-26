@@ -1,0 +1,613 @@
+{
+  "eny_0007_mimicw": {
+    "name": "Verminídeo Escavador de Túneis",
+    "nickname": "Verminídeo Escavador de Túneis",
+    "description": "Uma criatura que expele fluidos altamente corrosivos. Os Verminídeos geralmente vivem no subsolo. Eles dissolvem materiais metálicos com ácidos antes de consumi-los. Portanto, é aconselhável que caçadores de Verminídeos cuidem bem de suas armas.",
+    "abilities": [
+      "Evite o cuspe venenoso. Pisar nele causará DNO Natureza ao operador ao longo do tempo."
+    ]
+  },
+  "eny_0049_rogue": {
+    "name": "Infiltradora Quebra-Ossos",
+    "nickname": "Infiltradora Quebra-Ossos",
+    "description": "Uma Invasora de Terras com armas brancas. Infiltradoras são combatentes extremamente ágeis e capazes que lutam com duas armas ao mesmo tempo. Não se deve brincar com elas.",
+    "abilities": [
+      "Uma inimiga muito ágil e capaz de se desviar dos ataques básicos dos operadores. No entanto, quando ela ataca, não consegue desviar.",
+      "Pode arremessar dardos e realizar ataques adicionais em operadores atingidos pelos dardos. Desviar dos dardos pode oferecer uma boa chance de contra-ataque."
+    ]
+  },
+  "eny_0018_lbtough": {
+    "name": "Carrasco Quebra-Ossos",
+    "nickname": "Carrasco Quebra-Ossos",
+    "description": "Um Invasor de Terras armado com um machado pesado. Esses brutos enormes são muito mais poderosos do que seus equivalentes comuns e podem facilmente danificar estruturas defensivas ou derrubar veículos blindados.",
+    "abilities": [
+      "Seu ataque de agarrar causa DNO significativo. Se um operador for agarrado, use a habilidade de outro operador para interrompê-lo e libertar o operador agarrado.",
+      "Desviar dos poderosos golpes de machado duplo não será fácil. Em vez disso, tente interrompê-lo."
+    ]
+  },
+  "eny_0088_wgthorns": {
+    "name": "Hedron",
+    "nickname": "Hedron",
+    "description": "O \"Diaphaistagran\" (ID do arquivo: ARM315) é um padrão fluido com capacidade de projetar energia. Seu formato é de uma geometria complexa, porém simétrica. Seus ataques também podem sugar o calor de qualquer superfície com a qual entram em contato.",
+    "abilities": [
+      "Os projéteis que ele lança aplicam Inflição Crio aos operadores ao atingi-los."
+    ]
+  },
+  "eny_0021_agmelee": {
+    "name": "Ram",
+    "nickname": "Ram",
+    "description": "O \"Kriosson\" (ID do arquivo: ACL071) está entre as primeiras formas de Aggeloi registradas e é o mais comumente encontrado. Ele ataca suas vítimas com seus chifres.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0039_agcanno": {
+    "name": "Sentinela",
+    "nickname": "Sentinela",
+    "description": "O \"Phrourossaron\" (ARS316) é uma suposta tentativa Aggeloide de imitar o formato e os padrões de ataque das armas de sentinelas da humanidade. Apesar de seu enorme alcance, o Sentinela é um organismo séssil.",
+    "abilities": [
+      "Este inimigo tem um ataque poderoso com alcance extremamente longo. Desvie do bombardeio para progredir."
+    ]
+  },
+  "eny_0107_wgshoal2": {
+    "name": "Andarilho da Maré δ",
+    "nickname": "Andarilho da Maré δ",
+    "description": "O \"Genesklydan Dinedon\" (ID de arquivo: AGM321δ) é uma variante energizada do AGM321. Sua matéria constituinte encontra-se em um fluxo turbulento constante. Isso também explica sua forma particularmente aterradora quando aparece à noite.",
+    "abilities": [
+      "Ataques com habilidades que aplicam Inflição Crio e Solidificação aos operadores atingidos."
+    ]
+  },
+  "eny_0023_aghornb": {
+    "name": "Ram Pesado",
+    "nickname": "Ram Pesado",
+    "description": "O \"Thrylissoron\" (ID do arquivo: ACL072) é uma variante não padrão do ACL071. Ele pode manipular o ambiente e tomar decisões táticas.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0025_agrange": {
+    "name": "Ferrão",
+    "nickname": "Ferrão",
+    "description": "O \"Kentron\" (ID do arquivo: ARL121) carrega pedaços de si mesmo com energia e os impulsiona com lançamento inercial. A eficiência energética desse mecanismo é extremamente baixa.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0027_agscorp": {
+    "name": "Ferrão Pesado",
+    "nickname": "Ferrão Pesado",
+    "description": "O \"Varykentron\" (ID do arquivo: ARL141) é uma variante não padrão do ARL121. Ocasionalmente, ele realiza ataques de chicotada com a cauda em vez de usar seu ataque de energia à distância.",
+    "abilities": [
+      "Este inimigo ataca fazendo com que pilares de Originium entrem em erupção sob os operadores.",
+      "Ao ser abordado, esse inimigo irá conjurar pilares de pedra ao seu redor para proteção."
+    ]
+  },
+  "eny_0060_lbmad": {
+    "name": "Garra da Névoa Ardente",
+    "nickname": "Garra da Névoa Ardente",
+    "description": "Um combatente Invasor de Terras corrompido pela névoa ardente. Absorver névoa não deve ser considerado uma bênção. Esses invasores se tornaram versões horrivelmente distorcidas de si mesmos.",
+    "abilities": [
+      "Desvie do ataque violento para fazê-lo cair no chão."
+    ]
+  },
+  "eny_0078_nefarp1": {
+    "name": "Nefarith, \"Quebra-Ossos\"",
+    "nickname": "Nefarith, \"Quebra-Ossos\"",
+    "description": "Graças a Nefarith, os \"Quebra-Ossos\" se tornaram sinônimo de terror no Cinturão da Civilização. Sua conquista brutal ainda não terminou, e suas verdadeiras ambições ainda não foram reveladas.",
+    "abilities": [
+      "Lança ondas de energia do Æther das quais não é possível desviar. Use a Xiranita de Zhuang Fangyi para saltar no meio do ar e evitá-las completamente.",
+      "Salta a grandes alturas para se preparar para um ataque. Para interromper o movimento do inimigo, use Xiranita para pular no ar e, em seguida, execute um ataque de mergulho para invocar um raio."
+    ]
+  },
+  "eny_0029_lbmob": {
+    "name": "Invasor Quebra-Ossos",
+    "nickname": "Invasor Quebra-Ossos",
+    "description": "Um Invasor de Terras com armas básicas de combate corpo a corpo. Essa \"ralé\" das fileiras de IT tende a ser mal equipada e costuma aparecer em grupos.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0033_lbhunt": {
+    "name": "Emboscador Quebra-Ossos",
+    "nickname": "Emboscador Quebra-Ossos",
+    "description": "Um Invasor de Terras com armamento básico de longo alcance. Os Emboscadores receberam apenas o treinamento mais rudimentar e seus disparos são imprecisos. Mesmo assim, suas flechas já causaram muitas mortes.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0095_ethillu": {
+    "name": "Æthillu",
+    "nickname": "Æthillu",
+    "description": "Um fantasma que atendeu ao chamado de Ardashir. A encarnação da destruição, uma cristalização da decrepitude ancestral.",
+    "abilities": [
+      "Este inimigo possui uma poderosa habilidade de ressurreição. A forma ressuscitada tem um alcance de ataque maior. Ele também pode se detonar para causar DNO significativo."
+    ]
+  },
+  "eny_0045_agtrinit": {
+    "name": "Triaggelos",
+    "nickname": "Triaggelos",
+    "description": "SEM REGISTROS ANTERIORES. Classificado como Aggelos devido à natureza da formação. Mudanças na auréola podem refletir uma capacidade de tomar decisões táticas. Propriedades semelhantes às do Ankhor foram detectadas nessa entidade.",
+    "abilities": [
+      "Um inimigo com 3 formas diferentes.",
+      "FORMA DE ASSALTO: desfere ataques corpo a corpo continuamente. Interrompa o carregamento de sua habilidade para aplicar um grande efeito de Desorientação.",
+      "FORMA DE BUSCA: convoca muitos Aggeloi para a luta e libera ondas de choque do Ankhor.",
+      "FORMA TRAIÇOEIRA: entra em modo furtivo para disparar uma chuva de projéteis de longe ou emboscar seus operadores. Interrompa seu modo furtivo para aplicar um grande efeito de Desorientação."
+    ]
+  },
+  "eny_0063_agmelee2": {
+    "name": "Ram α",
+    "nickname": "Ram α",
+    "description": "O \"Kriosson Anavon\" (ID do arquivo: ACL071α) é uma variante energizada do ACL071. O conteúdo excessivo de energia da entidade dá a ele uma aparência vermelha brilhante característica e o torna mais forte e rápido do que a variante padrão.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0065_lbmob2": {
+    "name": "Invasor de Elite",
+    "nickname": "Invasor de Elite",
+    "description": "Um Invasor de Terras e combatente de elite, aperfeiçoado por vapores conhecidos como névoa ardente. Este IT em particular possui equipamentos, força e habilidades de batalha melhores.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0046_lbshamman": {
+    "name": "Piromante Quebra-Ossos",
+    "nickname": "Piromante Quebra-Ossos",
+    "description": "Um Invasor de Terras que pode usar as Artes de Originium da Evocação. Piromantes são extremamente perigosos, pois podem facilmente incendiar o campo de batalha com suas artes de fogo.",
+    "abilities": [
+      "Este inimigo tem ataques à distância poderosos que causam DNO Térmico, mas tem pouca mobilidade.",
+      "Este inimigo faz com que uma névoa ardente irrompa do chão, causando DNO Térmico. Tente desviar do ataque.",
+      "Teletransporta-se instantaneamente para um local distante quando os oponentes se aproximam demais."
+    ]
+  },
+  "eny_0052_palesent": {
+    "name": "Aggelomoirai de Mármore",
+    "nickname": "Aggelomoirai de Mármore",
+    "description": "SEM REGISTROS ANTERIORES. Categorizado como um Aggelos devido à natureza de sua formação, sua aparência externa imita a de Nefarith. Apesar de seus altos níveis de energia central, a entidade parece ser bastante instável.",
+    "abilities": [
+      "O Aggelomoirai de Mármore desperto pode conjurar inúmeros Ankhors do universo para bombardear a terra. Desvie desses ataques para encontrar uma maneira de retaliar."
+    ]
+  },
+  "eny_0087_wgslime": {
+    "name": "Lamacento",
+    "nickname": "Lamacento",
+    "description": "O \"Tholeroygran\" (ID do arquivo: ACM311) é o primeiro padrão fluido a ser descoberto. A morfologia da auréola é instável e a temperatura interna é tipicamente mais baixa do que a dos seus materiais constituintes.",
+    "abilities": [
+      "Este inimigo pode encurtar a distância rapidamente. Seus ataques podem aplicar Inflição Crio aos operadores atingidos."
+    ]
+  },
+  "eny_0047_firebat": {
+    "name": "Incendiário Quebra-Ossos",
+    "nickname": "Incendiário Quebra-Ossos",
+    "description": "Um Invasor de Terras armado com um lança-chamas. Embora essas armas pareçam malfeitas, elas cumprem bem o seu propósito. Incendiários podem facilmente eliminar pontos fortes e fazer os defensores, por mais teimosos que sejam, correrem para salvar suas vidas.",
+    "abilities": [
+      "Este inimigo pode cuspir fogo continuamente contra os operadores. Tente se mover para trás dele para evitar as chamas."
+    ]
+  },
+  "eny_0048_hvybow": {
+    "name": "Artilheiro Quebra-Ossos",
+    "nickname": "Artilheiro Quebra-Ossos",
+    "description": "Um Invasor de Terras com uma arma pesada de longo alcance. Artilheiros são elites selecionadas entre os Emboscadores que provaram seu valor. Suas flechas pesadas ​​são capazes de perfurar armaduras robustas.",
+    "abilities": [
+      "Dispara uma chuva de flechas que causam DNO ao Longo do Tempo e explodem após um atraso de alguns segundos.",
+      "Apesar de estar armado com uma balista gigante, esse inimigo também é um combatente corpo a corpo habilidoso."
+    ]
+  },
+  "eny_0050_hound": {
+    "name": "Rasga-Presa Quebra-Ossos",
+    "nickname": "Rasga-Presa Quebra-Ossos",
+    "description": "Uma pequena fera de guerra controlada pelos Invasores de Terras. Rasga-Presas são muito mais sanguinários e ferozes do que seus parentes selvagens e indomáveis. Eles são totalmente fiéis aos Invasores de Terras que os domaram.",
+    "abilities": [
+      "Este inimigo é ágil, mas pode ficar sobrecarregado ao receber vários golpes."
+    ]
+  },
+  "eny_0068_lbtough2": {
+    "name": "Carrasco de Elite",
+    "nickname": "Carrasco de Elite",
+    "description": "Um Invasor de Terras de elite embrutecido por vapores conhecidos como névoa ardente. Esse IT específico é um gigante imponente armado com um grande machado. Essas elites costumam ser vistas liderando multidões de invasores Quebra-Ossos.",
+    "abilities": [
+      "Seu ataque de agarrar causa DNO significativo. Se um operador for agarrado, use a habilidade de outro operador para interrompê-lo e libertar o operador agarrado.",
+      "Desviar dos poderosos golpes de machado duplo não será fácil. Em vez disso, tente interrompê-lo."
+    ]
+  },
+  "eny_0051_rodin": {
+    "name": "Rhodagn, o Punho Quebrador de Ossos",
+    "nickname": "Rhodagn",
+    "description": "O braço direito de Nefarith e o soldado Quebra-Ossos mais temido do clã. Muitos Invasores de Terras desafiaram a liderança de Nefarith apenas para serem completamente esmagados pelos punhos de Rhodagn.",
+    "abilities": [
+      "Um inimigo superpesado. Ele usa tubos de ventilação para atrair seus oponentes, aproximando-os o suficiente para que possam ser atacados.",
+      "Fortalece-se com o poder das fornalhas. Observe e desvie dos seus jatos de fogo."
+    ]
+  },
+  "eny_0076_agfly": {
+    "name": "Asas-Falsas",
+    "nickname": "Asas-Falsas",
+    "description": "O \"Psuthopteron\" (ID do arquivo: ARA07C) possui capacidades de voo totalmente alheias à sua morfologia. Esse padrão foi originalmente considerado biomimético. No entanto, o consenso moderno acredita que se tratava de uma imitação de veículos voadores Terranos.",
+    "abilities": [
+      "Gera pequenos redemoinhos que também podem atrasar os operadores."
+    ]
+  },
+  "eny_0079_nefarp2": {
+    "name": "Nefarith, \"Conquistadora\"",
+    "nickname": "Nefarith, \"Conquistadora\"",
+    "description": "A percepção que a Conquistadora tem de si mesma. Ela não esconde seu desejo de devastar a civilização.",
+    "abilities": [
+      "Protegida o tempo inteiro com um escudo de Æther que reduz consideravelmente o DNO recebido pelo inimigo. Interrompa o carregamento do inimigo para desabilitar temporariamente o escudo.",
+      "Rasga a estrutura do espaço-tempo para imobilizar seus operadores. Tente interromper essa habilidade, se puder.",
+      "Prende seus operadores com um Ankhor. Ataque o Ankhor para libertá-los."
+    ]
+  },
+  "eny_0089_wgreflec": {
+    "name": "Prisma",
+    "nickname": "Prisma",
+    "description": "O \"Prismastagran\" (ID do arquivo: ASM316) é uma variante não padrão do ARM315. Ele é capaz de proteger Aggeloi próximos e é muito difícil de atingir, pois frequentemente se cerca de entidades ARM315.",
+    "abilities": [
+      "Esse inimigo pode fortalecer consideravelmente os aliados próximos, melhorando suas capacidades."
+    ]
+  },
+  "eny_0053_hsmob": {
+    "name": "Saqueador das Estradas",
+    "nickname": "Saqueador das Estradas",
+    "description": "Um criminoso armado ativo nos territórios da Cidade de Wuling. Saqueadores das Estradas geralmente montam barricadas ilegais ou se envolvem no contrabando de mercadorias ilegais. Eliminar esses bandidos é uma das principais prioridades das forças policiais de Hongshan.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0083_hstiger": {
+    "name": "Rastejante Pintado",
+    "nickname": "Rastejante Pintado",
+    "description": "Um rastejante que cresceu nas áreas selvagens. Esses predadores poderosos são endêmicos de Talos-II. Eles podem saltar grandes distâncias e atacar suas presas com garras afiadas.",
+    "abilities": [
+      "Uma besta ágil que ataca com as garras e a cauda. Tente desviar.",
+      "Estado Enfurecido: quando enfurecido, o ATQ da fera aumenta e ela usa suas habilidades de carga com mais frequência. Aplicar Desorientado a ela encerra o estado Enfurecido."
+    ]
+  },
+  "eny_0098_sandb2": {
+    "name": "Besta-Couraça Chifre de Machado da Névoa Ardente",
+    "nickname": "Besta-Couraça Chifre de Machado da Névoa Ardente",
+    "description": "Uma besta-couraça chifre de machado corrompida por névoa ardente. A criatura tornou-se extremamente agressiva, tendo sido levada a um estado de insanidade raivosa. Aproxime-se com cautela se não quiser ser dividido ao meio por seu \"grande machado\".",
+    "abilities": [
+      "Uma Besta-Couraça Chifre de Machado furiosa usará seus enormes chifres para expulsar os inimigos que invadirem seu território. Cuidado com suas investidas.",
+      "O inimigo realizará diversos ataques em área. Interrompa-o quando ele ficar Enfurecido."
+    ]
+  },
+  "eny_0054_hsmino": {
+    "name": "Esmagador de Colinas",
+    "nickname": "Esmagador de Colinas",
+    "description": "Um criminoso armado com uma arma pesada. O nome pode soar como uma piada exagerada, mas o lançador de foguetes quádruplo do Esmagador de Colinas tem um poder de fogo considerável. Não subestime esse inimigo.",
+    "abilities": [
+      "Usa o lançador de foguetes pesado como arma de combate corpo a corpo. Também dispara fogos de artifício em seus ataques à distância. Ser atingido e erguido por seus chifres pode desencadear uma explosão de fogos de artifício incrível!",
+      "Não tente apunhalá-lo pelas costas. Ele tem um coice poderoso!"
+    ]
+  },
+  "eny_0055_hscrane": {
+    "name": "Perseguidor de Nuvens",
+    "nickname": "Perseguidor de Nuvens",
+    "description": "Um criminoso armado com uma estranha arma que se assemelha a uma lanterna inofensiva. Não se engane. A \"lanterna\" do Perseguidor de Nuvens é, na verdade, uma decapitadora voadora com um alcance aterrador.",
+    "abilities": [
+      "Cospe fumaça que interrompe o movimento. Operadores presos na fumaça têm menor linha de visão, menor velocidade de movimento e não conseguem desviar.",
+      "O inimigo é um combatente relativamente fraco. Tente eliminá-lo primeiro.",
+      "Solta fumaça verde que cura outros inimigos."
+    ]
+  },
+  "eny_0108_slbomb2": {
+    "name": "Lesma do Originium da Névoa Flamejante",
+    "nickname": "Lesma do Originium da Névoa Flamejante",
+    "description": "Uma criatura selvagem infectada por Originium com temperaturas corporais extremamente altas. Sua carapaça dorsal está impregnada de poeira de Originium com níveis mais altos de atividade.",
+    "abilities": [
+      "Este inimigo se autodetona quando está com pouco PV. A detonação aplica um material instável no operador atingido. Se o operador sofrer DNO, o material explodirá."
+    ]
+  },
+  "eny_0057_dog": {
+    "name": "Besta Carnívora Selvagem",
+    "nickname": "Besta Carnívora Selvagem",
+    "description": "Bestas Carnívoras Selvagens são predadoras da natureza de Talos. Considerando o ambiente hostil de Talos-II, chegar ao topo da cadeia alimentar não é tarefa fácil.",
+    "abilities": [
+      "Uma criatura dócil e tímida. Não ataca operadores à primeira vista."
+    ]
+  },
+  "eny_0058_agdisk": {
+    "name": "Efígie",
+    "nickname": "Efígie",
+    "description": "O \"Homoiossaron\" (ID do arquivo: AGL371) é capaz de imitar formas humanas ou partes delas. Algumas dessas entidades raras e perigosas são capazes de canalizar o próprio Æther.",
+    "abilities": [
+      "Este inimigo tem ataques de impacto poderosos, mas gira lentamente durante a conjuração. Esse é o melhor momento para se posicionar atrás dele e atacar.",
+      "O inimigo pode remontar seu corpo em várias formas e se mover rapidamente pelo campo de batalha.",
+      "O inimigo tentará encurralar os operadores! Uma interrupção rápida a neutralizará."
+    ]
+  },
+  "eny_0059_erhound": {
+    "name": "Besta Carnívora da Névoa Ardente",
+    "nickname": "Besta Carnívora da Névoa Ardente",
+    "description": "Uma besta carnívora contaminada pela névoa ardente. Essas pequenas aberrações geralmente se movem em bandos e podem representar uma séria ameaça, até mesmo para equipes de campo totalmente armadas.",
+    "abilities": [
+      "Menos inteligente, porém mais feroz que as bestas carnívoras comuns. Desvie de seu ataque de salto para fazê-la cair no chão."
+    ]
+  },
+  "eny_0061_palecore": {
+    "name": "Aggelomoirai de Mármore",
+    "nickname": "Aggelomoirai de Mármore",
+    "description": "SEM REGISTROS ANTERIORES. Classificado como um Aggelos devido à natureza de sua formação. Embora seus módulos mórficos tenham sido remontados, a entidade continua a imitar a aparência de Nefarith. Nenhuma explicação satisfatória foi proposta para esse fenômeno.",
+    "abilities": [
+      "Derrote todos os Apêndices de Mármore para forçar o Aggelomoirai de Mármore adormecido a expor temporariamente seu núcleo vulnerável a ataques."
+    ]
+  },
+  "eny_0062_paletent": {
+    "name": "Apêndice de Mármore",
+    "nickname": "Apêndice de Mármore",
+    "description": "SEM REGISTROS ANTERIORES. Classificado como Aggelos devido à natureza da formação. Sua manifestação física parece sugerir extensões de seu corpo principal. No entanto, esses apêndices, na verdade, alcançam o corpo principal e supostamente servem como uma forma de distração.",
+    "abilities": [
+      "Alguns Apêndices de Mármore são habilidosos em atacar adversários corpo a corpo com golpes poderosos.",
+      "Alguns Apêndices de Mármore são habilidosos em atacar adversários à distância, convertendo suas pontas em material de Praga que pode ser lançado."
+    ]
+  },
+  "eny_0075_lbroshan": {
+    "name": "Socador Quebra-Ossos",
+    "nickname": "Socador Quebra-Ossos",
+    "description": "Um combatente Invasor de Terras equipado com manoplas explosivas pesadas. Eles operam como os pilares dos bandos Quebra-Ossos. As manoplas de um Socador servem como armas portáteis para derrubar posições fortificadas.",
+    "abilities": [
+      "Um inimigo implacável. Mesmo após ser interrompido, é provável que tente atacar novamente.",
+      "Este inimigo usa sua manga blindada para espalhar escamas de armadura reativa. Mantenha uma distância segura, especialmente se pisar nele acidentalmente.",
+      "Esse inimigo tentará recuperar escamas de armadura do chão para voltar à sua forma original e lançará um ataque poderoso assim que conseguir recuperá-las."
+    ]
+  },
+  "eny_0091_wgshoal": {
+    "name": "Andarilho da Maré",
+    "nickname": "Andarilho da Maré",
+    "description": "O \"Genesklydan\" (ID do arquivo: AGM321) exibe cabeça e pernas humanoides. Desde a descoberta desse padrão específico, a semelhança humana tornou-se uma regra implícita para avaliar os níveis de ameaça dos Aggeloides.",
+    "abilities": [
+      "Ataques com habilidades que aplicam Inflição Crio e Solidificação aos operadores atingidos."
+    ]
+  },
+  "eny_0064_agrange2": {
+    "name": "Ferrão α",
+    "nickname": "Ferrão α",
+    "description": "O \"Kentron Anavon\" (ID do arquivo: ARL121α) é uma variante energizada do ARL121. A maior densidade energética da entidade dá a ele maior poder de fogo. A eficiência energética do seu mecanismo de disparo continua baixa.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0066_lbhunt2": {
+    "name": "Emboscador de Elite",
+    "nickname": "Emboscador de Elite",
+    "description": "Um Invasor de Terras e combatente de elite especializado em combate à distância, aprimorado pelos vapores conhecidos como névoa ardente. Este IT é mais bem treinado, mais preciso e equipado com uma besta superior e virotes reforçados.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0077_agshield": {
+    "name": "Crisópolis Caminhante",
+    "nickname": "Crisópolis Caminhante",
+    "description": "O \"Thureoron\" (ID do arquivo: ACL156) é um padrão equipado com uma estrutura semelhante a um escudo que protege sua auréola. Atenção: este Aggelos pode manipular energia para arrastar alvos distantes em sua direção.",
+    "abilities": [
+      "O Crisópolis Caminhante possui dois estados: Normal e Bastião.",
+      "Estado Normal: este sistema tem a capacidade de atrair operadores de longe.",
+      "Estado Bastião: todos os ataques recebidos pela frente ou pelas laterais serão refletidos, mas isso também expõe um ponto fraco na parte traseira."
+    ]
+  },
+  "eny_0094_hsfly": {
+    "name": "Lamparina",
+    "nickname": "Lamparina",
+    "description": "Um artrópode selvagem que vive em ambientes aquáticos. A lamparina emite um brilho fraco e seus fluidos corporais contêm substâncias irritantes que podem causar reações alérgicas e até queimaduras. Tenha cuidado ao manusear essa criatura.",
+    "abilities": [
+      "Um inimigo que cospe ácidos armazenados em sua cabeça. Operadores atingidos por esse ataque sofrerão redução de DEF. Embora não seja muito ameaçador, é necessário tomar cuidado assim mesmo."
+    ]
+  },
+  "eny_0067_hound2": {
+    "name": "Rasga-Presas de Elite",
+    "nickname": "Rasga-Presas de Elite",
+    "description": "Um Invasor de Terras de elite aprimorado com vapores conhecidos como névoa ardente. Esse Rasga-Presas específico é mais feroz e astuto, e ataca com movimentos menos previsíveis.",
+    "abilities": [
+      "Ágil e flexível. Continuará tentando se aproximar e atacar seu alvo."
+    ]
+  },
+  "eny_0069_aghornb2": {
+    "name": "Ram α Pesado",
+    "nickname": "Ram α Pesado",
+    "description": "O \"Thrylissoron Anavon\" (ID do arquivo: ACL072α) é uma variante energizada do ACL072. Seu alto teor energético não afetou sua capacidade de tomada de decisão. Essa entidade é extremamente perigosa.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0092_slbomb": {
+    "name": "Lesma do Originium Névoa de Fogo",
+    "nickname": "Lesma do Originium Névoa de Fogo",
+    "description": "Uma criatura selvagem infectada por Originium com temperaturas corporais extremamente altas. Essa lesma explode quando está próxima da morte, cobrindo tudo ao redor com fluidos corporais ácidos em temperaturas de ebulição, além de poeira de Originium ativo.",
+    "abilities": [
+      "Este inimigo se autodetona quando está com pouco PV. A detonação aplica um material instável no operador atingido. Se o operador sofrer DNO, o material explodirá."
+    ]
+  },
+  "eny_0070_agscorp2": {
+    "name": "Ferrão Pesado α",
+    "nickname": "Ferrão Pesado α",
+    "description": "O \"Varykentron Anavon\" (ID do arquivo: ARL141α) é uma variante energizada de ARL141 que manteve uma infinidade de padrões de ataque. É uma entidade mais resistente e perigosa.",
+    "abilities": [
+      "Este inimigo ataca fazendo com que pilares de Originium entrem em erupção sob os operadores.",
+      "Ao ser abordado, esse inimigo irá conjurar pilares de pedra ao seu redor para proteção."
+    ]
+  },
+  "eny_0071_sandb": {
+    "name": "Besta-Couraça Chifre de Machado",
+    "nickname": "Besta-Couraça Chifre de Machado",
+    "description": "Uma fera com carapaça óssea e chifre em forma de machado. A criatura pode até arrombar portões grossos e pesados de liga metálica com seus enormes chifres.",
+    "abilities": [
+      "Uma Besta-Couraça Chifre de Machado furiosa usará seus enormes chifres para expulsar os inimigos que invadirem seu território. Cuidado com suas investidas.",
+      "O inimigo realizará diversos ataques em área. Interrompa-o quando ele ficar Enfurecido."
+    ]
+  },
+  "eny_0072_slimeml": {
+    "name": "Besta Garras de Foice Nativa",
+    "nickname": "Besta Garras de Foice Nativa",
+    "description": "Uma criatura selvagem infectada por Originium. A grande fera carrega múltiplos aglomerados de Originium e é capaz de dilacerar suas presas com seus membros frontais em forma de foice.",
+    "abilities": [
+      "Um inimigo que aparece em grupos. Cuidado com seus apêndices frontais afiados como navalhas."
+    ]
+  },
+  "eny_0104_hsrogue2": {
+    "name": "Rajada Intensa",
+    "nickname": "Rajada Intensa",
+    "description": "Um criminoso armado com uma arma exótica. Esses Perseguidores de Nuvens são tão habilidosos com lâminas em forma de gancho que dizem que poderiam fatiar as próprias nuvens em cubos perfeitos.",
+    "abilities": [
+      "Usa ganchos acorrentados para atacar operadores aliados. Operadores acorrentados ficarão atordoados, a menos que sejam libertados."
+    ]
+  },
+  "eny_0073_slimerg": {
+    "name": "Lesma do Originium Ácida",
+    "nickname": "Lesma do Originium Ácida",
+    "description": "Uma criatura selvagem infectada por Originium. Esta lesma secreta uma substância ácida e, quando ameaçada, tenta intimidar o inimigo sacudindo-se violentamente e lançando fragmentos do aglomerado de Originium que carrega nas costas.",
+    "abilities": [
+      "Um inimigo tímido que se recolhe em sua carapaça para se proteger. Ele também dispara cristais de Originium de seu corpo a esmo para intimidar seus oponentes."
+    ]
+  },
+  "eny_0093_hshog": {
+    "name": "Penoso",
+    "nickname": "Penoso",
+    "description": "Um penoso nativo de Talos-II. Quando levanta seus espinhos e começa a rolar, torna-se tão destrutivo quanto uma motosserra giratória.",
+    "abilities": [
+      "Estado Enfurecido: quando enfurecido, o ATQ da fera aumenta e ela usa suas habilidades de carga com mais frequência. Aplicar Desorientado a ela encerra o estado Enfurecido."
+    ]
+  },
+  "eny_0074_lbshield": {
+    "name": "Vanguarda Quebra-Ossos",
+    "nickname": "Vanguarda Quebra-Ossos",
+    "description": "Um combatente Quebra-Ossos armado com lanças e escudos. Embora armado com armas rudimentares, os vanguardas desenvolveram uma técnica de combate que une ataque e defesa. Tome cuidado ao lutar contra esse inimigo.",
+    "abilities": [
+      "Este inimigo bloqueará todos os ataques recebidos, a menos que ele esteja atacando. Desoriente-o para quebrar seu escudo."
+    ]
+  },
+  "eny_0080_reaper": {
+    "name": "Ereignis",
+    "nickname": "Ereignis",
+    "description": "Qual é o significado do progresso? O que constitui o significado? Qual é a natureza da vida?",
+    "abilities": []
+  },
+  "eny_0081_ruanyi": {
+    "name": "Ruan Yi",
+    "nickname": "Ruan Yi",
+    "description": "Ruan Yi havia mantido sua raiva sob controle por anos. Quando uma \"oportunidade\" fugaz se apresentou, ele decidiu que era hora de finalmente liberar sua fúria reprimida.",
+    "abilities": [
+      "Ruan Yi pode desviar todos os ataques. Use Xiranita para quebrar sua proteção e causar DNO efetivo a ele.",
+      "Quando com PV baixo, este inimigo entra em um estado Irado. Use Xiranita para quebrar este estado e aplicar Enfraquecido ao inimigo por um período prolongado.",
+      "Quando Irado, Ruan Yi pode invocar Raízes da Ruína Irada que explodem quando o operador controlado se aproxima demais.",
+      "A Energia Xiranita se unirá e aparecerá no campo de batalha para oferecer apoio. Toque na Energia Xiranita quando no tempo certo para ativá-la e suprimir Ruan Yi."
+    ]
+  },
+  "eny_0099_slimeml2": {
+    "name": "Besta Garras de Foice Brutal",
+    "nickname": "Besta Garras de Foice Brutal",
+    "description": "Uma criatura selvagem infectada por Originium. A fera gigante carrega numerosos aglomerados de Originium que exibem níveis mais altos de atividade. Ela também possui uma carapaça mais espessa do que suas semelhantes comuns.",
+    "abilities": [
+      "Um inimigo que aparece em grupos. Cuidado com seus apêndices frontais afiados como navalhas."
+    ]
+  },
+  "eny_0082_hsbear": {
+    "name": "Retumbador Celeste",
+    "nickname": "Retumbador Celeste",
+    "description": "Um bugio que cresceu nas áreas selvagens. Essa criatura é nativa de Talos-II. As membranas resistentes em sua cabeça e no pescoço permitem que ela emita uivos poderosos, altos o suficiente para fazer as colinas e florestas tremerem.",
+    "abilities": [
+      "O PV baixo aciona o estado de Enfurecido do inimigo. Durante esse estado, o inimigo realiza seus ataques de carga com mais frequência, causa mais DNO e recebe Redução de DNO. Interrompa o inimigo a tempo de encerrar o estado de Enfurecido."
+    ]
+  },
+  "eny_0084_hshunt": {
+    "name": "Arqueiro do Bosque",
+    "nickname": "Arqueiro do Bosque",
+    "description": "Um fora-da-lei armado e equipado com armamento básico de longo alcance. Treinado nos bambuzais, o fora-da-lei pode disparar uma flecha pela floresta sem atingir uma única folha.",
+    "abilities": [
+      "Dispara todos os tipos de flechas e arremessa bombas para ameaçar seus oponentes à distância."
+    ]
+  },
+  "eny_0096_hsmob2": {
+    "name": "Salteador das Estradas",
+    "nickname": "Salteador das Estradas",
+    "description": "Um criminoso armado ativo nos territórios Wuling. Geralmente, montavam barricadas ilegais nas estradas ou se envolviam no contrabando de mercadorias ilegais. Alguns deles chegavam a atacar viajantes.",
+    "abilities": [
+      "Este inimigo não tem habilidades especiais."
+    ]
+  },
+  "eny_0085_hsrogue": {
+    "name": "Navalha de Nimbus",
+    "nickname": "Navalha de Nimbus",
+    "description": "Um criminoso armado com uma arma estranha. Quando o Perseguidor de Nuvens se cansa de usar a estranha lanterna, ele saca sua espada curta e parte para o combate corpo a corpo.",
+    "abilities": [
+      "Usa ganchos acorrentados para atacar operadores aliados. Operadores acorrentados ficarão atordoados, a menos que sejam libertados."
+    ]
+  },
+  "eny_0090_wgabyss": {
+    "name": "Tidalklast",
+    "nickname": "Tidalklast",
+    "description": "O \"Anavatklydan\" (ID do arquivo: AGM32L) é uma variante não modelo do AGM321. Tais entidades existem em uma ampla gama de tamanhos. A visão de indivíduos particularmente grandes emergindo da água tornou-se um pesadelo para quem a presenciou.",
+    "abilities": [
+      "O inimigo tem dois estados: Longa Distância e Corpo a Corpo.",
+      "Estado de Corpo a Corpo: nesse estado, o inimigo tentará se aproximar do alvo para desferir ataques corpo a corpo.",
+      "Estado de Longa Distância: nesse estado, o inimigo manterá distância e atacará com habilidades mais poderosas.",
+      "O estado de longa distância sofre mais DNO Térmica, mas apresenta uma Redução DNO significativa contra outros elementos."
+    ]
+  },
+  "eny_0097_hsmino2": {
+    "name": "Obliterador de Nuvens",
+    "nickname": "Obliterador de Nuvens",
+    "description": "Um criminoso equipado com armamento pesado. A obliteração não é uma tarefa fácil. Somente os destruidores mais fortes, armados com lançadores de foguetes quádruplos, podem alcançar o título de Obliteradores de Nuvens.",
+    "abilities": [
+      "Usa o lançador de foguetes pesado como arma de combate corpo a corpo. Também dispara fogos de artifício em seus ataques à distância. Ser atingido e erguido por seus chifres pode desencadear uma explosão de fogos de artifício incrível!",
+      "Não tente apunhalá-lo pelas costas. Ele tem um coice poderoso!"
+    ]
+  },
+  "eny_0100_slimerg2": {
+    "name": "Lesma do Originium Ácida α",
+    "nickname": "Lesma do Originium Ácida α",
+    "description": "Uma criatura selvagem infectada por Originium. Esta lesma do Originium ácida é mais perigosa do que sua contraparte comum. O aglomerado de Originium em suas costas está atingindo níveis mais altos de atividade, tornando a criatura cada vez mais agressiva.",
+    "abilities": [
+      "Um inimigo tímido que se recolhe em sua carapaça para se proteger. Ele também dispara cristais de Originium de seu corpo a esmo para intimidar seus oponentes."
+    ]
+  },
+  "eny_0101_agfly2": {
+    "name": "Asas-Falsas α",
+    "nickname": "Asas-Falsas α",
+    "description": "O \"Psuthopteron Anavon\" (ID do arquivo: ARA07Cα) é uma variante energizada do ARA07C. A maioria dos observadores considera a cor a única característica diferenciadora entre o Anavon e as variantes básicas.",
+    "abilities": [
+      "Gera pequenos redemoinhos que também podem atrasar os operadores."
+    ]
+  },
+  "eny_0102_hstiger2": {
+    "name": "Rastejante Brilhante",
+    "nickname": "Rastejante Brilhante",
+    "description": "Uma variante de rastejante com pelagem de cor diferente, vida útil mais curta, mas maior força. Seus olhos parecem brilhar como fogo líquido.",
+    "abilities": [
+      "Em comparação com os rastejantes comuns, este inimigo entrará em furtividade temporária e carregará suas habilidades quando estiver com pouco PV. Interrompa-o rapidamente para acabar com a furtividade e causar Desorientação significativa.",
+      "Estado Enfurecido: quando enfurecido, o ATQ da fera aumenta e ela usa suas habilidades de carga com mais frequência. Aplicar Desorientado a ela encerra o estado Enfurecido."
+    ]
+  },
+  "eny_0103_hshunt2": {
+    "name": "Vento Forte",
+    "nickname": "Vento Forte",
+    "description": "Um criminoso armado com armamento básico de longo alcance. Sua visão aguçada e mãos hábeis permitem que ele faça disparos mortais. Este Vento sopraria através dos prédios, levando todos os itens de valor.",
+    "abilities": [
+      "Dispara todos os tipos de flechas e arremessa bombas para ameaçar seus oponentes à distância."
+    ]
+  },
+  "eny_0105_wgslime2": {
+    "name": "Lamacento δ",
+    "nickname": "Lamacento δ",
+    "description": "O \"Tholeroygran\" (ID do arquivo: ACM311δ) é uma variante energizada do ACM311. Ele utiliza vias energéticas únicas e, portanto, mantém uma temperatura homeostática significativamente abaixo dos pontos de congelamento de sua matéria constituinte.",
+    "abilities": [
+      "Este inimigo pode encurtar a distância rapidamente. Seus ataques podem aplicar Inflição Crio aos operadores atingidos."
+    ]
+  },
+  "eny_0106_wgthorns2": {
+    "name": "Hedron δ",
+    "nickname": "Hedron δ",
+    "description": "O \"Diaphaistagran Dinedon\" (ID de arquivo: ARM315δ) é uma variante energizada do ARM315. Quando irradiado pela luz solar, emite uma luz púrpura cintilante. No entanto, assume uma forma diferente quando irradiado pela luz refletida por Talos.",
+    "abilities": [
+      "Os projéteis que ele lança aplicam Inflição Crio aos operadores ao atingi-los."
+    ]
+  },
+  "eny_0109_hshog2": {
+    "name": "Penoso Imbuído",
+    "nickname": "Penoso Imbuído",
+    "description": "Um penoso infectado por poeira de Originium ativo. Os espinhos da criatura são imbuídos de altos níveis de energia, o que os torna extremamente destrutivos.",
+    "abilities": [
+      "Este inimigo irá carregar energia e inflar o abdômen para cuspir lava superaquecida. Interrompa-o durante a carga para causar Desorientação significativa.",
+      "Estado Enfurecido: quando enfurecido, o ATQ da fera aumenta e ela usa suas habilidades de carga com mais frequência. Aplicar Desorientado a ela encerra o estado Enfurecido."
+    ]
+  }
+}
