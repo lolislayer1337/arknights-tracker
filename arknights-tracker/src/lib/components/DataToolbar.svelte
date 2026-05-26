@@ -102,7 +102,8 @@
     ];
     $: filterOptions = {
         rarity:
-            mode === "equipment" ? [5, 4, 3, 2, 1]
+            mode === "enemies" ? [6, 5, 4, 3]
+            : mode === "equipment" ? [5, 4, 3, 2, 1]
             : mode === "items" ? [5, 4, 3, 2, 1]
             : mode === "equipment" ? [5, 4, 3, 2, 1]
             : mode === "weapons" ? [6, 5, 4, 3]
@@ -124,14 +125,86 @@
         partType: [0, 1, 2], // 0 = body, 1 = hand, 2 = edc
         pack: ["none", ...(availablePacks || [])],
         stats: hardcodedStats.filter((s) => s.toLowerCase() !== "def"),
-        itemGroup: ["nature", "gatherable", "product", "usable", "facility"]
+        itemSubGroups: [
+            "facility_battle",
+            "facility_crafter",
+            "facility_miner",
+            "facility_other",
+            "facility_powerStation",
+            "facility_pump",
+            "facility_soil",
+
+            "gatherable_drop",
+            "gatherable_muck",
+            "gatherable_plant",
+
+            "nature_flowerPlant",
+            "nature_grassPlant",
+            "nature_liquid",
+            "nature_ore",
+            "nature_soilPlant",
+            "nature_wood",
+
+            "product_activityXiranite",
+            "product_amethyst",
+            "product_battery",
+            "product_carbon",
+            "product_component",
+            "product_copper",
+            "product_fullBottle",
+            "product_iron",
+            "product_liquid",
+            "product_muck",
+            "product_originium",
+            "product_powder",
+            "product_xiranite",
+
+            "usable_bomb",
+            "usable_bottledProdFood",
+            "usable_other",
+            "usable_powder"
+        ]
     };
 
     export let filters = (() => {
         if (mode === "items") {
             return {
                 rarity: [5, 4, 3, 2, 1],
-                itemGroup: ["nature", "gatherable", "product", "usable", "facility"]
+                itemSubGroups: [
+                    "facility_battle",
+                    "facility_crafter",
+                    "facility_miner",
+                    "facility_other",
+                    "facility_powerStation",
+                    "facility_pump",
+                    "facility_soil",
+                    "gatherable_drop",
+                    "gatherable_muck",
+                    "gatherable_plant",
+                    "nature_flowerPlant",
+                    "nature_grassPlant",
+                    "nature_liquid",
+                    "nature_ore",
+                    "nature_soilPlant",
+                    "nature_wood",
+                    "product_activityXiranite",
+                    "product_amethyst",
+                    "product_battery",
+                    "product_carbon",
+                    "product_component",
+                    "product_copper",
+                    "product_fullBottle",
+                    "product_iron",
+                    "product_liquid",
+                    "product_muck",
+                    "product_originium",
+                    "product_powder",
+                    "product_xiranite",
+                    "usable_bomb",
+                    "usable_bottledProdFood",
+                    "usable_other",
+                    "usable_powder"
+                ]
             }
         }
 
@@ -231,7 +304,7 @@
         partType: false,
         pack: false,
         stats: false,
-        itemGroup: false,
+        itemSubGroups: false,
     };
 
     function toggleFilterGroup(groupKey) {
@@ -285,8 +358,8 @@
         mode === "items" ?
             filters.rarity?.length !== filterOptions.rarity.length
             || manualMode.rarity
-            || filters.itemGroup.length !== filterOptions.itemGroup.length
-            || manualMode.itemGroup
+            || filters.itemSubGroups?.length !== filterOptions.itemSubGroups.length
+            || manualMode.itemSubGroups
         : mode === "equipment" ?
             filters.rarity?.length !== filterOptions.rarity.length
             || manualMode.rarity
@@ -333,7 +406,7 @@
         if (mode === "items") {
             filters = {
                 rarity: [...filterOptions.rarity],
-                itemGroup: [...filterOptions.itemGroup],
+                itemSubGroups: [...filterOptions.itemSubGroups],
             }
         } else if (mode === "equipment") {
             filters = {
@@ -397,6 +470,54 @@
                   filterOptions.stats.slice(20),
               ]
             : [];
+
+    $: itemSubGroups = mode === "items"
+        ? {
+            nature: [
+                "nature_ore",
+                "nature_liquid",
+                "nature_flowerPlant",
+                "nature_grassPlant",
+                "nature_soilPlant",
+                "nature_wood",
+            ],
+            product: [
+                "product_liquid",
+                "product_originium",
+                "product_amethyst",
+                "product_iron",
+                "product_copper",
+                "product_powder",
+                "product_carbon",
+                "product_xiranite",
+                "product_activityXiranite",
+                "product_component",
+                "product_battery",
+                "product_muck",
+                "product_fullBottle",
+            ],
+            usable: [
+                "usable_powder",
+                "usable_bottledProdFood",
+                "usable_bomb",
+                "usable_other",
+            ],
+            gatherable: [
+                "gatherable_plant",
+                "gatherable_muck",
+                "gatherable_drop",
+            ],
+            facility: [
+                "facility_miner",
+                "facility_pump",
+                "facility_crafter",
+                "facility_powerStation",
+                "facility_soil",
+                "facility_battle",
+                "facility_other",
+            ]
+        }
+        : {};
 
     $: getStatClass = (stat, tab) => {
         const currentArr = filters.stats[tab] || [];
@@ -551,7 +672,7 @@
                 on:keydown|stopPropagation
             >
                 <div class="flex justify-between">
-                    {#if mode !== "equipment" && mode !== "enemies"}
+                    {#if mode !== "equipment" && mode !== "enemies" && mode !== "items"}
                         <div class="flex items-center gap-3">
                             <span class="text-sm font-bold dark:text-[#E0E0E0] text-gray-800">
                                 {$t("sort.ownedOnly") || "Owned Only"}
@@ -1017,26 +1138,117 @@
 
                 {#if mode === "items"}
                     <div>
+
                         <button
                             type="button"
                             class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-                            on:click={() => toggleFilterGroup("itemGroup")}
+                            on:click={() => {}}
                         >
-                            {$t("sort.itemGroup") || "Group"}
+                            {$t("sort.itemGroups.nature") || "Nature"}
                         </button>
                         <div class="flex flex-wrap gap-2">
-                            {#each filterOptions.itemGroup as group}
+                            {#each itemSubGroups.nature as subGroup}
                                 <button
                                     type="button"
-                                    class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer {getFilterClass('itemGroup', group)}"
-                                    on:click={() => toggleFilterItem("itemGroup", group)}
+                                    class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('itemSubGroups', subGroup)}"
+                                    on:click={() => toggleFilterItem("itemSubGroups", subGroup)}
                                 >
                                     <span class="text-xs font-bold capitalize pointer-events-none">
-                                        {group}
+                                        {$t(`sort.itemSubGroups.${subGroup}`) || subGroup}
                                     </span>
                                 </button>
                             {/each}
                         </div>
+
+                        <button
+                                type="button"
+                                class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                                on:click={() => {}}
+                        >
+                            {$t("sort.itemGroups.product") || "Product"}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each itemSubGroups.product as subGroup}
+                                <button
+                                        type="button"
+                                        class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('itemSubGroups', subGroup)}"
+                                        on:click={() => toggleFilterItem("itemSubGroups", subGroup)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {$t(`sort.itemSubGroups.${subGroup}`) || subGroup}
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+
+                        <button
+                                type="button"
+                                class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                                on:click={() => {}}
+                        >
+                            {$t("sort.itemGroups.usable") || "Usable"}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each itemSubGroups.usable as subGroup}
+                                <button
+                                        type="button"
+                                        class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('itemSubGroups', subGroup)}"
+                                        on:click={() => toggleFilterItem("itemSubGroups", subGroup)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {$t(`sort.itemSubGroups.${subGroup}`) || subGroup}
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+
+                        <button
+                                type="button"
+                                class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                                on:click={() => {}}
+                        >
+                            {$t("sort.itemGroups.gatherable") || "Gatherable"}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each itemSubGroups.gatherable as subGroup}
+                                <button
+                                        type="button"
+                                        class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('itemSubGroups', subGroup)}"
+                                        on:click={() => toggleFilterItem("itemSubGroups", subGroup)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {$t(`sort.itemSubGroups.${subGroup}`) || subGroup}
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+
+                        <button
+                                type="button"
+                                class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                                on:click={() => {}}
+                        >
+                            {$t("sort.itemGroups.facility") || "Facility"}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each itemSubGroups.facility as subGroup}
+                                <button
+                                        type="button"
+                                        class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('itemSubGroups', subGroup)}"
+                                        on:click={() => toggleFilterItem("itemSubGroups", subGroup)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {$t(`sort.itemSubGroups.${subGroup}`) || subGroup}
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+
                     </div>
                 {/if}
             </div>
@@ -1090,7 +1302,7 @@
             {/if}
         </div>
     </div>
-    {#if mode === "equipment" || mode === "enemies"}
+    {#if mode === "equipment" || mode === "enemies" || mode === "items"}
         <button
             type="button"
             class="h-[40px] w-[40px] flex shrink-0 items-center justify-center rounded-full transition-colors cursor-pointer {groupMode

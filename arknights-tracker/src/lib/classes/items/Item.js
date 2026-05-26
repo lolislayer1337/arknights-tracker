@@ -22,6 +22,10 @@ export class Item {
         return this._itemObj.groupId;
     }
 
+    get subGroupId() {
+        return this._itemObj.subGroupId;
+    }
+
     get iconId() {
         return this._itemObj.iconId;
     }
