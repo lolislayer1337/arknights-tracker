@@ -2,7 +2,7 @@
     import { t } from "$lib/i18n";
     import Icon from "$lib/components/Icons.svelte";
 
-    export let mode = "operators"; // "operators" | "weapons" | "equipment" | "items"
+    export let mode = "operators"; // "operators" | "weapons" | "equipment" | "enemies" | "items"
     export let sortField = "rarity";
     export let sortDirection = "desc";
     export let searchQuery = "";
@@ -102,7 +102,8 @@
     ];
     $: filterOptions = {
         rarity:
-            mode === "items" ? [5, 4, 3, 2, 1]
+            mode === "equipment" ? [5, 4, 3, 2, 1]
+            : mode === "items" ? [5, 4, 3, 2, 1]
             : mode === "equipment" ? [5, 4, 3, 2, 1]
             : mode === "weapons" ? [6, 5, 4, 3]
             : [6, 5, 4],
@@ -146,9 +147,11 @@
                     3: [],
                 },
             };
-        }
-
-        if (mode === "weapons") {
+        } if (mode === "enemies") {
+            return {
+                rarity: [6, 5, 4, 3]
+            };
+        } if (mode === "weapons") {
             return {
                 rarity: [6, 5, 4, 3],
                 type: [
@@ -187,8 +190,9 @@
 
     $: sortOptions =
         mode === "items" ? ["rarity", "itemGroup"]
-        : mode === "equipment" ? ["rarity"] //, "level", "partType", "pack"
+        : mode === "equipment" ? ["rarity"]
         : mode === "weapons" ? ["rarity", "type"]
+        : mode === "enemies" ? ["rarity"]
         : ["rarity", "class", "element", "weapon"];
 
     let isFilterOpen = false;
@@ -310,6 +314,9 @@
             || filters.attr3?.length !== filterOptions.attr3.length
             || manualMode.attr3
             || showOwnedOnly
+        : mode === "enemies" ?
+            filters.rarity?.length !== filterOptions.rarity.length
+            || manualMode.rarity
         :
             filters.rarity?.length !== filterOptions.rarity.length
             || manualMode.rarity
@@ -544,11 +551,9 @@
                 on:keydown|stopPropagation
             >
                 <div class="flex justify-between">
-                    {#if mode !== "equipment"}
+                    {#if mode !== "equipment" && mode !== "enemies"}
                         <div class="flex items-center gap-3">
-                            <span
-                                class="text-sm font-bold dark:text-[#E0E0E0] text-gray-800"
-                            >
+                            <span class="text-sm font-bold dark:text-[#E0E0E0] text-gray-800">
                                 {$t("sort.ownedOnly") || "Owned Only"}
                             </span>
                             <button
@@ -561,10 +566,9 @@
                                     : 'bg-gray-200 dark:bg-[#555]'}"
                                 on:click={toggleOwnedOnly}
                             >
-                                <span
-                                    class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {showOwnedOnly
-                                        ? 'translate-x-6'
-                                        : 'translate-x-1'} shadow-sm"
+                                <span class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform {showOwnedOnly
+                                    ? 'translate-x-6'
+                                    : 'translate-x-1'} shadow-sm"
                                 ></span>
                             </button>
                         </div>
@@ -1086,7 +1090,7 @@
             {/if}
         </div>
     </div>
-    {#if mode === "equipment"}
+    {#if mode === "equipment" || mode === "enemies"}
         <button
             type="button"
             class="h-[40px] w-[40px] flex shrink-0 items-center justify-center rounded-full transition-colors cursor-pointer {groupMode

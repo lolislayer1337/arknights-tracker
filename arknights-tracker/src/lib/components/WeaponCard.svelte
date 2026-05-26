@@ -19,13 +19,14 @@
     export let hideDarkness = false;
     export let asLink = true;
     export let isEquipment = false;
+    export let isEnemy = false;
     export let hideRarity = false;
 
-    $: localeCategory = isEquipment ? "equipment" : "weaponsList";
-    $: itemUrl = isEquipment
-        ? `/equipment/${weapon.id}`
-        : `/weapons/${weapon.id}`;
-    $: imageVariant = isEquipment ? "equipment" : "weapon-icon";
+    $: localeCategory = isEnemy ? "enemies" : (isEquipment ? "equipment" : "weaponsList");
+    $: itemUrl = isEnemy
+        ? `/enemies/${weapon.id}`
+        : (isEquipment ? `/equipment/${weapon.id}` : `/weapons/${weapon.id}`);
+    $: imageVariant = isEnemy ? "enemy-icon" : (isEquipment ? "equipment" : "weapon-icon");
 
     $: safeWeaponType = weapon.type || weapon.weapon;
     $: equipType =

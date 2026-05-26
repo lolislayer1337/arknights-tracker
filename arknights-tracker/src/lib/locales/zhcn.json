@@ -25,7 +25,8 @@
     "privacyPolicy": "隐私政策",
     "specialThanks": "特别鸣谢",
     "interactiveMap": "互动地图 (Open Endfield Map)",
-    "supportProject": "赞助 Goyfield.moe"
+    "supportProject": "赞助 Goyfield.moe",
+    "supportProjectShort": "支持"
   },
   "page": {
     "title": "寻访记录档案",
@@ -243,6 +244,7 @@
   },
   "systemNames": {
     "total": "总计",
+    "banners": "卡池",
     "pull": "抽",
     "operator": "干员",
     "pity": "保底",
@@ -265,7 +267,12 @@
     "noMaterialsNeeded": "无需材料",
     "featuredCharacters": "UP干员",
     "new": "NEW",
-    "version": "版本"
+    "version": "版本",
+    "weapons": "武器",
+    "operators": "干员",
+    "versions": "版本",
+    "sortByRelease": "按实装顺序",
+    "sortByWait": "按未复刻天数"
   },
   "status": {
     "won": "胜出 50:50",
@@ -310,7 +317,9 @@
     "weapons": "武器",
     "essences": "武器基质",
     "changelog": "更新日志",
-    "equipment": "装备"
+    "equipment": "装备",
+    "bannerHistory": "卡池历史",
+    "enemies": "敌人"
   },
   "events": {
     "voyage_to_the_stars": "星际之旅",
@@ -347,7 +356,7 @@
     "AICSupportPalmTopSavior": "集成援助·掌中救星",
     "etchspaceSalvageZone56": "像差区域5&6",
     "blitzOfVerdance": "春雷醒物签到",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "流光庆时签到",
     "etchingsOfOurCosmicDreams": "镌宇铭星·留影",
     "etchingsOfOurCosmicDreamsSignIn": "镌宇铭星签到",
     "pristineMonthlyPassTribute": "焕新月卡赠礼",
@@ -498,7 +507,14 @@
     "arms_offering": "武库赠礼",
     "editPotential": "编辑潜能",
     "featured_guarantee": "必出",
-    "reset": "重置潜能值，将根据实际抽卡历史重新计算"
+    "reset": "重置潜能值，将根据实际抽卡历史重新计算",
+    "hp": "生命值",
+    "atk": "攻击力",
+    "def": "庇护效果",
+    "drops": "敌人掉落",
+    "properties": "特性说明",
+    "abilities": "能力",
+    "vulnerable": "破防"
   },
   "bioValues": {
     "Unknown": "未知"
@@ -834,7 +850,13 @@
       "onlyPc": "仅限 PC"
     },
     "noActiveCodes": "无可用兑换码",
-    "noActiveBanners": "无活动卡池"
+    "noActiveBanners": "无活动卡池",
+    "activeEvents": "当前活动",
+    "noActiveEvents": "暂无活动",
+    "discordJoin": "加入 Discord",
+    "docsTitle": "Goyfield DEV 文档",
+    "docsAuthor": "作者 @beetwooo_",
+    "goToTimeline": "前往活动时间轴"
   },
   "characters": {
     "catcher": "卡契尔",
@@ -863,7 +885,8 @@
     "tangtang": "汤汤",
     "pogranichnik": "骏卫",
     "rossi": "洛茜",
-    "zhuangfy": "庄方宜"
+    "zhuangfy": "庄方宜",
+    "zhuangFangyi": "庄方宜"
   },
   "weaponsList": {
     "industry01": "工业零点一",
@@ -1455,5 +1478,19 @@
     "Sub": "副能力",
     "AllSkillDamageIncrease": "所有技能伤害加成",
     "FireAndNaturalDamageIncrease": "灼热和自然伤害加成"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "天使",
+    "wiki_group_monster_landbreaker": "裂地者",
+    "wiki_group_monster_hongshan": "沧贼",
+    "wiki_group_monster_animal": "野外生物"
+  },
+  "resitances": {
+    "heatRez": "灼热抗性",
+    "elecrtoRez": "电磁抗性",
+    "physRez": "物理抗性",
+    "cryoRez": "寒冷抗性",
+    "narureRez": "自然抗性",
+    "ephyrRez": "超域抗性"
   }
 }

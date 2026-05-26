@@ -1,0 +1,613 @@
+{
+  "eny_0007_mimicw": {
+    "name": "Drago delle sabbie",
+    "nickname": "Drago delle sabbie",
+    "description": "Una creatura che sputa fluidi altamente corrosivi. In genere, il drago delle sabbie vive sottoterra ed è solito dissolvere materiali metallici con l'acido, per poi consumarli. Infatti, ai cacciatori di Nidwyrm si consiglia di sottoporre le proprie armi a una regolare manutenzione.",
+    "abilities": [
+      "Evita lo sputo velenoso. Se lo calpesti, l'operatore subirà danni da natura continui."
+    ]
+  },
+  "eny_0049_rogue": {
+    "name": "Infiltrato Spacca-Ossa",
+    "nickname": "Infiltrato Spacca-Ossa",
+    "description": "Un Fenditerra che usa armi da mischia. Gli infiltrati sono combattenti estremamente agili e capaci, e combattono con due armi insieme. È meglio non sottovalutarli.",
+    "abilities": [
+      "Un nemico estremamente agile, capace di schivare gli attacchi base degli operatori. Tuttavia, mentre attacca, non può schivare.",
+      "Può lanciare dardi ed eseguire attacchi aggiuntivi contro gli operatori colpiti. Schivare i dardi offre buone possibilità di contrattacco."
+    ]
+  },
+  "eny_0018_lbtough": {
+    "name": "Boia Spacca-Ossa",
+    "nickname": "Boia Spacca-Ossa",
+    "description": "Un Fenditerra armato di ascia pesante. Questi enormi bruti sono molto più potenti rispetto alla controparte comune: possono danneggiare facilmente le strutture difensive e rovesciare veicoli corazzati.",
+    "abilities": [
+      "La sua presa infligge danni ingenti. Se un operatore viene afferrato, usa l'abilità di un altro per interrompere la presa e liberarlo.",
+      "Schivare i doppi colpi di ascia caricati non sarà facile. Prova invece a interromperlo."
+    ]
+  },
+  "eny_0088_wgthorns": {
+    "name": "Edro",
+    "nickname": "Edro",
+    "description": "Il \"Diaphaistagran\" (ID archivio: ARM315) è una struttura a base liquida in grado di proiettare l'energia. La sua sagoma ha una geometria complessa ma simmetrica. Inoltre, i suoi attacchi sono in grado di assorbire calore da qualsiasi superficie con cui entrino in contatto.",
+    "abilities": [
+      "I suoi proiettili applicano Afflizione da ghiaccio agli operatori colpiti."
+    ]
+  },
+  "eny_0021_agmelee": {
+    "name": "Ariete",
+    "nickname": "Ariete",
+    "description": "Il \"Kriosson\" (ID archivio: ACL071) è una delle prime forme di Aggeloi mai documentate, nonché quella più comune. Attacca le vittime incornandole.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0039_agcanno": {
+    "name": "Sentinella",
+    "nickname": "Sentinella",
+    "description": "Si sospetta che il \"Phrourossaron\" (ARS316) sia il tentativo degli Aggeloi di imitare la forma e gli schemi d'attacco delle armi fisse automatiche umane. Nonostante l'enorme gittata, la sentinella è un organismo sessile.",
+    "abilities": [
+      "Questo nemico vanta un attacco potente dalla gittata estremamente lunga. Schiva i suoi bombardamenti per sconfiggerlo."
+    ]
+  },
+  "eny_0107_wgshoal2": {
+    "name": "Attraversamarea δ",
+    "nickname": "Attraversamarea δ",
+    "description": "Il \"Genesklydan Dinedon\" (ID archivio: AGM321δ) è una variante energizzata dell'AGM321. La sua materia costitutiva è bloccata in un flusso costante e turbolento, il che spiega il suo aspetto particolarmente spaventoso quando compare di notte.",
+    "abilities": [
+      "Attacca con abilità che applicano Afflizione da ghiaccio e può applicare Solidificazione agli operatori colpiti."
+    ]
+  },
+  "eny_0023_aghornb": {
+    "name": "Ariete pesante",
+    "nickname": "Ariete pesante",
+    "description": "Il \"Thrylissoron\" (ID archivio: ACL072) è una variante di ACL071 ancora più pericolosa. Può manipolare l'ambiente che lo circonda ed elaborare strategie.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0025_agrange": {
+    "name": "Telson",
+    "nickname": "Telson",
+    "description": "Il \"Kentron\" (ID archivio: ARL121) carica di energia pezzi del suo corpo e li spara tramite un lancio inerziale. L'efficienza energetica di questo meccanismo è estremamente bassa.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0027_agscorp": {
+    "name": "Telson pesante",
+    "nickname": "Telson pesante",
+    "description": "Il \"Varykentron\" (ID archivio: ARL141) è una variante di ARL121 ancora più pericolosa. Di tanto in tanto, attacca sfruttando la coda come fosse una frusta anziché utilizzare il suo attacco energetico a distanza.",
+    "abilities": [
+      "Questo nemico attacca facendo spuntare colonne di Originium sotto gli operatori.",
+      "Quando si sente minacciato, questo nemico evoca colonne di pietra intorno a sé per proteggersi."
+    ]
+  },
+  "eny_0060_lbmad": {
+    "name": "Artiglio di brumafiamma",
+    "nickname": "Artiglio di brumafiamma",
+    "description": "Un combattente Fenditerra corrotto dalla brumafiamma. Assorbire la brumafiamma non dovrebbe essere considerata una benedizione: questi sciacalli si sono trasformati in orribili e deformi ombre di loro stessi.",
+    "abilities": [
+      "Schiva il suo morso per farlo cadere a terra."
+    ]
+  },
+  "eny_0078_nefarp1": {
+    "name": "Nefarith, \"Spacca-Ossa\"",
+    "nickname": "Nefarith, \"Spacca-Ossa\"",
+    "description": "Grazie a Nefarith, gli \"Spacca-Ossa\" sono diventati sinonimo di terrore nella Cintura civilizzata. Il suo brutale dominio non si è ancora concluso e le sue vere ambizioni non sono state ancora rivelate.",
+    "abilities": [
+      "Scatena ondate di energia dell'Æther impossibili da schivare. Usa la xiranite di Zhuang Fangyi per saltare a mezz'aria ed evitarle del tutto.",
+      "Balza in alto per caricare un attacco. Per interrompere questa mossa del nemico, usa la xiranite per saltare in aria, poi esegui un attacco dall'alto per sferrare un attacco fulminante."
+    ]
+  },
+  "eny_0029_lbmob": {
+    "name": "Predone Spacca-Ossa",
+    "nickname": "Predone Spacca-Ossa",
+    "description": "Un Fenditerra che brandisce armi da mischia basiche. Sono i \"pesci piccoli\" dei clan degli Spacca-Ossa e sono soliti apparire in gruppo. Dispongono di equipaggiamenti di scarsa qualità.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0033_lbhunt": {
+    "name": "Tendi-agguati Spacca-Ossa",
+    "nickname": "Tendi-agguati Spacca-Ossa",
+    "description": "Un Fenditerra che brandisce armi a distanza basiche. I tendi-agguati hanno ricevuto un addestramento raffazzonato e i loro colpi sono tutt'altro che precisi. Ciononostante, sono riusciti a mietere parecchie vittime.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0095_ethillu": {
+    "name": "Æthillu",
+    "nickname": "Æthillu",
+    "description": "Un fantasma che ha risposto alla chiamata di Ardashir. È una manifestazione di distruzione, una sedimentazione di antica senescenza.",
+    "abilities": [
+      "Questo nemico possiede una potente abilità di rianimazione. Quando torna in vita, vanta un maggiore raggio d'azione per attaccare e può farsi esplodere per infliggere danni ingenti."
+    ]
+  },
+  "eny_0045_agtrinit": {
+    "name": "Triaggelos",
+    "nickname": "Triaggelos",
+    "description": "NESSUN DATO DISPONIBILE. Questa creatura è stata classificata come Aggelos per via della natura della sua formazione. I cambiamenti all'aureola potrebbero riflettere la sua capacità di ragionamento tattico. Attenzione: anche quest'entità presenta proprietà simili agli Ankhor.",
+    "abilities": [
+      "Un nemico con 3 forme diverse.",
+      "FORMA D'ASSALTO: attacca ripetutamente in mischia. Interrompi la carica della sua abilità per infliggergli un pesante Vacillamento.",
+      "FORMA DI RICERCA: evoca molti Aggeloi durante lo scontro e scatena onde d'urto dell'Ankhor.",
+      "FORMA FURTIVA: entra in modalità furtiva per scatenare raffiche di proiettili da lontano o tendere imboscate ai tuoi operatori. Interrompi la furtività per infliggergli un pesante Vacillamento."
+    ]
+  },
+  "eny_0063_agmelee2": {
+    "name": "Ariete α",
+    "nickname": "Ariete α",
+    "description": "Il \"Kriosson Anavon\" (ID archivio: ACL071α) è una variante ad alta energia di ACL071. L'energia in eccesso dell'entità le conferisce il suo caratteristico colore rosso acceso e la rende più forte e veloce rispetto alla controparte standard.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0065_lbmob2": {
+    "name": "Predone d'élite",
+    "nickname": "Predone d'élite",
+    "description": "Un combattente d'élite da mischia potenziato da fumi noti come brumafiamma. Rispetto ad altri Fenditerra, è più forte e dispone di equipaggiamento e abilità di combattimento migliori.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0046_lbshamman": {
+    "name": "Piromante Spacca-Ossa",
+    "nickname": "Piromante Spacca-Ossa",
+    "description": "Un Fenditerra in grado di usare le Arti di Originium dell'evocazione. I piromanti sono molto pericolosi, poiché possono incendiare il campo di battaglia con le loro fiamme.",
+    "abilities": [
+      "Questo nemico sferra potenti attacchi a distanza che infliggono danni da fuoco, ma ha una scarsa mobilità.",
+      "Questo nemico fa scoppiare incendi di brumafiamma dal terreno che infliggono danni da fuoco. Prova a schivare l'attacco.",
+      "Si teletrasporta istantaneamente in un luogo lontano quando gli avversari si avvicinano troppo."
+    ]
+  },
+  "eny_0052_palesent": {
+    "name": "Aggelomoira marmorea",
+    "nickname": "Aggelomoira marmorea",
+    "description": "NESSUN DATO DISPONIBILE. Questa creatura è stata classificata come Aggelos per via della natura della sua formazione. Il suo aspetto esteriore riproduce quello di Nefarith. Nonostante le letture rivelino alti livelli energetici del nucleo, quest'entità sembra piuttosto instabile.",
+    "abilities": [
+      "L'Aggelomoira marmorea risvegliata può evocare un'infinità di Ankhor dall'universo per bombardare il campo di battaglia. Schiva gli attacchi e trova un modo per contrattaccare."
+    ]
+  },
+  "eny_0087_wgslime": {
+    "name": "Fangoflutto",
+    "nickname": "Fangoflutto",
+    "description": "Il \"Tholeroygran\" (ID archivio: ACM311) è la prima struttura a base liquida che sia stata scoperta. La morfologia della sua aureola è instabile e la temperatura interna è tipicamente più bassa dei suoi materiali costituenti.",
+    "abilities": [
+      "Questo nemico può coprire grandi distanze in un batter d'occhio. I suoi attacchi possono applicare Afflizione da ghiaccio agli operatori."
+    ]
+  },
+  "eny_0047_firebat": {
+    "name": "Piromane Spacca-Ossa",
+    "nickname": "Piromane Spacca-Ossa",
+    "description": "Un Fenditerra armato di lanciafiamme. Anche se queste armi sembrano di fattura scadente, svolgono abbastanza bene la propria funzione. I piromani riescono a sgomberare con facilità i punti di vantaggio e far fuggire via persino le egide più ostinate.",
+    "abilities": [
+      "Questo nemico è in grado di sputare continuamente fuoco contro gli operatori. Prova a spostarti dietro di lui per evitare le fiamme."
+    ]
+  },
+  "eny_0048_hvybow": {
+    "name": "Balestriere Spacca-Ossa",
+    "nickname": "Balestriere Spacca-Ossa",
+    "description": "Un Fenditerra che brandisce un'arma a distanza pesante. Sono unità d'élite selezionate tra i tendi-agguati che hanno dato prova del proprio valore. I loro dardi pesanti sono in grado di perforare le armature più resistenti.",
+    "abilities": [
+      "Spara una raffica di frecce che infliggono danni progressivi ed esplodono dopo qualche secondo.",
+      "Nonostante sia armato di una balestra gigante, questo nemico è estremamente abile anche nel combattimento in mischia."
+    ]
+  },
+  "eny_0050_hound": {
+    "name": "Sanguizanna degli Spacca-Ossa",
+    "nickname": "Sanguizanna degli Spacca-Ossa",
+    "description": "Una piccola bestia da guerra controllata dai Fenditerra. I sanguizanna sono molto più violenti e feroci rispetto alla controparte selvatica. Sono estremamente fedeli ai Fenditerra che li hanno domati.",
+    "abilities": [
+      "Questo nemico è agile, ma viene sopraffatto quando subisce colpi multipli."
+    ]
+  },
+  "eny_0068_lbtough2": {
+    "name": "Boia d'élite",
+    "nickname": "Boia d'élite",
+    "description": "Un bruto d'élite potenziato da fumi noti come brumafiamma. Questo Fenditerra vanta una stazza imponente e impugna una grossa ascia. Alcuni di loro, di tanto in tanto, guidano le squadre di saccheggio degli Spacca-Ossa.",
+    "abilities": [
+      "La sua presa infligge danni ingenti. Se un operatore viene afferrato, usa l'abilità di un altro per interrompere la presa e liberarlo.",
+      "Schivare i doppi colpi di ascia caricati non sarà facile. Prova invece a interromperlo."
+    ]
+  },
+  "eny_0051_rodin": {
+    "name": "Rhodagn, il Pugno spaccaossa",
+    "nickname": "Rhodagn",
+    "description": "Il pugno destro di Nefarith e il soldato degli Spacca-Ossa più temuto del clan. Molti Fenditerra hanno osato sfidare l'autorità di Nefarith, per poi essere ridotti in poltiglia dai pugni di Rhodagn.",
+    "abilities": [
+      "Un nemico estremamente pesante che usa tubi di ventilazione per attirare a sé gli avversari, in modo da poterli attaccare.",
+      "Si potenzia col potere delle cataste. Osserva i suoi getti infuocati e schivali."
+    ]
+  },
+  "eny_0076_agfly": {
+    "name": "Falseali",
+    "nickname": "Falseali",
+    "description": "Lo \"Psuthopteron\" (ID archivio: ARA07C) possiede abilità di volo completamente indipendenti dalla sua morfologia. Questo schema era inizialmente considerato come biomimetico. Tuttavia, la ricerca odierna concorda sul definirlo un'imitazione dei velivoli di Terra.",
+    "abilities": [
+      "Lancia dei piccoli turbini che possono rallentare gli operatori."
+    ]
+  },
+  "eny_0079_nefarp2": {
+    "name": "Nefarith, \"Conquistatrice\"",
+    "nickname": "Nefarith, \"Conquistatrice\"",
+    "description": "La percezione interiore che la conquistatrice ha di se stessa. Non cela il suo desiderio di devastare la civiltà.",
+    "abilities": [
+      "Gode della protezione continua di uno scudo di Æther, che riduce di molto i danni subiti. Interrompi la carica del nemico per disabilitare temporaneamente lo scudo.",
+      "Lacera il tessuto dello spazio-tempo per immobilizzare i tuoi operatori. Prova a interrompere quest'abilità, se ci riesci.",
+      "Intrappola i tuoi operatori con un Ankhor. Attacca l'Ankhor per liberarli."
+    ]
+  },
+  "eny_0089_wgreflec": {
+    "name": "Prisma",
+    "nickname": "Prisma",
+    "description": "Il \"Prismastagran\" (ID archivio: ASM316) è una variante non standard dell'ARM315. È in grado di proteggere gli Aggeloi vicini ed è molto difficile da colpire, dato che spesso si circonda di entità ARM315.",
+    "abilities": [
+      "Questo nemico può potenziare notevolmente gli alleati vicini, migliorandone le capacità."
+    ]
+  },
+  "eny_0053_hsmob": {
+    "name": "Delinquente di strada",
+    "nickname": "Delinquente di strada",
+    "description": "Un criminale armato attivo nei territori di Wuling City. I delinquenti di strada di solito allestiscono blocchi stradali illegali o contrabbandano merci illegali. Eliminare questi malviventi è la priorità delle forze dell'ordine di Hongshan.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0083_hstiger": {
+    "name": "Rastrobestia maculata",
+    "nickname": "Rastrobestia maculata",
+    "description": "Una rastrobestia cresciuta nelle terre selvagge. Endemici di Talos-II, questi superpredatori riescono a spiccare lunghi balzi e attaccano la preda con artigli affilatissimi.",
+    "abilities": [
+      "Una bestia molto agile che usa gli artigli e la coda per attaccare. Concentrati sulla schivata.",
+      "Stato di Furia: quando questa bestia è Infuriata, il suo ATT aumenta e le abilità caricate vengono usate più spesso. Applica Vacillamento per porre fine allo stato di Furia."
+    ]
+  },
+  "eny_0098_sandb2": {
+    "name": "Bestia-scure corazzata di brumafiamma",
+    "nickname": "Bestia-scure corazzata di brumafiamma",
+    "description": "Una bestia-scure corazzata corrotta dalla brumafiamma. La creatura è diventata estremamente aggressiva, essendo stata proiettata in uno stato di follia rabbiosa. Avvicinati con cautela, se non vuoi farti tagliare in due dalla sua \"grande scure\".",
+    "abilities": [
+      "Le bestie-scure corazzate inferocite usano le enormi corna per scacciare i nemici che invadono il loro territorio. Fai attenzione alle incornate.",
+      "Il nemico si lancerà in vari attacchi ad ampio raggio. Interrompilo quando entra in stato di Furia."
+    ]
+  },
+  "eny_0054_hsmino": {
+    "name": "Spacca-colline",
+    "nickname": "Spacca-colline",
+    "description": "Un criminale che usa armi pesanti. Il nome potrebbe sembrare esagerato, ma il suo lanciarazzi quadruplo racchiude una potenza di fuoco devastante. Non sottovalutarlo.",
+    "abilities": [
+      "Usa un lanciarazzi pesante come arma da mischia e spara fuochi d'artificio come attacco a distanza. Se ti carica e ti solleva con le corna, potrebbe scatenare un incredibile spettacolo pirotecnico!",
+      "Non provare ad attaccarlo alle spalle: tira portentosi calci all'indietro!"
+    ]
+  },
+  "eny_0055_hscrane": {
+    "name": "Fendi-nubi",
+    "nickname": "Fendi-nubi",
+    "description": "Un criminale armato di uno strano oggetto che sembra una comune lanterna. Ma non lasciarti ingannare: in realtà questa \"lanterna\" è una ghigliottina volante con una gittata spaventosa.",
+    "abilities": [
+      "Emette una nuvola di fumo coprente. Gli operatori in mezzo alla cortina di fumo hanno visibilità ridotta, minore velocità di movimento e non possono schivare.",
+      "Questo nemico è un combattente relativamente mediocre. Cerca di farlo fuori per primo.",
+      "Emette del fumo verde che cura gli altri nemici."
+    ]
+  },
+  "eny_0108_slbomb2": {
+    "name": "Origilumaca ardifoschia",
+    "nickname": "Origilumaca ardifoschia",
+    "description": "Una creatura selvatica infettata dall'Originium, dall'elevata temperatura corporea. Il suo carapace dorsale è imbevuto di polvere di Originium, con alti livelli di attività.",
+    "abilities": [
+      "Quando ha pochi PS, questo nemico si fa esplodere. La detonazione ricopre gli operatori colpiti di un materiale instabile che esplode a sua volta quando subiscono danni."
+    ]
+  },
+  "eny_0057_dog": {
+    "name": "Bestia feroce selvatica",
+    "nickname": "Bestia feroce selvatica",
+    "description": "Le bestie feroci selvatiche sono predatori delle terre selvagge talossiane. Considerando quanto sono ostili gli ambienti di Talos-II, arrivare in cima alla catena alimentare non è un'impresa da poco.",
+    "abilities": [
+      "Una creatura docile e riservata che non attacca subito gli operatori."
+    ]
+  },
+  "eny_0058_agdisk": {
+    "name": "Effige",
+    "nickname": "Effige",
+    "description": "L'\"Homoiossaron\" (ID archivio: AGL371) è in grado di imitare in tutto o in parte le forme umane. Alcune di queste rare e temibili entità possono persino canalizzare l'Æther.",
+    "abilities": [
+      "Questo nemico sferra potenti attacchi a schianto, ma quando usa le abilità ruota lentamente: quello è il momento migliore per attaccarlo alle spalle.",
+      "Il nemico può riassemblare il suo corpo in varie forme e spostarsi rapidamente sul campo di battaglia.",
+      "Il nemico proverà a intrappolare gli operatori! Reagisci con un'interruzione tempestiva."
+    ]
+  },
+  "eny_0059_erhound": {
+    "name": "Bestia feroce di brumafiamma",
+    "nickname": "Bestia feroce di brumafiamma",
+    "description": "Una bestia feroce corrotta dalla brumafiamma. Queste piccole aberrazioni di solito si muovono in branco e possono costituire un serio pericolo anche per le squadre ben equipaggiate.",
+    "abilities": [
+      "Meno sveglia ma più aggressiva delle normali bestie feroci. Scansati quando salta per attaccare per farla cadere a terra."
+    ]
+  },
+  "eny_0061_palecore": {
+    "name": "Aggelomoira marmorea",
+    "nickname": "Aggelomoira marmorea",
+    "description": "NESSUN DATO DISPONIBILE. Questa creatura è stata classificata come Aggelos per via della natura della sua formazione. Anche se i suoi moduli morfici sono stati riassemblati, l'entità continua a riprodurre l'aspetto di Nefarith. Non sono state fornite spiegazioni convincenti per questo fenomeno.",
+    "abilities": [
+      "Sconfiggi tutte le appendici marmoree per costringere l'Aggelomoira marmorea dormiente a esporre temporaneamente il suo nucleo vulnerabile."
+    ]
+  },
+  "eny_0062_paletent": {
+    "name": "Appendice marmorea",
+    "nickname": "Appendice marmorea",
+    "description": "NESSUN DATO DISPONIBILE. Questa creatura è stata classificata come Aggelos per via della natura della sua formazione. Fisicamente, si presenta come un'estensione che si propaga dal corpo principale. In realtà, le appendici si estendono verso il corpo principale e sembra che fungano da distrazione.",
+    "abilities": [
+      "Alcune appendici marmoree sono abili nel colpire gli avversari in mischia con potenti attacchi a schianto.",
+      "Alcune appendici marmoree sono abili nell'attaccare a distanza trasformando le proprie punte in materiale contaminante da lanciare agli avversari."
+    ]
+  },
+  "eny_0075_lbroshan": {
+    "name": "Noccassalto Spacca-Ossa",
+    "nickname": "Noccassalto Spacca-Ossa",
+    "description": "Un combattente Fenditerra equipaggiato con coprimani esplosivi pesanti che ricopre il ruolo di supporto tra gli Spacca-Ossa. I coprimani di un noccassalto sono armi portatili capaci di abbattere le posizioni fortificate.",
+    "abilities": [
+      "Un nemico implacabile. Anche dopo essere stato interrotto, è probabile che si rimetta immediatamente all'attacco.",
+      "Questo nemico sfrutta la sua corazza per disperdere scaglie reattive. Tieniti a distanza, evitando di calpestarle per sbaglio.",
+      "Questo nemico proverà a recuperare le scaglie corazzate da terra per riassumere la propria forma originale e dopo esserci riuscito sferrerà un attacco molto potente."
+    ]
+  },
+  "eny_0091_wgshoal": {
+    "name": "Attraversamarea",
+    "nickname": "Attraversamarea",
+    "description": "Il \"Genesklydan\" (ID archivio: AGM321) presenta testa e gambe umanoidi. Sin dalla scoperta di questo particolare modello, le fattezze umanoidi sono diventate una regola non scritta per valutare il livello di pericolosità degli Aggeloi.",
+    "abilities": [
+      "Attacca con abilità che applicano Afflizione da ghiaccio e può applicare Solidificazione agli operatori colpiti."
+    ]
+  },
+  "eny_0064_agrange2": {
+    "name": "Telson α",
+    "nickname": "Telson α",
+    "description": "Il \"Kentron Anavon\" (ID archivio: ARL121α) è una variante ad alta energia di ARL121. La maggiore densità energetica conferisce all'entità una potenza di fuoco maggiore. L'efficacia del suo meccanismo di fuoco è comunque bassa.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0066_lbhunt2": {
+    "name": "Tendi-agguati d'élite",
+    "nickname": "Tendi-agguati d'élite",
+    "description": "Un combattente d'élite a distanza potenziato da fumi noti come brumafiamma. Rispetto ad altri Fenditerra, è più preciso e meglio addestrato, oltre a essere dotato di balestra e dardi migliori.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0077_agshield": {
+    "name": "Chrysopolis ambulante",
+    "nickname": "Chrysopolis ambulante",
+    "description": "Il \"Thureoron\" (ID archivio: ACL156) ha una struttura simile a uno scudo che protegge la sua aureola. Attenzione: questo Aggelos è in grado di manipolare l'energia per attrarre a sé bersagli distanti.",
+    "abilities": [
+      "Il chrysopolis ambulante ha due modalità: normale e bastione.",
+      "Modalità normale: può attirare a sé gli operatori lontani.",
+      "Modalità bastione: tutti gli attacchi frontali o laterali vengono riflessi, esponendo però un punto debole sulla schiena."
+    ]
+  },
+  "eny_0094_hsfly": {
+    "name": "Idrolampa",
+    "nickname": "Idrolampa",
+    "description": "Un artropode selvatico che vive in ambienti acquatici. L'idrolampa emette una debole luce e i suoi liquidi corporei contengono agenti irritanti in grado di provocare reazioni allergiche e persino scottature. Fai attenzione quando affronti questa creatura.",
+    "abilities": [
+      "Un nemico che sputa acido immagazzinato nella testa. Gli operatori colpiti da tale attacco subiscono una riduzione della difesa. Sebbene non sia particolarmente minaccioso, è sempre bene fare attenzione."
+    ]
+  },
+  "eny_0067_hound2": {
+    "name": "Sanguizanna d'élite",
+    "nickname": "Sanguizanna d'élite",
+    "description": "Una bestia da guerra d'élite dei Fenditerra potenziata da fumi noti come brumafiamma. Questo tipo di sanguizanna, in particolare, è più feroce e astuto, oltre ad attaccare con mosse meno prevedibili.",
+    "abilities": [
+      "Agile e scattante, cerca continuamente di avvicinarsi al bersaglio per attaccarlo."
+    ]
+  },
+  "eny_0069_aghornb2": {
+    "name": "Ariete pesante α",
+    "nickname": "Ariete pesante α",
+    "description": "Il \"Thrylissoron Anavon\" (ID archivio: ACL072α) è una variante ad alta energia di ACL072. Gli alti contenuti energetici non hanno avuto alcun impatto sulle sue abilità decisionali. È un'entità estremamente pericolosa.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0092_slbomb": {
+    "name": "Origilumaca ardifoschia",
+    "nickname": "Origilumaca ardifoschia",
+    "description": "Una creatura selvatica infettata dall'Originium, dalla temperatura corporea estremamente elevata. Questa lumaca esplode quando è prossima alla morte, coprendo l'area circostante di polvere attiva di Originium e di fluidi corporei acidi a temperatura di ebollizione.",
+    "abilities": [
+      "Quando ha pochi PS, questo nemico si fa esplodere. La detonazione ricopre gli operatori colpiti di un materiale instabile che esplode a sua volta quando subiscono danni."
+    ]
+  },
+  "eny_0070_agscorp2": {
+    "name": "Telson pesante α",
+    "nickname": "Telson pesante α",
+    "description": "Il \"Varykentron Anavon\" (ID archivio: ARL141α) è una variante ad alta energia di ARL141 con una gran varietà di schemi d'attacco. È un'entità più forte e pericolosa.",
+    "abilities": [
+      "Questo nemico attacca facendo spuntare colonne di Originium sotto gli operatori.",
+      "Quando si sente minacciato, questo nemico evoca colonne di pietra intorno a sé per proteggersi."
+    ]
+  },
+  "eny_0071_sandb": {
+    "name": "Bestia-scure corazzata",
+    "nickname": "Bestia-scure corazzata",
+    "description": "Una bestia-scure corazzata selvatica. Questa creatura rivestita da placche ossee è persino in grado di squarciare grosse porte in metallo rinforzato grazie al suo corno a forma di ascia.",
+    "abilities": [
+      "Le bestie-scure corazzate inferocite usano le enormi corna per scacciare i nemici che invadono il loro territorio. Fai attenzione alle incornate.",
+      "Il nemico si lancerà in vari attacchi ad ampio raggio. Interrompilo quando entra in stato di Furia."
+    ]
+  },
+  "eny_0072_slimeml": {
+    "name": "Bestia chelata indigena",
+    "nickname": "Bestia chelata indigena",
+    "description": "Una creatura selvatica infettata dall'Originium. Questa grande bestia presenta vari aggregati di Originium ed è in grado di squarciare la sua preda con i suoi arti frontali simili a falci.",
+    "abilities": [
+      "Un nemico che si muove in gruppo. Fai attenzione alle appendici anteriori affilate come rasoi."
+    ]
+  },
+  "eny_0104_hsrogue2": {
+    "name": "Folata frantumante",
+    "nickname": "Folata frantumante",
+    "description": "Un criminale armato di un'arma esotica. Questi fendi-nubi sono così abili con le lame uncinate che si dice possano tagliare le nuvole stesse in cubetti perfetti.",
+    "abilities": [
+      "Usa ganci a catena per attaccare gli operatori alleati. Gli operatori incatenati restano Storditi finché non vengono liberati."
+    ]
+  },
+  "eny_0073_slimerg": {
+    "name": "Origilumaca acida",
+    "nickname": "Origilumaca acida",
+    "description": "Una creatura selvatica infettata dall'Originium. Questa lumaca secerne un materiale acido. Quando viene minacciata, cerca di intimidire i nemici tremando con veemenza e scagliando frammenti degli aggregati di Originium presenti sulla sua schiena.",
+    "abilities": [
+      "Un nemico timido, che si rifugia nel guscio per difendersi e scaglia cristalli di Originium senza una direzione precisa per intimidire gli avversari."
+    ]
+  },
+  "eny_0093_hshog": {
+    "name": "Bestiaspina",
+    "nickname": "Bestiaspina",
+    "description": "Una bestiaspina selvatica indigena di Talos-II. Quando drizza gli aculei e inizia a rotolare, diventa distruttiva come una motosega rotante.",
+    "abilities": [
+      "Stato di Furia: quando questa bestia è Infuriata, il suo ATT aumenta e le abilità caricate vengono usate più spesso. Applica Vacillamento per porre fine allo stato di Furia."
+    ]
+  },
+  "eny_0074_lbshield": {
+    "name": "Avanguardia Spacca-Ossa",
+    "nickname": "Avanguardia Spacca-Ossa",
+    "description": "Un combattente Spacca-Ossa armato di lance e scudi. Anche se brandisce armi assemblate in modo poco ortodosso, l'avanguardia ha sviluppato una tecnica di combattimento che unisce attacco e difesa. Fai attenzione quando affronti questo nemico.",
+    "abilities": [
+      "Questo nemico blocca tutti gli attacchi in arrivo, a meno che non stia attaccando a sua volta. Fallo Vacillare per neutralizzarne lo scudo."
+    ]
+  },
+  "eny_0080_reaper": {
+    "name": "Ereignis",
+    "nickname": "Ereignis",
+    "description": "Cosa significa progresso? Cosa costituisce il significato? Qual è la natura della vita?",
+    "abilities": []
+  },
+  "eny_0081_ruanyi": {
+    "name": "Ruan Yi",
+    "nickname": "Ruan Yi",
+    "description": "Ruan Yi tenne a bada la sua rabbia per anni, ma quando si presentò una fugace opportunità, decise che finalmente era giunta l'ora di scatenare la sua ira repressa.",
+    "abilities": [
+      "Ruan Yi è in grado di deviare qualsiasi attacco. Usa la xiranite per infrangere la sua protezione e infliggergli danni consistenti.",
+      "Quando i PS sono bassi, questo nemico diventa Furente. Usa la xiranite per annullare lo stato e applicare Indebolimento al nemico per un periodo prolungato.",
+      "Quando è Furente, Ruan Yi può evocare le Radici della rovina iraconda, che esplodono quando l'operatore controllato si avvicina troppo.",
+      "L'energia da xiranite si accumulerà e apparirà sul campo di battaglia per aiutarti. Tocca l'energia da xiranite al momento giusto per attivarla e sconfiggere Ruan Yi."
+    ]
+  },
+  "eny_0099_slimeml2": {
+    "name": "Bestia chelata brutale",
+    "nickname": "Bestia chelata brutale",
+    "description": "Una creatura selvatica infettata dall'Originium. Questa bestia gigante presenta numerosi aggregati di Originium dall'elevato livello di attività. Vanta inoltre un carapace più spesso rispetto alla sua controparte ordinaria.",
+    "abilities": [
+      "Un nemico che si muove in gruppo. Fai attenzione alle appendici anteriori affilate come rasoi."
+    ]
+  },
+  "eny_0082_hsbear": {
+    "name": "Batticielo",
+    "nickname": "Batticielo",
+    "description": "Una bestia urlatrice cresciuta nelle terre selvagge. Questa bestia è indigena di Talos-II. Le membrane coriacee sulla testa e sul collo le permettono di lanciare urla così forti da far tremare le colline e le foreste.",
+    "abilities": [
+      "Quando ha pochi PS, il nemico attiva lo stato di Furia. In questo stato, effettua attacchi caricati più spesso, infligge danni maggiori e subisce meno danni. Interrompi il nemico in tempo per porre fine al suo stato di Furia."
+    ]
+  },
+  "eny_0084_hshunt": {
+    "name": "Arciere boschivo",
+    "nickname": "Arciere boschivo",
+    "description": "Un criminale equipaggiato con armi semplici a distanza. Addestrato tra le foreste di bambù, è in grado di scoccare una freccia attraverso la foresta senza neanche sfiorare l'orlo di una foglia.",
+    "abilities": [
+      "Scocca frecce di vario genere e lancia bombe per infastidire gli avversari a distanza."
+    ]
+  },
+  "eny_0096_hsmob2": {
+    "name": "Bandito di strada",
+    "nickname": "Bandito di strada",
+    "description": "Un criminale armato attivo nei territori di Wuling. È solito innalzare barricate stradali illegali o svolgere attività di contrabbando. Alcuni attaccano persino i viaggiatori.",
+    "abilities": [
+      "Questo nemico non ha abilità speciali."
+    ]
+  },
+  "eny_0085_hsrogue": {
+    "name": "Squarcia-nembi",
+    "nickname": "Squarcia-nembi",
+    "description": "Un criminale armato di un'arma alquanto peculiare. Quando il fendi-nubi si stanca di usare la sua strana lanterna, tira fuori una lama corta e si getta nel combattimento corpo a corpo.",
+    "abilities": [
+      "Usa ganci a catena per attaccare gli operatori alleati. Gli operatori incatenati restano Storditi finché non vengono liberati."
+    ]
+  },
+  "eny_0090_wgabyss": {
+    "name": "Tidalklast",
+    "nickname": "Tidalklast",
+    "description": "L'\"Anavatklydan\" (ID archivio: AGM32L) è una variante non standard dell'AGM321 presente in molte dimensioni diverse. La vista di un individuo particolarmente grande che emerge dall'acqua è diventata un incubo per coloro che vi hanno assistito.",
+    "abilities": [
+      "Il nemico ha due modalità d'attacco: distanza e mischia.",
+      "Modalità mischia: in questa modalità, il nemico proverà ad avvicinarsi al bersaglio per sferrare attacchi in mischia.",
+      "Modalità distanza: in questa modalità, il nemico si terrà a distanza e attaccherà con abilità più potenti.",
+      "In modalità distanza il nemico subisce più danni da fuoco, mentre i danni legati agli altri elementi risultano notevolmente ridotti."
+    ]
+  },
+  "eny_0097_hsmino2": {
+    "name": "Oblitera-nubi",
+    "nickname": "Oblitera-nubi",
+    "description": "Un criminale equipaggiato con armi pesanti. L'obliterazione non è un'impresa semplice, solo i distruttori più forti armati di lanciarazzi quadrupli possono ricevere il titolo di oblitera-nubi.",
+    "abilities": [
+      "Usa un lanciarazzi pesante come arma da mischia e spara fuochi d'artificio come attacco a distanza. Se ti carica e ti solleva con le corna, potrebbe scatenare un incredibile spettacolo pirotecnico!",
+      "Non provare ad attaccarlo alle spalle: tira portentosi calci all'indietro!"
+    ]
+  },
+  "eny_0100_slimerg2": {
+    "name": "Origilumaca acida α",
+    "nickname": "Origilumaca acida α",
+    "description": "Una creatura selvatica infettata dall'Originium. L'origilumaca acida è più pericolosa della sua controparte normale: l'aggregato di Originium sulla sua schiena presenta livelli di attività elevati e rende la creatura sempre più aggressiva.",
+    "abilities": [
+      "Un nemico timido, che si rifugia nel guscio per difendersi e scaglia cristalli di Originium senza una direzione precisa per intimidire gli avversari."
+    ]
+  },
+  "eny_0101_agfly2": {
+    "name": "Falseali α",
+    "nickname": "Falseali α",
+    "description": "Il \"Psuthopteron Anavon\" (ID archivio: ARA07Cα) è una variante energizzata dall'ARA07C. Il colore è generalmente considerato l’unico elemento distintivo tra questo Anavon e le varianti di base.",
+    "abilities": [
+      "Lancia dei piccoli turbini che possono rallentare gli operatori."
+    ]
+  },
+  "eny_0102_hstiger2": {
+    "name": "Rastrobestia abbagliante",
+    "nickname": "Rastrobestia abbagliante",
+    "description": "Una variante di rastrobestia che presenta un manto di colori diversi, un'aspettativa di vita più breve, ma una forza maggiore. I suoi occhi sembrano brillare come fiamme liquide.",
+    "abilities": [
+      "Rispetto alle rastrobestie normali, quando ha pochi PS, questo nemico entra temporaneamente in modalità furtiva e inizia a caricare le sue abilità. Interrompilo in fretta per farlo uscire dalla modalità furtiva e infliggere quantità ingenti di Vacillamento.",
+      "Stato di Furia: quando questa bestia è Infuriata, il suo ATT aumenta e le abilità caricate vengono usate più spesso. Applica Vacillamento per porre fine allo stato di Furia."
+    ]
+  },
+  "eny_0103_hshunt2": {
+    "name": "Vento sferzante",
+    "nickname": "Vento sferzante",
+    "description": "Un criminale armato di armi semplici a distanza. La vista acuta e le mani esperte gli consentono di sparare colpi letali. Questo Vento potrebbe soffiare attraverso gli edifici e spazzare via tutti gli oggetti preziosi.",
+    "abilities": [
+      "Scocca frecce di vario genere e lancia bombe per infastidire gli avversari a distanza."
+    ]
+  },
+  "eny_0105_wgslime2": {
+    "name": "Fangoflutto δ",
+    "nickname": "Fangoflutto δ",
+    "description": "Il \"Tholeroygran\" (ID archivio: ACM311δ) è una variante energizzata dell'ACM311. Poiché sfrutta percorsi energetici unici, può mantenere una temperatura omeostatica notevolmente inferiore ai punti di congelamento della sua materia costitutiva.",
+    "abilities": [
+      "Questo nemico può coprire grandi distanze in un batter d'occhio. I suoi attacchi possono applicare Afflizione da ghiaccio agli operatori."
+    ]
+  },
+  "eny_0106_wgthorns2": {
+    "name": "Edro δ",
+    "nickname": "Edro δ",
+    "description": "Il \"Diaphaistagran Dinedon\" (ID archivio: ARM315δ) è una variante energizzata dell'ARM315. Quando viene colpito dalla luce solare irradia una sfavillante luce viola. Quando viene colpito dalla luce riflessa da Talos, invece, assume una forma diversa.",
+    "abilities": [
+      "I suoi proiettili applicano Afflizione da ghiaccio agli operatori colpiti."
+    ]
+  },
+  "eny_0109_hshog2": {
+    "name": "Bestiaspina imbevuta",
+    "nickname": "Bestiaspina imbevuta",
+    "description": "Una bestiaspina infettata dalla polvere attiva di Originium. Gli aculei della bestia sono imbevuti di alti livelli di energia che li rendono estremamente distruttivi.",
+    "abilities": [
+      "Questo nemico si carica e gonfia l'addome per sputare lava incandescente. Interrompilo durante la carica per infliggere quantità ingenti di Vacillamento.",
+      "Stato di Furia: quando questa bestia è Infuriata, il suo ATT aumenta e le abilità caricate vengono usate più spesso. Applica Vacillamento per porre fine allo stato di Furia."
+    ]
+  }
+}

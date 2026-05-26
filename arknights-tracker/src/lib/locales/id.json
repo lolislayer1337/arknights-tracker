@@ -25,7 +25,8 @@
     "privacyPolicy": "Kebijakan Privasi",
     "specialThanks": "Ucapan Terima Kasih",
     "interactiveMap": "Peta Interaktif (Open Endfield Map)",
-    "supportProject": "Dukung Goyfield.moe"
+    "supportProject": "Dukung Goyfield.moe",
+    "supportProjectShort": "Dukung"
   },
   "page": {
     "title": "Catatan Headhunting",
@@ -243,6 +244,7 @@
   },
   "systemNames": {
     "total": "Total",
+    "banners": "Spanduk",
     "pull": "Pull",
     "operator": "Operator",
     "pity": "Pity",
@@ -265,7 +267,12 @@
     "noMaterialsNeeded": "Material Tidak Dibutuhkan",
     "featuredCharacters": "Operator Unggulan",
     "new": "BARU",
-    "version": "Versi"
+    "version": "Versi",
+    "weapons": "Senjata",
+    "operators": "Operator",
+    "versions": "Versi",
+    "sortByRelease": "Berdasarkan rilis",
+    "sortByWait": "Berdasarkan hari tanpa rerun"
   },
   "status": {
     "won": "Menang 50:50",
@@ -310,7 +317,9 @@
     "weapons": "Senjata",
     "essences": "Esensi",
     "changelog": "Catatan Perubahan",
-    "equipment": "Perlengkapan"
+    "equipment": "Perlengkapan",
+    "bannerHistory": "Riwayat Banner",
+    "enemies": "Musuh"
   },
   "events": {
     "voyage_to_the_stars": "Voyage to the Stars",
@@ -348,7 +357,7 @@
     "AICSupportPalmTopSavior": "Dukungan AIC: Perangkat Penyelamat Mini",
     "etchspaceSalvageZone56": "Zona Aberan 5&6",
     "blitzOfVerdance": "Sign In Kilatan Kemakmuran",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "Sign In Momen Gemilang",
     "etchingsOfOurCosmicDreams": "Snapshot: Ukiran Impian Kosmis Kita",
     "etchingsOfOurCosmicDreamsSignIn": "Sign In Ukiran Impian Kosmis Kita",
     "pristineMonthlyPassTribute": "Persembahan Tiket Akses Bulanan Sempurna",
@@ -499,7 +508,14 @@
     "arms_offering": "Penawaran Senjata",
     "editPotential": "Edit Potensi",
     "featured_guarantee": "Jaminan",
-    "reset": "Setel ulang nilai potensi, perhitungan akan didasarkan pada riwayat tarikan aktual"
+    "reset": "Setel ulang nilai potensi, perhitungan akan didasarkan pada riwayat tarikan aktual",
+    "hp": "HP",
+    "atk": "Serangan",
+    "def": "Protection",
+    "drops": "Drop",
+    "properties": "Properti",
+    "abilities": "Kemampuan",
+    "vulnerable": "Vulnerable"
   },
   "bioValues": {
     "Unknown": "Tidak Diketahui"
@@ -835,7 +851,13 @@
       "onlyPc": "Hanya tersedia di PC"
     },
     "noActiveCodes": "Tidak ada kode aktif",
-    "noActiveBanners": "Tidak Ada Banner Aktif"
+    "noActiveBanners": "Tidak Ada Banner Aktif",
+    "activeEvents": "Acara Aktif",
+    "noActiveEvents": "Tidak ada acara aktif",
+    "discordJoin": "Bergabung dengan Discord",
+    "docsTitle": "Dokumentasi Goyfield DEV",
+    "docsAuthor": "oleh @beetwooo_",
+    "goToTimeline": "Ke linimasa acara"
   },
   "characters": {
     "catcher": "Catcher",
@@ -864,7 +886,8 @@
     "tangtang": "Tangtang",
     "pogranichnik": "Pogranichnik",
     "rossi": "Rossi",
-    "zhuangfy": "Zhuang Fangyi"
+    "zhuangfy": "Zhuang Fangyi",
+    "zhuangFangyi": "Zhuang Fangyi"
   },
   "weaponsList": {
     "industry01": "Industry 0.1",
@@ -1456,5 +1479,19 @@
     "Sub": "Atribut Sekunder",
     "AllSkillDamageIncrease": "Bonus Semua Skill DMG Dealt",
     "FireAndNaturalDamageIncrease": "Bonus Heat dan Nature DMG Dealt"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "Aggelos",
+    "wiki_group_monster_landbreaker": "Landbreaker",
+    "wiki_group_monster_hongshan": "Perompak Cangzei",
+    "wiki_group_monster_animal": "Margasatwa"
+  },
+  "resitances": {
+    "heatRez": "Resistansi Heat",
+    "elecrtoRez": "Resistansi Electric",
+    "physRez": "Resistansi Physical",
+    "cryoRez": "Resistansi Cryo",
+    "narureRez": "Resistansi Nature",
+    "ephyrRez": "Resistansi Æther"
   }
 }

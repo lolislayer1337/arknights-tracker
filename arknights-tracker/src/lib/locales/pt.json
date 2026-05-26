@@ -25,7 +25,8 @@
     "privacyPolicy": "Política de Privacidade",
     "specialThanks": "Agradecimentos Especiais",
     "interactiveMap": "Mapa Interativo (Open Endfield Map)",
-    "supportProject": "Apoiar o Goyfield.moe"
+    "supportProject": "Apoiar o Goyfield.moe",
+    "supportProjectShort": "Apoiar"
   },
   "page": {
     "title": "Registros de Busca",
@@ -243,6 +244,7 @@
   },
   "systemNames": {
     "total": "Total",
+    "banners": "Banners",
     "pull": "Tirada",
     "operator": "Operador",
     "pity": "Pity",
@@ -265,7 +267,12 @@
     "noMaterialsNeeded": "Nenhum material necessário",
     "featuredCharacters": "Operadores em destaque",
     "new": "NOVO",
-    "version": "Versão"
+    "version": "Versão",
+    "weapons": "Armas",
+    "operators": "Operadores",
+    "versions": "Versões",
+    "sortByRelease": "Por lançamento",
+    "sortByWait": "Por dias sem rerun"
   },
   "status": {
     "won": "Ganho 50:50",
@@ -310,7 +317,9 @@
     "weapons": "Armas",
     "essences": "Essências",
     "changelog": "Registro de alterações",
-    "equipment": "Equipamento"
+    "equipment": "Equipamento",
+    "bannerHistory": "Histórico de Banners",
+    "enemies": "Inimigos"
   },
   "events": {
     "voyage_to_the_stars": "Viagem às Estrelas",
@@ -348,7 +357,7 @@
     "AICSupportPalmTopSavior": "Apoio do CAI: Salvadora Portátil",
     "etchspaceSalvageZone56": "Zona Aberrante 5&6",
     "blitzOfVerdance": "Login em Tempestade Verdejante",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "Login em Momento Brilhante",
     "etchingsOfOurCosmicDreams": "Fotografia: Gravuras dos Nossos Sonhos Cósmicos",
     "etchingsOfOurCosmicDreamsSignIn": "Login em Gravuras dos Nossos Sonhos Cósmicos",
     "pristineMonthlyPassTribute": "Tributo de Passe Mensal Imaculado",
@@ -499,7 +508,14 @@
     "arms_offering": "Oferta de Armas",
     "editPotential": "Editar Potencial",
     "featured_guarantee": "Garantido",
-    "reset": "Redefinir valor de potencial, o cálculo será baseado no histórico de pulls atual"
+    "reset": "Redefinir valor de potencial, o cálculo será baseado no histórico de pulls atual",
+    "hp": "PV",
+    "atk": "Ataque",
+    "def": "Proteção",
+    "drops": "Espólios",
+    "properties": "Propriedades",
+    "abilities": "Capacidades",
+    "vulnerable": "Vulnerável"
   },
   "bioValues": {
     "Unknown": "Desconhecido"
@@ -835,7 +851,13 @@
       "onlyPc": "Disponível apenas no PC"
     },
     "noActiveCodes": "Nenhum código ativo",
-    "noActiveBanners": "Nenhum Banner Ativo"
+    "noActiveBanners": "Nenhum Banner Ativo",
+    "activeEvents": "Eventos Ativos",
+    "noActiveEvents": "Nenhum evento ativo",
+    "discordJoin": "Entrar no Discord",
+    "docsTitle": "Documentação Goyfield DEV",
+    "docsAuthor": "por @beetwooo_",
+    "goToTimeline": "Ir para a linha do tempo"
   },
   "characters": {
     "catcher": "Catcher",
@@ -864,7 +886,8 @@
     "tangtang": "Tangtang",
     "pogranichnik": "Pogranichnik",
     "rossi": "Rossi",
-    "zhuangfy": "Zhuang Fangyi"
+    "zhuangfy": "Zhuang Fangyi",
+    "zhuangFangyi": "Zhuang Fangyi"
   },
   "weaponsList": {
     "industry01": "Indústria 0.1",
@@ -1456,5 +1479,19 @@
     "Sub": "Atributo Secundário",
     "AllSkillDamageIncrease": "Bônus de Todo o DNO Habilidade Causado",
     "FireAndNaturalDamageIncrease": "Bônus de DNO Térmico e DNO Natureza Causado"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "Aggeloi",
+    "wiki_group_monster_landbreaker": "Invasores de Terras",
+    "wiki_group_monster_hongshan": "Piratas Cangzei",
+    "wiki_group_monster_animal": "Vida Selvagem"
+  },
+  "resitances": {
+    "heatRez": "Resistência Térmica",
+    "elecrtoRez": "Resistência Elétrica",
+    "physRez": "Resistência Física",
+    "cryoRez": "Resistência Crio",
+    "narureRez": "Resistência à Natureza",
+    "ephyrRez": "Resistência a Æther"
   }
 }

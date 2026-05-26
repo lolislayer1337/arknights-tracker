@@ -40,7 +40,8 @@
     "privacyPolicy": "Privacy Policy",
     "specialThanks": "Special Thanks",
     "interactiveMap": "Interactive Map (Open Endfield Map)",
-    "supportProject": "Support Goyfield.moe"
+    "supportProject": "Support Goyfield.moe",
+    "supportProjectShort": "Support"
   },
   "page": {
     "title": "Headhunting Records",
@@ -263,6 +264,7 @@
   },
   "systemNames": {
     "total": "Total",
+    "banners": "Banners",
     "pull": "Pull",
     "operator": "Operator",
     "pity": "Pity",
@@ -285,7 +287,12 @@
     "noMaterialsNeeded": "No materials Needed",
     "featuredCharacters": "Featured operators",
     "new": "New",
-    "version": "Version"
+    "version": "Version",
+    "weapons": "Weapons",
+    "operators": "Operators",
+    "versions": "Versions",
+    "sortByRelease": "By release date",
+    "sortByWait": "By days without rerun"
   },
   "status": {
     "won": "Won 50:50",
@@ -331,6 +338,8 @@
     "essences": "Essences",
     "changelog": "Changelog",
     "equipment": "Equipment",
+    "bannerHistory": "Banner History",
+    "enemies": "Enemies",
     "recipes": "Recipes"
   },
   "events": {
@@ -370,7 +379,7 @@
     "AICSupportPalmTopSavior": "AIC Support: Palm-Top Savior",
     "etchspaceSalvageZone56": "Etchspace Salvage «Aberrant Zone 5&6»",
     "blitzOfVerdance": "Blitz of Verdance Sign-In",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "Shimmering Moment Sign-In",
     "etchingsOfOurCosmicDreams": "Snapshot: Etchings of Our Cosmic Dreams",
     "etchingsOfOurCosmicDreamsSignIn": "Etchings of Our Cosmic Dreams Sign-In",
     "pristineMonthlyPassTribute": "Pristine Monthly Pass Tribute",
@@ -523,7 +532,14 @@
     "arms_offering": "Arms Offering",
     "editPotential": "Edit Potential",
     "featured_guarantee": "Guaranteed",
-    "reset": "Reset potential value"
+    "reset": "Reset potential value",
+    "hp": "HP",
+    "atk": "Attack",
+    "def": "Protection",
+    "drops": "Drops",
+    "properties": "Properties",
+    "abilities": "Abilities",
+    "vulnerable": "Vulnerable"
   },
   "bioValues": {
     "Unknown": "Unknown"
@@ -860,7 +876,13 @@
       "onlyPc": "Only available on PC"
     },
     "noActiveCodes": "No active codes",
-    "noActiveBanners": "No Active Banners"
+    "noActiveBanners": "No Active Banners",
+    "activeEvents": "Active Events",
+    "noActiveEvents": "No active events",
+    "discordJoin": "Join Discord Server",
+    "docsTitle": "Goyfield DEV Documentation",
+    "docsAuthor": "by @beetwooo_",
+    "goToTimeline": "Go to event timeline"
   },
   "characters": {
     "catcher": "Catcher",
@@ -889,7 +911,8 @@
     "tangtang": "Tangtang",
     "pogranichnik": "Pogranichnik",
     "rossi": "Rossi",
-    "zhuangfy": "Zhuang Fangyi"
+    "zhuangfy": "Zhuang Fangyi",
+    "zhuangFangyi": "Zhuang Fangyi"
   },
   "weaponsList": {
     "industry01": "Industry 0.1",
@@ -1481,5 +1504,19 @@
     "Sub": "Secondary Attribute",
     "AllSkillDamageIncrease": "All Skill DMG Dealt Bonus",
     "FireAndNaturalDamageIncrease": "Heat and Nature DMG Dealt Bonus"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "Aggeloi",
+    "wiki_group_monster_landbreaker": "Landbreakers",
+    "wiki_group_monster_hongshan": "Cangzei Pirates",
+    "wiki_group_monster_animal": "Wildlife"
+  },
+  "resitances": {
+    "heatRez": "Heat Resistance",
+    "elecrtoRez": "Electric Resistance",
+    "physRez": "Physical Resistance",
+    "cryoRez": "Cryo Resistance",
+    "narureRez": "Nature Resistance",
+    "ephyrRez": "Æther Resistance"
   }
 }

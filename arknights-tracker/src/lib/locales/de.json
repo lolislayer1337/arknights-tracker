@@ -25,7 +25,8 @@
     "privacyPolicy": "Datenschutzrichtlinie",
     "specialThanks": "Besonderer Dank",
     "interactiveMap": "Interaktive Karte (Open Endfield Map)",
-    "supportProject": "Goyfield.moe unterstützen"
+    "supportProject": "Goyfield.moe unterstützen",
+    "supportProjectShort": "Unterstützen"
   },
   "page": {
     "title": "Rekrutierung",
@@ -243,6 +244,7 @@
   },
   "systemNames": {
     "total": "Gesamt",
+    "banners": "Banner",
     "pull": "Pull",
     "operator": "Operator",
     "pity": "Pity",
@@ -265,7 +267,12 @@
     "noMaterialsNeeded": "Keine Materialien benötigt",
     "featuredCharacters": "Aktions-Operator",
     "new": "NEU",
-    "version": ""
+    "version": "Version",
+    "weapons": "Waffen",
+    "operators": "Operatoren",
+    "versions": "Versionen",
+    "sortByRelease": "Nach Veröffentlichung",
+    "sortByWait": "Nach Tagen ohne Rerun"
   },
   "status": {
     "won": "Gewonnen 50:50",
@@ -310,7 +317,9 @@
     "weapons": "Waffen",
     "essences": "Essenzen",
     "changelog": "Changelog",
-    "equipment": "Ausrüstung"
+    "equipment": "Ausrüstung",
+    "bannerHistory": "Banner-Historie",
+    "enemies": "Feinde"
   },
   "events": {
     "voyage_to_the_stars": "Reise zu den Sternen",
@@ -348,7 +357,7 @@
     "AICSupportPalmTopSavior": "AIK-Unterstützung: Handheld-Rettung",
     "etchspaceSalvageZone56": "Anomaliezone 5&6",
     "blitzOfVerdance": "Moment des Aufblühens – Anmeldung",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "Moment des Glänzens – Anmeldung",
     "etchingsOfOurCosmicDreams": "Schnappschuss: Gravuren unserer Träume vom Weltall",
     "etchingsOfOurCosmicDreamsSignIn": "Gravuren unserer Träume vom Weltall – Anmeldung",
     "pristineMonthlyPassTribute": "Erstklassiger Monatspass-Tribut",
@@ -499,7 +508,14 @@
     "arms_offering": "Waffenangebot",
     "featured_guarantee": "Garantiert",
     "editPotential": "Potenzial bearbeiten",
-    "reset": "Potenzialwert zurücksetzen, die Berechnung basiert auf dem tatsächlichen Ziehungsverlauf"
+    "reset": "Potenzialwert zurücksetzen, die Berechnung basiert auf dem tatsächlichen Ziehungsverlauf",
+    "hp": "LP",
+    "atk": "Angriff",
+    "def": "Schutz",
+    "drops": "Drops",
+    "properties": "Eigenschaften",
+    "abilities": "Capacidades",
+    "vulnerable": "Anfällig"
   },
   "bioValues": {
     "Unknown": "Unbekannt"
@@ -835,7 +851,13 @@
       "onlyPc": "Nur auf PC verfügbar"
     },
     "noActiveCodes": "Keine aktiven Codes",
-    "noActiveBanners": "Keine aktiven Banner"
+    "noActiveBanners": "Keine aktiven Banner",
+    "activeEvents": "Aktive Events",
+    "noActiveEvents": "Keine aktiven Events",
+    "discordJoin": "Discord beitreten",
+    "docsTitle": "Goyfield DEV Dokumentation",
+    "docsAuthor": "von @beetwooo_",
+    "goToTimeline": "Zur Event-Timeline"
   },
   "characters": {
     "catcher": "Catcher",
@@ -1456,5 +1478,19 @@
     "Sub": "Sekundärattribut",
     "AllSkillDamageIncrease": "SDN-Bonus: Sämtlicher Verursachter Fertigkeits-SDN",
     "FireAndNaturalDamageIncrease": "SDN-Bonus: Verursachter Hitze- und Natur-SDN"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "Aggeloi",
+    "wiki_group_monster_landbreaker": "Landbrecher",
+    "wiki_group_monster_hongshan": "Cangzei-Piraten",
+    "wiki_group_monster_animal": "Fauna"
+  },
+  "resitances": {
+    "heatRez": "Heat Resistance",
+    "elecrtoRez": "Elektrische Resistenz",
+    "physRez": "Physische Resistenz",
+    "cryoRez": "Kryo-Resistenz",
+    "narureRez": "Naturresistenz",
+    "ephyrRez": "Æther-Resistenz"
   }
 }

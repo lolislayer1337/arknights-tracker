@@ -25,7 +25,8 @@
     "privacyPolicy": "Politique de confidentialité",
     "specialThanks": "Remerciements spéciaux",
     "interactiveMap": "Carte Interactive (Open Endfield Map)",
-    "supportProject": "Soutenir Goyfield.moe"
+    "supportProject": "Soutenir Goyfield.moe",
+    "supportProjectShort": "Soutenir"
   },
   "page": {
     "title": "Dossiers de Recrutement",
@@ -243,6 +244,7 @@
   },
   "systemNames": {
     "total": "Total",
+    "banners": "Bannières",
     "pull": "Tirage",
     "operator": "Opérateur",
     "pity": "Pity",
@@ -265,7 +267,12 @@
     "noMaterialsNeeded": "Aucun matériel requis",
     "featuredCharacters": "Opérateurs en vedette",
     "new": "NOUVEAU",
-    "version": "Version"
+    "version": "Version",
+    "weapons": "Armes",
+    "operators": "Opérateurs",
+    "versions": "Versions",
+    "sortByRelease": "Par date de sortie",
+    "sortByWait": "Par jours sans rerun"
   },
   "status": {
     "won": "Gagné 50:50",
@@ -310,7 +317,9 @@
     "weapons": "Armes",
     "essences": "Essences",
     "changelog": "Journal des modifications",
-    "equipment": "Équipement"
+    "equipment": "Équipement",
+    "bannerHistory": "Historique des bannières",
+    "enemies": "Ennemis"
   },
   "events": {
     "voyage_to_the_stars": "Voyage vers les Étoiles",
@@ -348,7 +357,7 @@
     "AICSupportPalmTopSavior": "Soutien du GIA : remède de poche",
     "etchspaceSalvageZone56": "Zone d'anomalie 5&6",
     "blitzOfVerdance": "Connexion - Raid verdoyant",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "Connexion - Moment chatoyant",
     "etchingsOfOurCosmicDreams": "Instantané : Gravures de nos rêves cosmiques",
     "etchingsOfOurCosmicDreamsSignIn": "Connexion - Gravures de nos rêves cosmiques",
     "pristineMonthlyPassTribute": "Don du Pass mensuel immaculé",
@@ -499,7 +508,14 @@
     "arms_offering": "Offrande d'armes",
     "editPotential": "Modifier le potentiel",
     "featured_guarantee": "Garanti",
-    "reset": "Réinitialiser le potentiel, le calcul sera basé sur l'historique réel des tirages"
+    "reset": "Réinitialiser le potentiel, le calcul sera basé sur l'historique réel des tirages",
+    "hp": "PV",
+    "atk": "Attaque",
+    "def": "Protection",
+    "drops": "Butins",
+    "properties": "Propriétés",
+    "abilities": "Capacités",
+    "vulnerable": "Vulnérable"
   },
   "bioValues": {
     "Unknown": "Inconnu"
@@ -835,7 +851,13 @@
       "onlyPc": "Disponible uniquement sur PC"
     },
     "noActiveCodes": "Aucun code actif",
-    "noActiveBanners": "Aucune bannière active"
+    "noActiveBanners": "Aucune bannière active",
+    "activeEvents": "Événements actifs",
+    "noActiveEvents": "Aucun événement actif",
+    "discordJoin": "Rejoindre Discord",
+    "docsTitle": "Documentation Goyfield DEV",
+    "docsAuthor": "par @beetwooo_",
+    "goToTimeline": "Aller à la chronologie"
   },
   "characters": {
     "catcher": "Catcher",
@@ -864,7 +886,8 @@
     "tangtang": "Tangtang",
     "pogranichnik": "Pogranichnik",
     "rossi": "Rossi",
-    "zhuangfy": "Zhuang Fangyi"
+    "zhuangfy": "Zhuang Fangyi",
+    "zhuangFangyi": "Zhuang Fangyi"
   },
   "weaponsList": {
     "industry01": "Industrie 0.1",
@@ -1456,5 +1479,19 @@
     "Sub": "Trait secondaire",
     "AllSkillDamageIncrease": "Bonus de tous les DÉG de compétence infligés",
     "FireAndNaturalDamageIncrease": "Bonus de DÉG thermiques et naturels infligés"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "Aggeloi",
+    "wiki_group_monster_landbreaker": "Brise-Terres",
+    "wiki_group_monster_hongshan": "Pirates cangzei",
+    "wiki_group_monster_animal": "Faune"
+  },
+  "resitances": {
+    "heatRez": "Résistance thermique",
+    "elecrtoRez": "Résistance électrique",
+    "physRez": "Résistance physique",
+    "cryoRez": "Résistance cryogénique",
+    "narureRez": "Résistance naturelle",
+    "ephyrRez": "Résistance æthérique"
   }
 }

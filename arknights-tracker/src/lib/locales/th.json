@@ -25,7 +25,8 @@
     "privacyPolicy": "นโยบายความเป็นส่วนตัว",
     "specialThanks": "ขอขอบคุณเป็นพิเศษ",
     "interactiveMap": "แผนที่แบบโต้ตอบ (Open Endfield Map)",
-    "supportProject": "สนับสนุน Goyfield.moe"
+    "supportProject": "สนับสนุน Goyfield.moe",
+    "supportProjectShort": "สนับสนุน"
   },
   "page": {
     "title": "บันทึกการเฟ้นหา",
@@ -243,6 +244,7 @@
   },
   "systemNames": {
     "total": "รวม",
+    "banners": "แบนเนอร์",
     "pull": "ครั้ง",
     "operator": "โอเปอเรเตอร์",
     "pity": "Pity",
@@ -265,7 +267,12 @@
     "noMaterialsNeeded": "ไม่ต้องการวัสดุ",
     "featuredCharacters": "โอเปอเรเตอร์หน้าตู้",
     "new": "ใหม่",
-    "version": "เวอร์ชัน"
+    "version": "เวอร์ชัน",
+    "weapons": "อาวุธ",
+    "operators": "โอเปอเรเตอร์",
+    "versions": "เวอร์ชัน",
+    "sortByRelease": "ตามวันเปิดตัว",
+    "sortByWait": "ตามจำนวนวันที่ไม่มีรีรัน"
   },
   "status": {
     "won": "ชนะ 50:50",
@@ -310,7 +317,9 @@
     "weapons": "อาวุธ",
     "essences": "แก่นแท้",
     "changelog": "บันทึกการเปลี่ยนแปลง",
-    "equipment": "อุปกรณ์"
+    "equipment": "อุปกรณ์",
+    "bannerHistory": "ประวัติแบนเนอร์",
+    "enemies": "ศัตรู"
   },
   "events": {
     "voyage_to_the_stars": "การเดินทางสู่ดวงดาว",
@@ -347,7 +356,7 @@
     "AICSupportPalmTopSavior": "AIC สนับสนุน​: ผู้​กอบกู้​ใน​อุ้งมือ",
     "etchspaceSalvageZone56": "เขต​ผิดเพี้ยน​ 5&6",
     "blitzOfVerdance": "ลงชื่อ​เข้าสู่ระบบ​สายฟ้า​ปลุก​สรรพสิ่ง",
-    "shimmeringMoment": "",
+    "shimmeringMoment": "การเข้าสู่​ระบบ​ช่วงเวลา​วิบวับ",
     "etchingsOfOurCosmicDreams": "ส​แน​ป​ช็อต​: การ​ฝัง​รอย​แห่ง​ความฝัน​ใน​จักรวาล​ของ​เรา",
     "etchingsOfOurCosmicDreamsSignIn": "ลงชื่อ​เข้าสู่ระบบ​การ​ฝัง​รอย​แห่ง​ความฝัน​ใน​จักรวาล​ของ​เรา",
     "pristineMonthlyPassTribute": "เครื่องบรรณาการ​บัตร​ผ่าน​รายเดือน​ระดับ​บริสุทธิ์​",
@@ -498,7 +507,14 @@
     "arms_offering": "ข้อเสนอ​อาวุธ",
     "editPotential": "แก้ไขศักยภาพ",
     "featured_guarantee": "การันตี",
-    "reset": "รีเซ็ตค่าศักยภาพ การคำนวณจะอิงจากประวัติการสุ่มที่แท้จริง"
+    "reset": "รีเซ็ตค่าศักยภาพ การคำนวณจะอิงจากประวัติการสุ่มที่แท้จริง",
+    "hp": "HP",
+    "atk": "การ​โจมตี",
+    "def": "การปกป้อง",
+    "drops": "ของ​ดร็อป",
+    "properties": "คุณสมบัติ",
+    "abilities": "ความสามารถ",
+    "vulnerable": "เปราะบาง"
   },
   "bioValues": {
     "Unknown": "ไม่ทราบ"
@@ -834,7 +850,13 @@
       "onlyPc": "ใช้ได้เฉพาะบน PC"
     },
     "noActiveCodes": "ไม่มีโค้ดที่ใช้งานได้",
-    "noActiveBanners": "ไม่มีแบนเนอร์ที่เปิดอยู่"
+    "noActiveBanners": "ไม่มีแบนเนอร์ที่เปิดอยู่",
+    "activeEvents": "กิจกรรมที่กำลังดำเนินการ",
+    "noActiveEvents": "ไม่มีกิจกรรม",
+    "discordJoin": "เข้าร่วม Discord",
+    "docsTitle": "เอกสาร Goyfield DEV",
+    "docsAuthor": "โดย @beetwooo_",
+    "goToTimeline": "ไปที่ไทม์ไลน์กิจกรรม"
   },
   "characters": {
     "catcher": "แคท​เชอร์",
@@ -863,7 +885,8 @@
     "tangtang": "ถัง​ถัง",
     "pogranichnik": "Pogranichnik",
     "rossi": "รอส​ซี",
-    "zhuangfy": "จวง​ฟาง​อี้"
+    "zhuangfy": "จวง​ฟาง​อี้",
+    "zhuangFangyi": "จวง​ฟาง​อี้"
   },
   "weaponsList": {
     "industry01": "อิน​ดัส​ทรี​ 0.1",
@@ -1455,5 +1478,19 @@
     "Sub": "คุณสมบัติ​รอง",
     "AllSkillDamageIncrease": "โบนัส​ DMG ของ​ทักษะ​ทั้งหมด",
     "FireAndNaturalDamageIncrease": "โบนัส​ DMG ความร้อน​และ​ธรรมชาติ"
+  },
+  "enemiesGroups": {
+    "wiki_group_monster_angel": "แอง​เกลอ​ย",
+    "wiki_group_monster_landbreaker": "แลนด์​เบรก​เกอร์",
+    "wiki_group_monster_hongshan": "โจรสลัด​คัง​เซย",
+    "wiki_group_monster_animal": "สัตว์ป่า"
+  },
+  "resitances": {
+    "heatRez": "การต้าน​ทาน​ความร้อน",
+    "elecrtoRez": "การต้าน​ทาน​ไฟฟ้า",
+    "physRez": "ความต้านทาน​ทางกายภาพ",
+    "cryoRez": "การต้าน​ทาน​ไค​ร​โอ",
+    "narureRez": "การต้าน​ทาน​ธรรมชาติ",
+    "ephyrRez": "การต้าน​ทาน​เอ​เทอร์"
   }
 }

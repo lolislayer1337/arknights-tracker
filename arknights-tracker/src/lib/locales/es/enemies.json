@@ -1,0 +1,613 @@
+{
+  "eny_0007_mimicw": {
+    "name": "Nidwyrm Subterráneo",
+    "nickname": "Nidwyrm Subterráneo",
+    "description": "Una criatura que expulsa fluidos altamente corrosivos. Los nidwyrms suelen vivir bajo tierra. Disuelven materiales metálicos con ácidos antes de consumirlos. Por lo tanto, se recomienda a los cazadores de nidwyrms que cuiden bien sus armas.",
+    "abilities": [
+      "Evita el escupitajo venenoso. Pisar encima infligirá DAÑ por naturaleza continuo al operador."
+    ]
+  },
+  "eny_0049_rogue": {
+    "name": "Rompehuesos Infiltrado",
+    "nickname": "Rompehuesos Infiltrado",
+    "description": "Un Rompesuelos que porta armas cuerpo a cuerpo. Los Infiltrados son combatientes ágiles y letales que usan dos armas al mismo tiempo. No es un enemigo para tomar a la ligera.",
+    "abilities": [
+      "Un enemigo muy ágil y capaz de esquivar los ataques básicos de los operadores. Sin embargo, cuando ataque, no podrá esquivar.",
+      "Puede lanzar dardos y realizar ataques adicionales contra los operadores alcanzados por los dardos. Esquivar los dardos podría darte una buena oportunidad de contraatacar."
+    ]
+  },
+  "eny_0018_lbtough": {
+    "name": "Verdugo Rompehuesos",
+    "nickname": "Verdugo Rompehuesos",
+    "description": "Un Rompesuelos que porta un hacha pesada. Estos brutos colosales son mucho más poderosos que sus versiones comunes y son capaces de destruir defensas o voltear vehículos blindados con facilidad.",
+    "abilities": [
+      "Su ataque de agarre inflige DAÑ masivo. Si un operador es agarrado, usa la habilidad de otro operador para interrumpirlo y liberar al operador atrapado.",
+      "Esquivar los hachazos dobles cargados no será fácil. Intenta interrumpirlo en su lugar."
+    ]
+  },
+  "eny_0088_wgthorns": {
+    "name": "Hedron",
+    "nickname": "Hedron",
+    "description": "El “Diaphaistagran” (ID de archivo: ARM315) es un patrón fluido con capacidad para proyectar energía. Su forma es de una geometría compleja pero simétrica. Sus ataques también pueden absorber calor de cualquier superficie con la que entre en contacto.",
+    "abilities": [
+      "Los proyectiles que lanza aplican Imp. crio. a los operadores al impactar."
+    ]
+  },
+  "eny_0021_agmelee": {
+    "name": "Carnero",
+    "nickname": "Carnero",
+    "description": "El “Kriosson” (ID de archivo: ACL071) es una de las formas más antiguas registradas de los Aggeloi y la más común. Ataca embistiendo a sus víctimas con sus cuernos.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0039_agcanno": {
+    "name": "Centinela",
+    "nickname": "Centinela",
+    "description": "El “Phrourossaron” (ARS316) es un supuesto intento Aggeloide de imitar la forma y los patrones de ataque de las armas centinela humanas. A pesar de su enorme alcance, el Centinela es un organismo sésil.",
+    "abilities": [
+      "Este enemigo tiene un poderoso ataque a distancia con un alcance extremadamente largo. Esquiva su bombardeo para progresar."
+    ]
+  },
+  "eny_0107_wgshoal2": {
+    "name": "Caminante de mareas δ",
+    "nickname": "Caminante de mareas δ",
+    "description": "El “Genesklydan Dinedon” (ID de archivo: AGM321δ) es una variante energizada de AGM321. Su materia constitutiva está en un flujo constante y turbulento. Esto también explica su forma particularmente aterradora cuando aparece por la noche.",
+    "abilities": [
+      "Ataca con habilidades que aplican Imposición criogénica y aplica Solidificación a los operadores que golpea."
+    ]
+  },
+  "eny_0023_aghornb": {
+    "name": "Carnero grande",
+    "nickname": "Carnero grande",
+    "description": "El “Thrylissoron” (ID de archivo: ACL072) es una variante no estándar del ACL071. Puede manipular su entorno y tomar decisiones tácticas.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0025_agrange": {
+    "name": "Aguijón",
+    "nickname": "Aguijón",
+    "description": "El “Kentron” (ID de archivo: ARL121) carga partes de sí mismo con energía y las propulsa mediante lanzamiento inercial. La eficiencia energética de este mecanismo es extremadamente baja.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0027_agscorp": {
+    "name": "Aguijón fuerte",
+    "nickname": "Aguijón fuerte",
+    "description": "El “Varykentron” (ID de archivo: ARL141) es una variante no estándar del ARL121. Ocasionalmente, realiza ataques de látigo con la cola en lugar de usar su ataque de energía a distancia.",
+    "abilities": [
+      "Este enemigo ataca provocando que estallen pilares de Originio bajo los operadores.",
+      "Cuando te acercas a él, este enemigo invoca pilares de piedra a su alrededor para protección."
+    ]
+  },
+  "eny_0060_lbmad": {
+    "name": "Garra de bruma ardiente",
+    "nickname": "Garra de bruma ardiente",
+    "description": "Un combatiente Rompesuelos corrompido por la bruma ardiente. Absorber la bruma ardiente no debería considerarse una bendición. Estos asaltantes se han convertido en versiones terriblemente retorcidas de sí mismos.",
+    "abilities": [
+      "Esquiva su ataque de mordida feroz para hacerlo caer al suelo."
+    ]
+  },
+  "eny_0078_nefarp1": {
+    "name": "Nefarith, “Rompehuesos”",
+    "nickname": "Nefarith, “Rompehuesos”",
+    "description": "Gracias a Nefarith, los “Rompehuesos” se volvieron sinónimo de terror en la Franja de la Civilización. Su conquista brutal aún no ha terminado, y sus verdaderas ambiciones todavía no se han revelado.",
+    "abilities": [
+      "Desata ondas de Energía de éter que no se pueden esquivar. Usa la Xiranita de Zhuang Fangyi para saltar por los aires y esquivarlo por completo.",
+      "Salta a grandes alturas para cargar un ataque. Para interrumpir este movimiento enemigo, usa Xiranita para elevarte en el aire y luego realiza un ataque de inmersión para invocar un rayo."
+    ]
+  },
+  "eny_0029_lbmob": {
+    "name": "Asaltante Rompehuesos",
+    "nickname": "Asaltante Rompehuesos",
+    "description": "Un Rompesuelos armado con armas cuerpo a cuerpo básicas. Este “maleante común” de los clanes RS suele estar pobremente equipado y aparecer en grupos.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0033_lbhunt": {
+    "name": "Emboscador Rompehuesos",
+    "nickname": "Emboscador Rompehuesos",
+    "description": "Un Rompesuelos que porta armas a distancia básicas. Los emboscadores solo recibieron un entrenamiento básico, por lo que tienen una puntería bastante mala. Sin embargo, sus disparos se llevaron varias vidas.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0095_ethillu": {
+    "name": "Éthillu",
+    "nickname": "Éthillu",
+    "description": "Un fantasma que respondió al llamado de Ardashir. Es una manifestación de la destrucción, una sedimentación de una senectud antigua.",
+    "abilities": [
+      "Este enemigo tiene una poderosa habilidad de resurrección. Su forma reanimada tiene un mayor alcance de ataque. También puede detonarse para infligir DAÑ masivo."
+    ]
+  },
+  "eny_0045_agtrinit": {
+    "name": "Triaggelos",
+    "nickname": "Triaggelos",
+    "description": "SIN REGISTROS PREVIOS. La naturaleza de su formación llevó a clasificarlo como un Aggelos. Los cambios en su aureola podrían indicar que es capaz de tomar decisiones tácticas. Ten cuidado. Esta entidad también presenta características similares a las de los Ankhor.",
+    "abilities": [
+      "Es un enemigo con 3 formas diferentes.",
+      "TIPO DE ASALTO: Lanza ataques cuerpo a cuerpo de forma continua. Interrumpe la carga de su habilidad para causarle un fuerte tambaleo.",
+      "FORMA DE BÚSQUEDA: Invoca a muchos Aggeloi para la pelea y desata ondas de choque de Ankhor.",
+      "TIPO DE ENGAÑO: Entra en sigilo para lanzar descargas de proyectiles desde lejos o emboscar a tus operadores. Rompe su modo sigiloso para causarle un fuerte tambaleo."
+    ]
+  },
+  "eny_0063_agmelee2": {
+    "name": "Carnero α",
+    "nickname": "Carnero α",
+    "description": "El “Kriosson Anavon” (ID de archivo: ACL071α) es una variante energizada de ACL071. El exceso de energía en esta entidad le da un característico tono rojo brillante, lo que también la hace más rápida y poderosa que la versión estándar.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0065_lbmob2": {
+    "name": "Asaltante de élite",
+    "nickname": "Asaltante de élite",
+    "description": "Un luchador Rompesuelos de élite de combate cuerpo a cuerpo, potenciado por vapores conocidos como bruma ardiente. Este RS en particular tiene mejor equipamiento, fuerza y habilidades de batalla.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0046_lbshamman": {
+    "name": "Piromante Rompehuesos",
+    "nickname": "Piromante Rompehuesos",
+    "description": "Un Rompesuelos capaz de dominar las Artes de originio de evocación. Los piromantes son muy peligrosos debido a que pueden prender fuego el campo de batalla con sus artes ígneas.",
+    "abilities": [
+      "Este enemigo tiene poderosos ataques a distancia que infligen DAÑ por calor, pero tiene poca movilidad.",
+      "Este enemigo hace que la bruma ardiente brote del suelo para infligir DAÑ por calor. Intenta esquivar el ataque.",
+      "Se teletransporta instantáneamente a un lugar lejano cuando los oponentes se acercan demasiado."
+    ]
+  },
+  "eny_0052_palesent": {
+    "name": "Aggelomoirai de mármol",
+    "nickname": "Aggelomoirai de mármol",
+    "description": "SIN REGISTROS PREVIOS. La naturaleza de su formación llevó a categorizarlo como un Aggelos. Su apariencia se parece mucho a la de Nefarith. A pesar de tener niveles altos de energía en su núcleo, la entidad no parece ser estable.",
+    "abilities": [
+      "Las Aggelomoirai de mármol despiertas pueden invocar innumerables Ankhors del universo para bombardear la Tierra. Esquiva estos ataques para hallar una manera de contraatacar."
+    ]
+  },
+  "eny_0087_wgslime": {
+    "name": "Flujo de lodo",
+    "nickname": "Flujo de lodo",
+    "description": "El “Tholeroygran” (ID de archivo: ACM311) es el primer patrón fluido descubierto. La morfología de la aureola es inestable y la temperatura interna suele ser inferior a la de sus materiales constituyentes.",
+    "abilities": [
+      "Este enemigo puede cerrar la distancia rápidamente desde lejos. Sus ataques pueden aplicar Imp. crio. a los operadores al impactar."
+    ]
+  },
+  "eny_0047_firebat": {
+    "name": "Rompehuesos Pirómano",
+    "nickname": "Rompehuesos Pirómano",
+    "description": "Un Rompesuelos que porta un lanzallamas. Aunque estas armas parecen de mala calidad, cumplen muy bien con su función. Los pirómanos pueden despejar posiciones importantes con facilidad y hacer que hasta los defensores más seguros huyan aterrados.",
+    "abilities": [
+      "Este enemigo puede escupir fuego continuamente a los operadores. Intenta moverte detrás de él para evitar las llamas."
+    ]
+  },
+  "eny_0048_hvybow": {
+    "name": "Balista Rompehuesos",
+    "nickname": "Balista Rompehuesos",
+    "description": "Un Rompesuelos que porta un arma a distancia poderosa. Los Balistas son unidades de élite surgidos de Emboscadores que se ganaron su lugar. Sus proyectiles son lo bastante potentes como para perforar armaduras pesadas.",
+    "abilities": [
+      "Dispara una descarga de flechas que infligen DAÑ continuo y explotan tras un retraso de varios segundos.",
+      "A pesar de estar armado con una ballesta gigante, este enemigo también es hábil en el combate cuerpo a cuerpo."
+    ]
+  },
+  "eny_0050_hound": {
+    "name": "Colmillo desgarrador Rompehuesos",
+    "nickname": "Colmillo desgarrador Rompehuesos",
+    "description": "Una pequeña bestia de guerra controlada por los Rompesuelos. Los colmillos desgarradores son mucho más feroces y sedientos de sangre que sus parientes salvajes. Son absolutamente leales a los Rompesuelos que los domaron.",
+    "abilities": [
+      "Este enemigo es ágil, pero puede ser abrumado cuando recibe múltiples golpes."
+    ]
+  },
+  "eny_0068_lbtough2": {
+    "name": "Ejecutor de élite",
+    "nickname": "Ejecutor de élite",
+    "description": "Un bruto de élite de los Rompesuelos, potenciada por vapores conocidos como bruma ardiente. Este RS es un gigante imponente, armado con un hacha enorme. Estas élites suelen liderar las bandas de Asaltantes Rompehuesos.",
+    "abilities": [
+      "Su ataque de agarre inflige DAÑ masivo. Si un operador es agarrado, usa la habilidad de otro operador para interrumpirlo y liberar al operador atrapado.",
+      "Esquivar los hachazos dobles cargados no será fácil. Intenta interrumpirlo en su lugar."
+    ]
+  },
+  "eny_0051_rodin": {
+    "name": "Rhodagn el puño Rompehuesos",
+    "nickname": "Rhodagn",
+    "description": "El puño derecho de Nefarith y el soldado más temido del clan de los Rompehuesos. Muchos Rompesuelos desafiaron el liderazgo de Nefarith, solo para ser completamente aplastados por los puños de Rhodagn.",
+    "abilities": [
+      "Un enemigo superpesado. Usa tuberías de ventilación para atraer a sus oponentes y tenerlos lo suficientemente cerca para atacarlos.",
+      "Se potencia a sí mismo con el poder de denstacks. Observa y esquiva sus chorros de fuego."
+    ]
+  },
+  "eny_0076_agfly": {
+    "name": "Alas falsas",
+    "nickname": "Alas falsas",
+    "description": "El “Psutóptero” (ID de archivo: ARA07C) posee capacidades de vuelo completamente independientes de su morfología. Este patrón se consideró originalmente biomimético. Sin embargo, según el consenso actual, se cree que era una imitación de los vehículos voladores terranos.",
+    "abilities": [
+      "Lanza pequeños torbellinos que también pueden ralentizar a los operadores."
+    ]
+  },
+  "eny_0079_nefarp2": {
+    "name": "Nefarith, “Conquistadora”",
+    "nickname": "Nefarith, “Conquistadora”",
+    "description": "La percepción interna que la Conquistadora tiene de sí misma. No oculta su deseo de arrasar con la Civilización.",
+    "abilities": [
+      "Está en constante protección por un escudo de Éter que reduce enormemente el DAÑ recibido por el enemigo. Interrumpe la carga del enemigo para desactivar temporalmente el escudo.",
+      "Desgarra el tejido del espacio-tiempo para inmovilizar a tus operadores. Intenta interrumpir esta habilidad si puedes.",
+      "Atrapa a tus operadores con un Ankhor. Ataca al Ankhor para liberarlos."
+    ]
+  },
+  "eny_0089_wgreflec": {
+    "name": "Prisma",
+    "nickname": "Prisma",
+    "description": "El “Prismastagran” (ID de archivo: ASM316) es una variante no modelo del ARM315. Es capaz de proteger a los Aggeloi cercanos y es muy difícil de alcanzar, ya que suele rodearse de entidades del ARM315.",
+    "abilities": [
+      "Este enemigo puede fortalecer en gran medida a los aliados cercanos para mejorar sus capacidades."
+    ]
+  },
+  "eny_0053_hsmob": {
+    "name": "Saqueador de caminos",
+    "nickname": "Saqueador de caminos",
+    "description": "Delincuente armado que está activo en la jurisdicción de la Ciudad de Wuling. Los Saqueadores de caminos suelen levantar barricadas ilegales o dedicarse al contrabando de mercancías. Eliminar a estos forajidos es una prioridad para las fuerzas policiales de Hongshan.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0083_hstiger": {
+    "name": "Bestia rastrera manchada",
+    "nickname": "Bestia rastrera manchada",
+    "description": "Una bestia rastrera que creció en el área silvestre. Estos depredadores dominantes son endémicos de Talos-II. Pueden saltar grandes distancias y atacar a sus presas con garras afiladas como navajas.",
+    "abilities": [
+      "Una bestia ágil que ataca con sus garras y cola. Intenta esquivar.",
+      "Estado Iracundo: Cuando está Iracunda, la bestia aumenta su ATQ y usa sus habilidades de carga con más frecuencia. Aplicar Tambaleado pone fin al estado Iracundo."
+    ]
+  },
+  "eny_0098_sandb2": {
+    "name": "Bestia armadura con hacha de bruma ardiente",
+    "nickname": "Bestia armadura con hacha de bruma ardiente",
+    "description": "Una bestia armadura con hacha y corrompida por la bruma ardiente. La criatura se ha vuelto extremadamente agresiva, tras haber sido llevada a un estado de locura rabiosa. Acércate con precaución si no quieres que te parta en dos con su “gran hacha”.",
+    "abilities": [
+      "Una Bestia armadura con hacha furiosa usará sus enormes cuernos para ahuyentar a los enemigos que invadan su territorio. Cuidado con su embestida.",
+      "El enemigo realizará varios ataques de área amplia. Interrúmpelo cuando se ponga iracundo."
+    ]
+  },
+  "eny_0054_hsmino": {
+    "name": "Demoledor de colinas",
+    "nickname": "Demoledor de colinas",
+    "description": "Un criminal armado con un arma pesada. Aunque su nombre parezca un chiste, el lanzacohetes cuádruple del Demoledor de colinas desata una potencia de fuego seria. No subestimes a este enemigo.",
+    "abilities": [
+      "Usa el lanzacohetes como arma cuerpo a cuerpo. También dispara fuegos artificiales para sus ataques a distancia. Ten cuidado. Si te embiste y te levanta con sus cuernos, ¡podrías ver fuegos artificiales enormes!",
+      "No trates de atacarlo por la espalda. ¡Tiene una patada trasera poderosa!"
+    ]
+  },
+  "eny_0055_hscrane": {
+    "name": "Acechador de nubes",
+    "nickname": "Acechador de nubes",
+    "description": "Un criminal armado con un arma extraña que parece una linterna inofensiva. No te dejes engañar. La “linterna” del Acechador de nubes en realidad es un decapitador volador con un alcance aterrador.",
+    "abilities": [
+      "Escupe un humo alterador. Los operadores atrapados en el humo sufren una reducción de su visibilidad, tienen menor velocidad de movimiento y no pueden esquivar.",
+      "Este enemigo es un combatiente relativamente débil. Trata de deshacerte de él primero.",
+      "Escupe un humo verde que cura a los demás enemigos."
+    ]
+  },
+  "eny_0108_slbomb2": {
+    "name": "Babosa de Originio de niebla ardiente",
+    "nickname": "Babosa de Originio de niebla ardiente",
+    "description": "Una criatura salvaje infectada por Originio con temperaturas corporales extremadamente altas. Su caparazón dorsal está impregnado de polvo de Originio con niveles de actividad más altos.",
+    "abilities": [
+      "Este enemigo se autodestruye cuando tiene pocos PV. La detonación aplica un material inestable al operador al que golpea. Si el operador recibe DAÑ, el material explota."
+    ]
+  },
+  "eny_0057_dog": {
+    "name": "Bestia colmilluda salvaje",
+    "nickname": "Bestia colmilluda salvaje",
+    "description": "Las bestias colmilludas salvajes son depredadoras Talosianas. Debido a los entornos hostiles de Talos-II, llegar a la cima de la cadena alimenticia es una verdadera hazaña.",
+    "abilities": [
+      "Es una criatura dócil y tímida. No ataca a los operadores cuando los ve."
+    ]
+  },
+  "eny_0058_agdisk": {
+    "name": "Efigie",
+    "nickname": "Efigie",
+    "description": "El “Homoiossaron” (ID de archivo: AGL371) es capaz de imitar formas humanas o partes de ellas. Algunas de estas raras y peligrosas entidades son capaces de canalizar el mismísimo éter.",
+    "abilities": [
+      "Este enemigo tiene poderosos ataques de embestida, pero gira lentamente durante el lanzamiento. Este es el mejor momento para posicionarse detrás de él y atacarlo.",
+      "El enemigo puede reensamblar su cuerpo en diversas formas y moverse rápidamente por el campo de batalla.",
+      "¡El enemigo intentará atrapar a los operadores! Una interrupción rápida la contrarrestará."
+    ]
+  },
+  "eny_0059_erhound": {
+    "name": "Bestia colmilluda de bruma ardiente",
+    "nickname": "Bestia colmilluda de bruma ardiente",
+    "description": "Una bestia colmilluda corrompida por la bruma ardiente. Estas pequeñas aberraciones suelen moverse en manadas y pueden representar una grave amenaza, incluso para equipos de campo completamente armados.",
+    "abilities": [
+      "Menos inteligente pero más feroz que las bestias colmilludas comunes. Esquiva su ataque de zarpazo para hacerlo caer al suelo."
+    ]
+  },
+  "eny_0061_palecore": {
+    "name": "Aggelomoirai de mármol",
+    "nickname": "Aggelomoirai de mármol",
+    "description": "SIN REGISTROS PREVIOS. La naturaleza de su formación llevó a clasificarlo como un Aggelos. Aunque se reensamblaron sus módulos mórficos, la entidad sigue imitando la apariencia de Nefarith. Aún no existen explicaciones satisfactorias para este fenómeno.",
+    "abilities": [
+      "Derrota todos los Apéndices de mármol para obligar al Aggelomoirai de mármol inactivo a exponer temporalmente su núcleo vulnerable al ataque."
+    ]
+  },
+  "eny_0062_paletent": {
+    "name": "Apéndice de mármol",
+    "nickname": "Apéndice de mármol",
+    "description": "SIN REGISTROS PREVIOS. La naturaleza de su formación llevó a clasificarlo como un Aggelos. Su manifestación física se muestra como extensiones que emergen de su cuerpo central. No obstante, estos apéndices llegan hasta el cuerpo central y se dice que funcionan como una forma de distracción.",
+    "abilities": [
+      "Algunos Apéndices de mármol son hábiles para atacar a sus oponentes con poderosas embestidas en peleas cuerpo a cuerpo.",
+      "Algunos Apéndices de mármol son hábiles para atacar a sus oponentes a distancia convirtiendo sus puntas en material de plaga que puede ser lanzado."
+    ]
+  },
+  "eny_0075_lbroshan": {
+    "name": "Nudillos de asedio de Rompehuesos",
+    "nickname": "Nudillos de asedio de Rompehuesos",
+    "description": "Un combatiente Rompesuelos equipado con guanteletes explosivos pesados. Estos son el pilar de las hordas de Rompehuesos. Los guanteletes de un Nudillo de Asedio sirven como armas portátiles para derribar posiciones fortificadas.",
+    "abilities": [
+      "Un enemigo implacable. Incluso después de ser interrumpido, es probable que intente atacar de nuevo.",
+      "Este enemigo usa su manga blindada para esparcir escamas de armadura reactiva. Mantén una distancia segura, especialmente si llegas a pisarlas por accidente.",
+      "Este enemigo intentará recuperar escamas de armadura del suelo para recomponerse, y lanzará un ataque poderoso al lograr recuperarlas."
+    ]
+  },
+  "eny_0091_wgshoal": {
+    "name": "Caminante de mareas",
+    "nickname": "Caminante de mareas",
+    "description": "El “Genesklydan” (ID de archivo: AGM321) exhibe cabeza y piernas humanoides. Desde el descubrimiento de este patrón en particular, el parecido humano se convirtió en una regla tácita para evaluar los niveles de amenaza de los Aggeloides.",
+    "abilities": [
+      "Ataca con habilidades que aplican Imposición criogénica y aplica Solidificación a los operadores que golpea."
+    ]
+  },
+  "eny_0064_agrange2": {
+    "name": "Aguijón α",
+    "nickname": "Aguijón α",
+    "description": "El “Kentron Anavon” (ID de archivo: ARL121α) es una variante energizada de ARL121. La mayor densidad energética de la entidad le otorga mayor potencia de fuego. La eficiencia energética de su mecanismo de disparo sigue siendo baja.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0066_lbhunt2": {
+    "name": "Emboscador de élite",
+    "nickname": "Emboscador de élite",
+    "description": "Un luchador Rompesuelos de élite de combate a distancia, potenciado por vapores conocidos como bruma ardiente. Este RS en particular está mejor entrenado y es más preciso, además de estar armado con una ballesta mejorada y disparos superiores.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0077_agshield": {
+    "name": "Crisópolis andante",
+    "nickname": "Crisópolis andante",
+    "description": "El “Thureoron” (ID de archivo: ACL156) es un modelo con una estructura similar a un escudo que protege su aureola. Ten cuidado: este Aggelos puede manipular la energía para atraer objetivos distantes hacia sí.",
+    "abilities": [
+      "El Crisópolis andante tiene dos estados: Normal y bastión.",
+      "Estado Normal: Tiene la capacidad de atraer operadores desde lejos.",
+      "Estado Bastión: Todos los ataques entrantes en su frente o costados serán reflejados, pero esto también expone un punto débil en su espalda."
+    ]
+  },
+  "eny_0094_hsfly": {
+    "name": "Lámpara de agua",
+    "nickname": "Lámpara de agua",
+    "description": "Un artrópodo silvestre que vive en ambientes acuáticos. La lámpara de agua emite un brillo tenue y sus fluidos corporales contienen irritantes que pueden provocar reacciones alérgicas e incluso quemaduras. Ten cuidado al acercarte a esta criatura.",
+    "abilities": [
+      "Un enemigo que escupe ácidos almacenados en su cabeza. Los operadores alcanzados por este ataque sufrirán reducción de DEF. Aunque no es muy amenazante, aun así se debe tener cuidado."
+    ]
+  },
+  "eny_0067_hound2": {
+    "name": "Colmillo desgarrador de élite",
+    "nickname": "Colmillo desgarrador de élite",
+    "description": "Una bestia de guerra de élite de los Rompesuelos, potenciada por vapores conocidos como bruma ardiente. Este colmillo desgarrador es más feroz y astuto, y sus ataques son más impredecibles.",
+    "abilities": [
+      "Ágil y veloz. Seguirá intentando acercarse y atacar a su objetivo."
+    ]
+  },
+  "eny_0069_aghornb2": {
+    "name": "Carnero grande α",
+    "nickname": "Carnero grande α",
+    "description": "El “Thrylissoron Anavon” (ID de archivo: ACL072α) es una variante energizada del ACL072. Su alto contenido energético no afectó su capacidad para tomar decisiones. Esta entidad es extremadamente peligrosa.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0092_slbomb": {
+    "name": "Babosa de Originio de brumafuego",
+    "nickname": "Babosa de Originio de brumafuego",
+    "description": "Una criatura salvaje infectada por Originio con temperaturas corporales extremadamente altas. Esta babosa explota al estar cerca de la muerte, cubriendo todo lo que se encuentra cerca con fluidos corporales ácidos a temperaturas de ebullición, además de polvo de Originio activo.",
+    "abilities": [
+      "Este enemigo se autodestruye cuando tiene pocos PV. La detonación aplica un material inestable al operador al que golpea. Si el operador recibe DAÑ, el material explota."
+    ]
+  },
+  "eny_0070_agscorp2": {
+    "name": "Aguijón fuerte α",
+    "nickname": "Aguijón fuerte α",
+    "description": "El “Varykentron Anavon” (ID de archivo: ARL141α) es una variante energizada del ARL141 que ha conservado una gran variedad de patrones de ataque. Es una entidad más resistente y peligrosa.",
+    "abilities": [
+      "Este enemigo ataca provocando que estallen pilares de Originio bajo los operadores.",
+      "Cuando te acercas a él, este enemigo invoca pilares de piedra a su alrededor para protección."
+    ]
+  },
+  "eny_0071_sandb": {
+    "name": "Bestia armadura con hacha",
+    "nickname": "Bestia armadura con hacha",
+    "description": "Una bestia armadura con hacha salvaje. La criatura está revestida de placas óseas. Incluso puede forzar puertas de aleación gruesas y pesadas con sus cuernos en forma de hacha.",
+    "abilities": [
+      "Una Bestia armadura con hacha furiosa usará sus enormes cuernos para ahuyentar a los enemigos que invadan su territorio. Cuidado con su embestida.",
+      "El enemigo realizará varios ataques de área amplia. Interrúmpelo cuando se ponga Iracundo."
+    ]
+  },
+  "eny_0072_slimeml": {
+    "name": "Bestia pinza indígena",
+    "nickname": "Bestia pinza indígena",
+    "description": "Una criatura salvaje infectada por Originio. Esta gran bestia porta múltiples cúmulos de Originio y es capaz de despedazar a sus presas con sus extremidades frontales en forma de hoz.",
+    "abilities": [
+      "Un enemigo que aparece en grupos. Cuidado con sus apéndices frontales afiladísimos."
+    ]
+  },
+  "eny_0104_hsrogue2": {
+    "name": "Ráfaga devastadora",
+    "nickname": "Ráfaga devastadora",
+    "description": "Un criminal armado con un arma fuera de lo común. Estos Acechadores de nubes son tan hábiles con cuchillas con gancho que se dice que podrían rebanar las nubes y convertirlas en cubos perfectos.",
+    "abilities": [
+      "Usa ganchos de cadena para atacar a los operadores aliados. Los operadores encadenados quedarán Aturdidos a menos que sean liberados."
+    ]
+  },
+  "eny_0073_slimerg": {
+    "name": "Babosa de Originio ácida",
+    "nickname": "Babosa de Originio ácida",
+    "description": "Una criatura salvaje infectada por Originio. Esta babosa segrega una sustancia ácida. Al sentirse amenazada, intentará intimidar a su enemigo sacudiéndose violentamente y proyectando fragmentos del cúmulo de Originio que lleva en su lomo.",
+    "abilities": [
+      "Un enemigo tímido que se retrae en su caparazón para protegerse. También disparará sin pensar cristales de Originio desde su cuerpo para intimidar a sus oponentes."
+    ]
+  },
+  "eny_0093_hshog": {
+    "name": "Bestia pluma",
+    "nickname": "Bestia pluma",
+    "description": "Una bestia pluma autóctona de Talos-II. Cuando levanta sus púas y empieza a rodar, se vuelve tan destructiva como una motosierra giratoria.",
+    "abilities": [
+      "Estado Iracundo: Cuando está Iracunda, la bestia aumenta su ATQ y usa sus habilidades de carga con más frecuencia. Aplicar Tambaleado pone fin al estado Iracundo."
+    ]
+  },
+  "eny_0074_lbshield": {
+    "name": "Vanguardia Rompehuesos",
+    "nickname": "Vanguardia Rompehuesos",
+    "description": "Un combatiente Rompehuesos armado con lanzas y escudos. Aunque armado con armas improvisadas, la vanguardia ha desarrollado una técnica de combate que une ataque y defensa. Ten cuidado al luchar contra este enemigo.",
+    "abilities": [
+      "Este enemigo bloqueará todos los ataques entrantes a menos que esté atacando. Provoca tambaleo para quebrar su escudo."
+    ]
+  },
+  "eny_0080_reaper": {
+    "name": "Ereignis",
+    "nickname": "Ereignis",
+    "description": "¿Qué significa el progreso? ¿Qué constituye el significado? ¿Cuál es la naturaleza de la vida?",
+    "abilities": []
+  },
+  "eny_0081_ruanyi": {
+    "name": "Ruan Yi",
+    "nickname": "Ruan Yi",
+    "description": "Ruan Yi contuvo su ira bajo control durante años. Cuando surgió una “oportunidad” repentina, decidió que era hora de por fin desatar su furia acumulada.",
+    "abilities": [
+      "Ruan Yi puede desviar todos los ataques. Usa Xiranita para romper su protección e infligirle DAÑ efectivo.",
+      "Cuando los PV bajan mucho, este enemigo entra en estado Furioso. Usa Xiranita para romper este estado y aplicar Debilitado al enemigo por un periodo prolongado.",
+      "Cuando está Furioso, Ruan Yi puede invocar Raíces iracundas de la calamidad que explotan cuando el operador controlado se acerca demasiado.",
+      "La Energía de Xiranita se unirá y aparecerá en el campo de batalla para brindar apoyo. Toca la Energía de Xiranita en el momento oportuno para activarla y suprimir a Ruan Yi."
+    ]
+  },
+  "eny_0099_slimeml2": {
+    "name": "Bestia pinza brutal",
+    "nickname": "Bestia pinza brutal",
+    "description": "La bestia gigante porta numerosos cúmulos de Originio que exhiben niveles más altos de actividad. También posee un caparazón más grueso que el de sus versiones comunes.",
+    "abilities": [
+      "Un enemigo que aparece en grupos. Cuidado con sus apéndices frontales afiladísimos."
+    ]
+  },
+  "eny_0082_hsbear": {
+    "name": "Tamborilero celestial",
+    "nickname": "Tamborilero celestial",
+    "description": "Una bestia aulladora que creció en el Área silvestre. Esta bestia es originaria de Talos-II. Las fuertes membranas en su cabeza y cuello le permiten desatar aullidos poderosos lo suficientemente fuertes como para sacudir colinas y bosques.",
+    "abilities": [
+      "Un nivel bajo de PV activa el estado Iracundo del enemigo. Durante este estado, el enemigo realiza con mayor frecuencia sus ataques de carga, inflige más DAÑ y obtiene Reducción de DAÑ. Interrúmpelo a tiempo para terminar el estado Iracundo."
+    ]
+  },
+  "eny_0084_hshunt": {
+    "name": "Arquero de arboleda",
+    "nickname": "Arquero de arboleda",
+    "description": "Un forajido armado con armamento básico a distancia. Entrenado en los bosques de bambú, puede disparar una flecha a través del bosque sin alcanzar ni una sola hoja.",
+    "abilities": [
+      "Dispara todo tipo de flechas y lanza bombas para hostigar a sus oponentes a distancia."
+    ]
+  },
+  "eny_0096_hsmob2": {
+    "name": "Bandido de autopistas",
+    "nickname": "Bandido de autopistas",
+    "description": "Un criminal armado que opera en los territorios de Wuling. Por lo general, montan barricadas ilegales en el camino o se dedican al contrabando de mercancía ilícita. Algunos incluso atacan a los viajeros.",
+    "abilities": [
+      "Este enemigo no tiene habilidades especiales."
+    ]
+  },
+  "eny_0085_hsrogue": {
+    "name": "Navaja de Nimbus",
+    "nickname": "Navaja de Nimbus",
+    "description": "Un criminal armado con un arma extraña. Cuando el Acechador de nubes se cansa de usar la linterna extraña, saca una espada corta y se lanza al combate cuerpo a cuerpo.",
+    "abilities": [
+      "Usa ganchos de cadena para atacar a los operadores aliados. Los operadores encadenados quedarán Aturdidos a menos que sean liberados."
+    ]
+  },
+  "eny_0090_wgabyss": {
+    "name": "Tidalklast",
+    "nickname": "Tidalklast",
+    "description": "El “Anavatklydan” (ID de archivo: AGM32L) es una variante no modelo del AGM321. Estas entidades presentan una amplia gama de tamaños. Ver individuos particularmente grandes emergiendo del agua se ha convertido en una pesadilla para quienes lo presenciaron.",
+    "abilities": [
+      "El enemigo tiene dos estados: A distancia y cuerpo a cuerpo.",
+      "Estado cuerpo a cuerpo: En este estado, el enemigo intentará acercarse al objetivo para desatar ataques cuerpo a cuerpo.",
+      "Estado a distancia: En este estado, el enemigo mantendrá la distancia y atacará con habilidades más poderosas.",
+      "El estado a distancia sufre más DAÑ por calor, pero tiene una considerable Reducción de DAÑ contra otros elementos."
+    ]
+  },
+  "eny_0097_hsmino2": {
+    "name": "Destructor de nubes",
+    "nickname": "Destructor de nubes",
+    "description": "Un criminal armado con armamento pesado. La destrucción no es cosa fácil, solo aquellos capaces de dominar el lanzacohetes cuádruple, pueden alcanzar el título de Destructor de nubes.",
+    "abilities": [
+      "Usa el lanzacohetes como arma cuerpo a cuerpo. También dispara fuegos artificiales para sus ataques a distancia. Ten cuidado. Si te embiste y te levanta con sus cuernos, ¡podrías ver fuegos artificiales enormes!",
+      "No trates de atacarlo por la espalda. ¡Tiene una patada trasera poderosa!"
+    ]
+  },
+  "eny_0100_slimerg2": {
+    "name": "Babosa de Originio ácida α",
+    "nickname": "Babosa de Originio ácida α",
+    "description": "Una criatura salvaje infectada por Originio. Esta babosa de Originio ácida es más peligrosa que su versión común. El cúmulo de Originio en su lomo va aumentando su actividad, lo que la vuelve cada vez más agresiva.",
+    "abilities": [
+      "Un enemigo tímido que se retrae en su caparazón para protegerse. También disparará sin pensar cristales de Originio desde su cuerpo para intimidar a sus oponentes."
+    ]
+  },
+  "eny_0101_agfly2": {
+    "name": "Alas falsas α",
+    "nickname": "Alas falsas α",
+    "description": "El “Psutóptero Anavon” (ID de archivo: ARA07Cα) es una variante energizada del ARA07C. La mayoría de los observadores consideran el color como la única característica que diferencia al Anavon de las variantes básicas.",
+    "abilities": [
+      "Lanza pequeños torbellinos que también pueden ralentizar a los operadores."
+    ]
+  },
+  "eny_0102_hstiger2": {
+    "name": "Bestia rastrera deslumbrante",
+    "nickname": "Bestia rastrera deslumbrante",
+    "description": "Una variante de la bestia rastrera con un pelaje de distinto color, menor esperanza de vida, pero mayor fuerza. Sus ojos parecen brillar como el magma.",
+    "abilities": [
+      "Comparado con las bestias rastreras comunes, este enemigo entrará en sigilo temporal y cargará sus habilidades cuando tenga poca PV. Interrúmpelo rápido para terminar su sigilo e infligirle Tambaleo masivo.",
+      "Estado Iracundo: Cuando está Iracunda, la bestia aumenta su ATQ y usa sus habilidades de carga con más frecuencia. Aplicar Tambaleado pone fin al estado Iracundo."
+    ]
+  },
+  "eny_0103_hshunt2": {
+    "name": "Viento arrasador",
+    "nickname": "Viento arrasador",
+    "description": "Un criminal armado con armamento básico a distancia. Gracias a su puntería y destreza sus disparos son mortales. Como un viento que atraviesa edificios, este criminal arrasa con todo lo valioso que está a su paso.",
+    "abilities": [
+      "Dispara todo tipo de flechas y lanza bombas para hostigar a sus oponentes a distancia."
+    ]
+  },
+  "eny_0105_wgslime2": {
+    "name": "Flujo de lodo δ",
+    "nickname": "Flujo de lodo δ",
+    "description": "El “Tholeroygran” (ID de archivo: ACM311δ) es una variante energizada del ACM311. Utiliza vías de energía únicas y, por lo tanto, mantiene una temperatura homeostática muy por debajo de los puntos de congelación de las sustancias que lo componen.",
+    "abilities": [
+      "Este enemigo puede cerrar la distancia rápidamente desde lejos. Sus ataques pueden aplicar Imp. crio. a los operadores al impactar."
+    ]
+  },
+  "eny_0106_wgthorns2": {
+    "name": "Hedron δ",
+    "nickname": "Hedron δ",
+    "description": "El “Diaphaistagran Dinedon” (ID de archivo: ARM315δ) es una variante energizada de ARM315. Al irradiarse con la luz del sol, emite un brillo púrpura centelleante. Sin embargo, adopta una forma distinta cuando se irradia con la luz reflejada de Talos.",
+    "abilities": [
+      "Los proyectiles que lanza aplican Imp. crio. a los operadores al impactar."
+    ]
+  },
+  "eny_0109_hshog2": {
+    "name": "Bestia pluma imbuida",
+    "nickname": "Bestia pluma imbuida",
+    "description": "Una bestia pluma infectada por polvo de Originio activo. Las púas de la criatura están imbuidas de altos niveles de energía, lo que las hace extremadamente destructivas.",
+    "abilities": [
+      "Este enemigo cargará e inflará su abdomen para expulsar lava supercaliente desde su cuerpo. Interrúmpelo durante la carga para infligirle Tambaleo masivo.",
+      "Estado Iracundo: Cuando está Iracunda, la bestia aumenta su ATQ y usa sus habilidades de carga con más frecuencia. Aplicar Tambaleado pone fin al estado Iracundo."
+    ]
+  }
+}

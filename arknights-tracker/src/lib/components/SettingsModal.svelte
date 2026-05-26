@@ -44,26 +44,18 @@
         else if (keyLower.includes('weap') || keyLower.includes('wepon') || keyLower.includes('constant')) cat = 'weapon';
         else if (keyLower === 'standard' || keyLower.includes('standard')) cat = 'standard';
         else if (keyLower.includes('special') || keyLower.includes('event')) cat = 'special';
-        
         const pulls = [...bannerData.pulls].sort((a, b) => new Date(a.time) - new Date(b.time));
-
-        // --- НОВОЕ: Счетчик круток для каждого конкретного баннера внутри категории ---
         const bannerCounters = {}; 
 
         pulls.forEach((pull, index) => {
             const pullTime = new Date(pull.time).getTime();
-            
-            // 1. Поиск по ID (если есть rawPoolId)
             let foundBanner = banners.find(b => b.id === pull.rawPoolId);
-
-            // 2. Поиск по ВРЕМЕНИ
             if (!foundBanner) {
                 let searchType = null;
                 if (cat === 'special') searchType = 'special';
                 if (cat === 'weapon') searchType = 'weapon';
                 if (cat === 'new_player') searchType = 'new-player';
                 if (cat === 'standard') searchType = 'standard';
-
                 if (searchType) {
                     foundBanner = banners.find(b => {
                         const bType = (b.type || "").toLowerCase();
@@ -81,12 +73,10 @@
             }
 
             let bannerNameDisplay = storeKey; 
-            // ID для подсчета Roll (чтобы отличать баннеры друг от друга)
             let trackingId = storeKey; 
-            
             if (foundBanner) {
                 bannerNameDisplay = foundBanner.name || foundBanner.id;
-                trackingId = foundBanner.id; // Используем уникальный ID баннера
+                trackingId = foundBanner.id;
 
                 if (!usedBannersMap.has(foundBanner.id)) {
                     usedBannersMap.set(foundBanner.id, foundBanner);
@@ -98,12 +88,10 @@
                 }
             }
 
-            // --- ЛОГИКА СЧЕТЧИКА ROLL ---
             if (!bannerCounters[trackingId]) {
                 bannerCounters[trackingId] = 0;
             }
             bannerCounters[trackingId]++;
-            // ---------------------------
 
             const row = {
                 "Time": pull.time ? new Date(pull.time).toLocaleString("ru-RU") : "",
@@ -111,7 +99,7 @@
                 "Name": pull.name,
                 "Rarity": pull.rarity,
                 "Pity": pull.pity,
-                "Roll": bannerCounters[trackingId] // Используем локальный счетчик баннера
+                "Roll": bannerCounters[trackingId]
             };
             categories[cat].push(row);
         });
@@ -127,20 +115,15 @@
 
     Object.entries(categories).forEach(([key, rows]) => {
         if (rows.length === 0) return;
-
         const ws = XLSX.utils.json_to_sheet(rows);
-
-        // Настройка ширины колонок (wch - width in characters)
-        // Time: 18, Banner: 22, Name: 13, Rarity: 6, Pity: 4
         ws["!cols"] = [
             { wch: 18 }, 
             { wch: 22 }, 
             { wch: 13 }, 
             { wch: 6 },  
             { wch: 4 },  
-            { wch: 6 }   // Roll
+            { wch: 6 }
         ];
-
         XLSX.utils.book_append_sheet(workbook, ws, catNames[key]);
     });
 

@@ -1056,26 +1056,27 @@
                             <div
                                 class="px-4 py-3 flex flex-wrap gap-4 justify-between items-center border-b border-gray-200 dark:border-[#333]"
                             >
-                                <div class="flex items-center gap-3">
+                                <div class="flex items-center gap-3 group">
                                     <div
-                                        class="w-12 h-12 rounded-full border border-gray-400 dark:border-gray-600 bg-[#111] overflow-hidden flex-shrink-0"
+                                        class="w-12 h-12 rounded-full border border-gray-400 dark:border-gray-600 bg-[#111] overflow-hidden flex-shrink-0 group-hover:outline group-hover:outline-white transition-all"
                                     >
                                         {#if firstEnemyId}
-                                            <img
-                                                src={`/images/enemies/${firstEnemyId}.png`}
-                                                alt={$t(
-                                                    `enemies.${firstEnemyId}`,
-                                                ) || firstEnemyId}
-                                                class="w-full h-full object-cover"
-                                                on:error={(e) =>
-                                                    (e.target.src =
-                                                        "/images/boss_placeholder.png")}
-                                            />
+                                            <a 
+                                                href={`/enemies/${firstEnemyId}`}
+                                                class="block w-full h-full overflow-hidden transition-all  cursor-pointer rounded-[inherit]"
+                                            >
+                                                <img
+                                                    src={`/images/enemies/${firstEnemyId}.png`}
+                                                    alt={$t(`enemies.${firstEnemyId}`) || firstEnemyId}
+                                                    class="w-full h-full object-cover"
+                                                    on:error={(e) => (e.target.src = "/images/boss_placeholder.png")}
+                                                />
+                                            </a>
                                         {:else}
                                             <img
                                                 src="/images/boss_placeholder.png"
                                                 alt="boss"
-                                                class="w-full h-full object-cover"
+                                                class="w-full h-full object-cover rounded-[inherit]"
                                             />
                                         {/if}
                                     </div>
@@ -1083,13 +1084,18 @@
                                         <div
                                             class="text-md font-bold text-gray-900 dark:text-[#E0E0E0]"
                                         >
-                                            {firstEnemyId
-                                                ? $t(
-                                                      `enemies.${firstEnemyId}`,
-                                                  ) || firstEnemyId
-                                                : $t(
-                                                      "essencesPage.unknownBoss",
-                                                  )}
+                                            {#if firstEnemyId}
+                                                <a 
+                                                    href={`/enemies/${firstEnemyId}`}
+                                                    class="text-md font-bold text-gray-900 dark:text-[#E0E0E0] group-hover:text-white transition-opacity block w-max"
+                                                >
+                                                    {$t(`enemies.${firstEnemyId}`) || firstEnemyId}
+                                                </a>
+                                            {:else}
+                                                <div class="text-md font-bold text-gray-900 dark:text-[#E0E0E0]">
+                                                    {$t("essencesPage.unknownBoss")}
+                                                </div>
+                                            {/if}
                                         </div>
                                         <div
                                             class="flex items-center gap-2 mt-0.5"

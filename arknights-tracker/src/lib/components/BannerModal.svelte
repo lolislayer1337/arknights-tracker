@@ -8,6 +8,7 @@
     import { banners } from "$lib/data/banners";
     import { browser } from "$app/environment";
     import { t } from "$lib/i18n";
+    import { currentLocale } from '$lib/stores/locale';
 
     import Icon from "$lib/components/Icons.svelte";
     import OperatorCard from "$lib/components/OperatorCard.svelte";
@@ -70,29 +71,29 @@
             .replace(/[^a-z0-9]/g, "");
     }
 
-    function formatTime(d) {
+    function formatTime(d, loc) {
         if (!d) return "";
+
+        const activeLocale = loc || "ru";
 
         if (showServerTime) {
             const shiftedMs = d.getTime() + (serverOffset * 3600000);
             const shiftedDate = new Date(shiftedMs);
             
-            return shiftedDate.toLocaleString("ru-RU", {
+            return shiftedDate.toLocaleString(activeLocale, {
                 timeZone: "UTC",
-                day: "2-digit",
-                month: "2-digit",
+                day: "numeric",
+                month: "short",
                 year: "numeric",
                 hour: "2-digit",
                 minute: "2-digit",
             });
         }
 
-        return d.toLocaleString("ru-RU", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
+        return d.toLocaleString(activeLocale, {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
         });
     }
 
@@ -462,7 +463,7 @@
                             >
                             <span
                                 class="font-nums font-medium dark:text-[#E0E0E0] text-gray-900"
-                                >{formatTime(realStart)}</span
+                                >{formatTime(realStart, $currentLocale)}</span
                             >
                         </div>
                         <div class="flex flex-col gap-0.5 text-right">
@@ -472,7 +473,7 @@
                             >
                             <span
                                 class="font-nums font-medium dark:text-[#E0E0E0] text-gray-900"
-                                >{banner.isPermanent || !realEnd ? "∞" : formatTime(realEnd)}</span
+                                >{banner.isPermanent || !realEnd ? "∞" : formatTime(realEnd, $currentLocale)}</span
                             >
                         </div>
                     </div>

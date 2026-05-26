@@ -1,7 +1,5 @@
 // src/lib/data/items/currencies.js
 
-// Добавить свои картинки
-
 export const currencies = [
     {
         id: "tCreds",
