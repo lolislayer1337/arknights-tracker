@@ -477,6 +477,42 @@
         }
         manualSkillRanks = maxRanks;
     }
+
+    let shiftPressed = false;
+    let targetLevel = level;
+
+    function handleKeydown(e) {
+        if (e.key === "Shift") shiftPressed = true;
+    }
+
+    function handleKeyup(e) {
+        if (e.key === "Shift") shiftPressed = false;
+    }
+
+    function handleInput(e) {
+        const val = parseInt(e.target.value);
+        
+        if (shiftPressed) {
+            const diff = val - level;
+            
+            if (Math.abs(diff) >= 5) {
+                const change = diff > 0 ? 10 : -10;
+                let nextLevel = Math.round(level / 10) * 10 + change;
+                
+                if (nextLevel < 1) nextLevel = 1;
+                if (nextLevel > maxLevel) nextLevel = maxLevel;
+                
+                level = nextLevel;
+            }
+        } else {
+            level = val;
+        }
+        
+        targetLevel = val;
+    }
+    $: if (!shiftPressed) {
+        targetLevel = level;
+    }
 </script>
 
 <svelte:window
@@ -488,6 +524,8 @@
             isPotDropdownOpen = false;
     }}
     on:mouseup={() => (isDraggingRank = false)}
+    on:keydown={handleKeydown}
+    on:keyup={handleKeyup}
 />
 
 <div class="min-h-screen md:px-8 md:py-3 font-sans transition-colors ">
@@ -826,7 +864,8 @@
                             min="1"
                             max={maxLevel}
                             step="1"
-                            bind:value={level}
+                            value={targetLevel}
+                            on:input={handleInput}
                             class="touch-none w-full h-2 bg-gray-200 dark:bg-[#2C2C2C] rounded-lg appearance-none cursor-pointer accent-[#F9B90C] outline-none"
                         />
                     </div>

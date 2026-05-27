@@ -53,6 +53,10 @@ const initialOperatorFilters = {
     weapon: ["sword", "polearm", "artsUnit", "greatSword", "handcannon"],
 };
 
+const initialEnemiesFilters = {
+    rarity: [6, 5, 4, 3]
+};
+
 const initialManualMode = {
     rarity: false, partType: false, pack: false, stats: false,
     class: false, element: false, weapon: false, type: false, attr1: false, attr2: false, attr3: false
