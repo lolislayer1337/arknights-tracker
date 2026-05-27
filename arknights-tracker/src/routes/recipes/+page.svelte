@@ -102,6 +102,15 @@
                 return sortDirection === "desc" ? diff : -diff;
             }
 
+            aWeight = itemA.rarity;
+            bWeight = itemB.rarity;
+
+            diff = aWeight - bWeight;
+
+            if (diff !== 0) {
+                return diff;
+            }
+
             return itemA.id.localeCompare(itemB.id);
         };
 
