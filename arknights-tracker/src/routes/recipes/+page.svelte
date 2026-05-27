@@ -5,6 +5,7 @@
     import DataToolbar from "$lib/components/DataToolbar.svelte";
     import ItemCard from "$lib/components/recipes/ItemCard.svelte";
     import {craftableItemsList} from "$lib/data/crafts/craftableItemsList.js";
+    import FormulaSidebar from "$lib/components/recipes/FormulaSidebar.svelte";
 
     $: filters = $itemFilters;
     $: searchQuery = $itemSearch;
@@ -165,6 +166,21 @@
         "usable_powder": 10
     };
 
+    let selectedItemId = "";
+
+    function selectItem(itemId) {
+        if (selectedItemId === itemId) {
+            selectedItemId = "";
+            return;
+        }
+
+        selectedItemId = itemId;
+    }
+
+    $: isSelectedItem = (itemId) => {
+        return selectedItemId === itemId;
+    };
+
     $: groupedItems = filteredItems.reduce((groups, item) => {
         let groupId = item.groupId;
 
@@ -202,67 +218,85 @@
     }
 </script>
 
-<div class="max-w-[100%] max-h-[100%] justify-start min-h-screen">
+<div class="max-w-[100%] max-h-[100%] min-h-screen flex flex-col xl:flex-row">
+    <div class="w-full xl:w-[70%]">
+        <div class="flex items-baseline flex-wrap gap-2 md:gap-3 mb-8 font-sdk">
+            <h2 class="text-3xl md:text-5xl tracking-wide text-[#21272C] dark:text-[#FDFDFD]">
+                {$t("pages.recipes") || "Recipes"}
+            </h2>
+            <span class="text-gray-400 text-xl md:text-3xl font-normal">
+                / {filteredItems.length}
+            </span>
+        </div>
 
-    <div class="flex items-baseline flex-wrap gap-2 md:gap-3 mb-8 font-sdk">
-        <h2 class="text-3xl md:text-5xl tracking-wide text-[#21272C] dark:text-[#FDFDFD]">
-            {$t("pages.recipes") || "Recipes"}
-        </h2>
-        <span class="text-gray-400 text-xl md:text-3xl font-normal">
-            / {filteredItems.length}
-        </span>
-    </div>
+        <div class="w-full xl:w-[70%] mb-4">
+            <DataToolbar
+                bind:sortField
+                bind:sortDirection
+                bind:filters={$itemFilters}
+                bind:searchQuery={$itemSearch}
+                bind:manualMode={$itemManual}
+                bind:groupMode={$itemGroupMode}
+                mode="items"
+            />
+        </div>
 
-    <div class="w-full xl:w-[70%] mb-4">
-        <DataToolbar
-            bind:sortField
-            bind:sortDirection
-            bind:filters={$itemFilters}
-            bind:searchQuery={$itemSearch}
-            bind:manualMode={$itemManual}
-            bind:groupMode={$itemGroupMode}
-            mode="items"
-        />
-    </div>
+        <div class="w-full pb-8">
 
-    <div class="w-full xl:w-[85%] pb-8">
+            {#if isGrouped}
 
-        {#if isGrouped}
+                {#each displayedGroups as group}
+                    <div class="flex flex-col gap-1 animate-fadeIn">
+                        <div class="flex items-center gap-3 mb-2 mt-6">
+                            <h3 class="text-xl font-bold text-[#21272C] dark:text-[#E4E4E4] font-sdk">
+                                {$t(`sort.itemGroups.${group.groupId}`)}
+                            </h3>
+                        </div>
 
-            {#each displayedGroups as group}
-                <div class="flex flex-col gap-1 animate-fadeIn">
-                    <div class="flex items-center gap-3 mb-2 mt-6">
-                        <h3 class="text-xl font-bold text-[#21272C] dark:text-[#E4E4E4] font-sdk">
-                            {$t(`sort.itemGroups.${group.groupId}`)}
-                        </h3>
-                    </div>
+                        <div class="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fill,100px)] gap-5 justify-start">
+                            {#each group.items as item}
 
-                    <div class="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fill,100px)] gap-5 justify-start">
-                        {#each group.items as item}
-                            <div class="flex justify-center transition-transform">
-                                <ItemCard item={item} />
-                            </div>
-                        {/each}
-                    </div>
-                </div>
-            {/each}
+                                <button
+                                    tabindex="0"
+                                    class="relative w-[110px] h-[110px] rounded-[6px] cursor-pointer text-left aspect-square transition-all duration-300"
+                                    on:click|preventDefault|stopPropagation={() => selectItem(item.id)}
+                                >
 
-        {:else}
+                                    <ItemCard item={item} />
 
-            <div class="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fill,100px)] gap-5 justify-start">
-                {#each displayedItems as item}
-                    <div class="flex justify-center">
-                        <ItemCard item={item} />
+                                    {#if isSelectedItem(item.id)}
+                                        <div
+                                            class="absolute inset-[-3px] border-[3px] border-[#F9B90C] rounded-[9px] z-30 pointer-events-none"
+                                        ></div>
+                                    {/if}
+
+                                </button>
+
+                            {/each}
+                        </div>
                     </div>
                 {/each}
-            </div>
 
-            {#if displayLimit < filteredItems.length}
-                <div use:infiniteScroll class="h-10 w-full mt-4"></div>
+            {:else}
+
+                <div class="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] md:grid-cols-[repeat(auto-fill,100px)] gap-5 justify-start">
+                    {#each displayedItems as item}
+                        <div class="flex justify-center">
+                            <ItemCard item={item} />
+                        </div>
+                    {/each}
+                </div>
+
+                {#if displayLimit < filteredItems.length}
+                    <div use:infiniteScroll class="h-10 w-full mt-4"></div>
+                {/if}
+
             {/if}
 
-        {/if}
-
+        </div>
     </div>
 
+    <div class="w-full xl:w-[30%] pb-8 pt-2 pl-6 sticky">
+        <FormulaSidebar currentItemId={selectedItemId} />
+    </div>
 </div>

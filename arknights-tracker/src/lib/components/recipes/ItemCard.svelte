@@ -1,9 +1,14 @@
 <script>
-    import {Item} from "$lib/classes/items/Item.js";
     import Images from "$lib/components/Images.svelte";
     import {getRarityColor} from "$lib/utils/rarityUtils.js";
+    import {FullBottle} from "$lib/classes/items/FullBottle.js";
 
     export let item = {};
+
+    let isFullBottle = FullBottle.isFullBottle(item.id);
+
+    let fullBottle = FullBottle.getFullBottleFromItem(item);
+    let liquid = fullBottle?.liquidItem;
 
     let isHovered = false;
     $: rarityColor = getRarityColor(item.rarity);
@@ -37,6 +42,20 @@
                 alt={item.id}
             />
         </div>
+
+        {#if isFullBottle}
+            <div
+                class="absolute inset-0 flex items-center justify-center z-0 bottom-[6px]"
+            >
+                <div class="w-2/3 h-2/3">
+                    <Images
+                        id={liquid.iconId}
+                        variant="item-icon"
+                        className="w-full h-full object-contain blur-[0.3px] rotate-[0.01deg] backface-hidden transform-gpu transition-all duration-300"
+                    />
+                </div>
+            </div>
+        {/if}
 
         <div
             class="absolute bottom-0 left-0 w-full h-[6px] z-20"
