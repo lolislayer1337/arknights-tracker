@@ -215,11 +215,11 @@
         pendingData = null;
         let lastPullTimes = {};
         const currentPullData = get(pullData);
-        if (currentPullData && !isOverwriteEnabled && !isRecoveryEnabled) { 
+        if (currentPullData && !isOverwriteEnabled && !isRecoveryEnabled) {
             Object.entries(currentPullData).forEach(([catId, cat]) => {
                 let maxTimeForCat = 0;
                 if (cat.pulls && Array.isArray(cat.pulls)) {
-                    cat.pulls.forEach(p => {
+                    cat.pulls.forEach((p) => {
                         const t = new Date(p.time).getTime();
                         if (t > maxTimeForCat) maxTimeForCat = t;
                     });
@@ -241,7 +241,7 @@
                 body: JSON.stringify({
                     rawUrl: urlToSend,
                     overwrite: isOverwriteEnabled,
-                    lastPullTimes
+                    lastPullTimes,
                 }),
             });
 
@@ -282,7 +282,8 @@
 
                     if (msg.type === "progress") {
                         const { poolId, count } = msg;
-                        const currentPoolCount = previewReport.addedCount[poolId] || 0;
+                        const currentPoolCount =
+                            previewReport.addedCount[poolId] || 0;
                         previewReport.totalAdded += count;
 
                         previewReport.addedCount = {
@@ -299,13 +300,24 @@
                         const backendMsg = msg.message || "";
 
                         if (backendMsg.includes("Token is invalid")) {
-                            errorMsg = $t("import.error_invalid_token") || "Token is invalid or expired.";
+                            errorMsg =
+                                $t("import.error_invalid_token") ||
+                                "Token is invalid or expired.";
                         } else if (backendMsg.includes("Invalid domain")) {
-                            errorMsg = $t("import.error_domain") || "Invalid game link. Domain not supported";
-                        } else if (backendMsg.includes("No pulls found") || backendMsg.includes("expired")) {
-                            errorMsg = $t("import.error_no_data") || "No pulls found or Link Expired";
+                            errorMsg =
+                                $t("import.error_domain") ||
+                                "Invalid game link. Domain not supported";
+                        } else if (
+                            backendMsg.includes("No pulls found") ||
+                            backendMsg.includes("expired")
+                        ) {
+                            errorMsg =
+                                $t("import.error_no_data") ||
+                                "No pulls found or Link Expired";
                         } else if (backendMsg.includes("No token found")) {
-                            errorMsg = $t("import.error_format") || "Invalid URL/Token format";
+                            errorMsg =
+                                $t("import.error_format") ||
+                                "Invalid URL/Token format";
                         } else {
                             errorMsg = backendMsg;
                         }
@@ -329,7 +341,10 @@
             ) {
                 errorMsg = $t("import.error_network") || "Bad Gateway";
             } else {
-                errorMsg = err.message || $t("import.error_unknown") || "Unknown Error";
+                errorMsg =
+                    err.message ||
+                    $t("import.error_unknown") ||
+                    "Unknown Error";
             }
 
             previewReport = null;
@@ -349,22 +364,34 @@
 
             if (currentAcc) {
                 if (accountStore.updateAccount) {
-                    const shortUid = importedUid.length > 4 ? importedUid.slice(-4) : importedUid;
-                    const shouldRename = 
-                        currentAcc.name === "Main Account" || 
-                        currentAcc.name.startsWith("Account") || 
+                    const shortUid =
+                        importedUid.length > 4
+                            ? importedUid.slice(-4)
+                            : importedUid;
+                    const shouldRename =
+                        currentAcc.name === "Main Account" ||
+                        currentAcc.name.startsWith("Account") ||
                         currentAcc.name.startsWith("Doctor");
 
                     accountStore.updateAccount(currentAcc.id, {
                         uid: importedUid,
                         serverId: backendServerId,
-                        name: shouldRename ? `Account ${shortUid}` : currentAcc.name,
+                        name: shouldRename
+                            ? `Account ${shortUid}`
+                            : currentAcc.name,
                     });
                 }
             } else {
                 if (accountStore.addAccount) {
-                    const shortUid = importedUid.length > 4 ? importedUid.slice(-4) : importedUid;
-                    accountStore.addAccount(importedUid, `Account ${shortUid}`, backendServerId);
+                    const shortUid =
+                        importedUid.length > 4
+                            ? importedUid.slice(-4)
+                            : importedUid;
+                    accountStore.addAccount(
+                        importedUid,
+                        `Account ${shortUid}`,
+                        backendServerId,
+                    );
                 }
             }
         }
@@ -399,7 +426,12 @@
             if (uid && typeof window !== "undefined") {
                 localStorage.setItem("ark_active_uid", uid);
             }
-            await pullData.smartImport(pendingData, sId, true, isRecoveryEnabled);
+            await pullData.smartImport(
+                pendingData,
+                sId,
+                true,
+                isRecoveryEnabled,
+            );
 
             if (uid) {
                 const currentLocalData = get(pullData);
@@ -912,7 +944,8 @@
                                     on:input={handleInputProcessing}
                                     placeholder={platformTab === "android" ||
                                     platformTab === "pc-web" ||
-                                    platformTab === "pc2" || platformTab === "pc3"
+                                    platformTab === "pc2" ||
+                                    platformTab === "pc3"
                                         ? $t("import.placeholder_token") ||
                                           "Paste Token here"
                                         : $t("import.placeholder_url") ||
@@ -1061,7 +1094,8 @@
                                             {$t(
                                                 platformTab === "android" ||
                                                     platformTab === "pc-web" ||
-                                                    platformTab === "pc2" || platformTab === "pc3"
+                                                    platformTab === "pc2" ||
+                                                    platformTab === "pc3"
                                                     ? "import.save_label_token"
                                                     : "import.save_label_url",
                                             )}
@@ -1074,7 +1108,8 @@
                                                     platformTab === "android" ||
                                                         platformTab ===
                                                             "pc-web" ||
-                                                        platformTab === "pc2" || platformTab === "pc3"
+                                                        platformTab === "pc2" ||
+                                                        platformTab === "pc3"
                                                         ? "import.save_desc_token"
                                                         : "import.save_desc_url",
                                                 )}
@@ -1206,10 +1241,16 @@
                             <span
                                 class="text-gray-600 dark:text-[#E0E0E0] group-hover:text-black group-hover:dark:text-[#FDFDFD] transition-colors cursor-pointer font-medium text-sm flex items-center gap-1.5"
                             >
-                                {$t("import.recoveryStats") || "Восстановление записей"}
-                                <Tooltip text={$t("import.recoveryTooltip") || "При нажатии данного чекбокса история круток принудительно восстановиться если данная процедура приминима, может помочь при частичной потере записей о крутках"}>
-                                    <span class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 mt-0.5 inline-flex items-center">
-                                        <Icon name="info" class="w-4 h-4" />
+                                {$t("import.recoveryStats") ||
+                                    "Восстановление записей"}
+                                <Tooltip
+                                    text={$t("import.recoveryTooltip") ||
+                                        "При нажатии данного чекбокса история круток принудительно восстановиться если данная процедура приминима, может помочь при частичной потере записей о крутках"}
+                                >
+                                    <span
+                                        class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 mt-0.5 inline-flex items-center"
+                                    >
+                                        <Icon name="info" class="m-1 w-4 h-4" />
                                     </span>
                                 </Tooltip>
                             </span>
