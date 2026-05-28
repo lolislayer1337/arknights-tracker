@@ -25,6 +25,7 @@
     let errorMsg = "";
     let isGlobalStatsEnabled = true;
     let isOverwriteEnabled = false;
+    let isRecoveryEnabled = false;
     let activeTab = "new";
     let selectedServer = "3";
     let isSaveTokenEnabled = false;
@@ -214,7 +215,7 @@
         pendingData = null;
         let lastPullTimes = {};
         const currentPullData = get(pullData);
-        if (currentPullData && !isOverwriteEnabled) { 
+        if (currentPullData && !isOverwriteEnabled && !isRecoveryEnabled) { 
             Object.entries(currentPullData).forEach(([catId, cat]) => {
                 let maxTimeForCat = 0;
                 if (cat.pulls && Array.isArray(cat.pulls)) {
@@ -379,6 +380,7 @@
             cleanPulls,
             backendServerId,
             false,
+            isRecoveryEnabled,
         );
         pendingData = cleanPulls;
         previewReport = report;
@@ -397,7 +399,7 @@
             if (uid && typeof window !== "undefined") {
                 localStorage.setItem("ark_active_uid", uid);
             }
-            await pullData.smartImport(pendingData, sId, true);
+            await pullData.smartImport(pendingData, sId, true, isRecoveryEnabled);
 
             if (uid) {
                 const currentLocalData = get(pullData);
@@ -1177,6 +1179,39 @@
                                 class="text-gray-600 dark:text-[#E0E0E0] group-hover:text-black group-hover:dark:text-[#FDFDFD] transition-colors cursor-pointer font-medium text-sm"
                             >
                                 {$t("import.enableGlobalStats")}
+                            </span>
+                        </label>
+
+                        <label
+                            class="flex items-center gap-3 select-none group cursor-pointer w-fit"
+                        >
+                            <div class="relative flex items-center">
+                                <input
+                                    type="checkbox"
+                                    bind:checked={isRecoveryEnabled}
+                                    class="peer w-5 h-5 cursor-pointer appearance-none rounded border-2 border-gray-300 bg-white checked:border-red-500 checked:bg-red-500 transition-all"
+                                />
+                                <svg
+                                    class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="4"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <polyline points="20 6 9 17 4 12" />
+                                </svg>
+                            </div>
+                            <span
+                                class="text-gray-600 dark:text-[#E0E0E0] group-hover:text-black group-hover:dark:text-[#FDFDFD] transition-colors cursor-pointer font-medium text-sm flex items-center gap-1.5"
+                            >
+                                {$t("import.recoveryStats") || "Восстановление записей"}
+                                <Tooltip text={$t("import.recoveryTooltip") || "При нажатии данного чекбокса история круток принудительно восстановиться если данная процедура приминима, может помочь при частичной потере записей о крутках"}>
+                                    <span class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 mt-0.5 inline-flex items-center">
+                                        <Icon name="info" class="w-4 h-4" />
+                                    </span>
+                                </Tooltip>
                             </span>
                         </label>
 
