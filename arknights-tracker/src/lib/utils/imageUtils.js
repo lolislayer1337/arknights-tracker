@@ -48,6 +48,9 @@ export function getImagePath(idOrName, variant = 'operator-icon') {
         case 'item-icon':
             return `/images/items/items/${withExt(name)}`;
 
+        case 'item-icon-bg':
+            return `/images/items/icon-bg/${withExt(name)}`;
+
         case 'banner-icon':
             return `/images/banners/icon/${withExt(name)}`;
 
