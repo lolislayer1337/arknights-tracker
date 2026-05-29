@@ -296,7 +296,7 @@
         </div>
     </div>
 
-    <div class="w-full xl:w-[max(470px,30%)] h-[95vh] pt-2 sticky">
+    <div class="w-full xl:w-[max(470px,30%)] h-[95vh] sticky">
         <FormulaSidebar currentItemId={selectedItemId} />
     </div>
 </div>

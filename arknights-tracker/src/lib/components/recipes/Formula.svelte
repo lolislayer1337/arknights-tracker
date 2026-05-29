@@ -51,7 +51,7 @@
     
 </script>
 
-<div class="flex flex-row gap-3 h-[60px] w-full">
+<div class="flex flex-row gap-3 h-[60px] w-full pl-1">
 
     <div class="flex flex-row gap-2">
 
