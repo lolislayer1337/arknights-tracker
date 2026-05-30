@@ -1895,5 +1895,18 @@
       "hub": "แกน​หลัก​อัตโนมัติ",
       "manual": "การ​สร้าง"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "ที่เก็บ​น้ำสะอาด",
+    "item_minepoint_iron_ore": "จุด​ขุด​แร่​เฟอร์​เรียม",
+    "item_liquidpoint_sewage": "ที่เก็บ​น้ำเสีย",
+    "item_liquidpoint_xiranite": "ที่เก็บ​ซี​เรน​ไนต์​เหลว",
+    "item_liquidpoint_acid": "ที่เก็บ​กรด​ตกตะกอน",
+    "item_liquidpoint_plant_grass_1": "ที่เก็บ​สาร​สกัด​จาก​หญ้า​ไหม",
+    "item_liquidpoint_plant_grass_2": "ที่เก็บ​สาร​สกัด​จาก​หน่อ​เข็ม",
+    "item_liquidpoint_xiranite_enr": "ที่เก็บ​ซี​เรน​ไนต์​หนัก​แบบ​เหลว",
+    "item_minepoint_copper_ore": "จุด​ขุด​แร่​คู​เพ​รี​ยม",
+    "item_minepoint_originium_ore": "จุด​ขุด​แร่​ออ​ริ​จิ​เนียม",
+    "item_minepoint_quartz_sand": "จุด​ขุด​แร่​อเม​ทิส​ต์"
   }
 }

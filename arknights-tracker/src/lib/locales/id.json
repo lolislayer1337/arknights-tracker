@@ -1895,5 +1895,18 @@
       "hub": "Automasi Canggih",
       "manual": "Crafting"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "Penyimpanan Air Bersih",
+    "item_minepoint_iron_ore": "Titik Tambang Ferrium",
+    "item_liquidpoint_sewage": "Penyimpanan Limbah Cair",
+    "item_liquidpoint_xiranite": "Penyimpanan Xiranite Cair",
+    "item_liquidpoint_acid": "Penyimpanan Asam Peluruh",
+    "item_liquidpoint_plant_grass_1": "Penyimpanan Larutan Jincao",
+    "item_liquidpoint_plant_grass_2": "Penyimpanan Larutan Yazhen",
+    "item_liquidpoint_xiranite_enr": "Penyimpanan Xiranite Berat Cair",
+    "item_minepoint_copper_ore": "Titik Tambang Cuprium",
+    "item_minepoint_originium_ore": "Titik Tambang Originium",
+    "item_minepoint_quartz_sand": "Titik Tambang Ametis"
   }
 }

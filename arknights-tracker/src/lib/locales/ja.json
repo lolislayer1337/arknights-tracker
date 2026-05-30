@@ -1895,5 +1895,18 @@
       "hub": "協約核心",
       "manual": "道具製作"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "水貯蔵スポット",
+    "item_minepoint_iron_ore": "青鉄鉱物スポット",
+    "item_liquidpoint_sewage": "汚水貯蔵スポット",
+    "item_liquidpoint_xiranite": "液化息壌貯蔵スポット",
+    "item_liquidpoint_acid": "沈殿酸貯蔵スポット",
+    "item_liquidpoint_plant_grass_1": "錦草エキス貯蔵スポット",
+    "item_liquidpoint_plant_grass_2": "芽針エキス貯蔵スポット",
+    "item_liquidpoint_xiranite_enr": "液化重息壌貯蔵スポット",
+    "item_minepoint_copper_ore": "赤銅鉱物スポット",
+    "item_minepoint_originium_ore": "源石鉱物スポット",
+    "item_minepoint_quartz_sand": "紫晶鉱物スポット"
   }
 }

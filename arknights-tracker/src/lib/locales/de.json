@@ -1894,5 +1894,18 @@
       "hub": "Automationskern",
       "manual": "Herstellen"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "Sauberes-Wasser-Lager",
+    "item_minepoint_iron_ore": "Ferrium-Erz-Abbaustelle",
+    "item_liquidpoint_sewage": "Schmutzwasser-Lager",
+    "item_liquidpoint_xiranite": "Flüssiges-Xiranit-Lager",
+    "item_liquidpoint_acid": "Niederschlagssäure-Vorkommen",
+    "item_liquidpoint_plant_grass_1": "Jincao-Lösung-Lager",
+    "item_liquidpoint_plant_grass_2": "Yazhen-Lösung-Lager",
+    "item_liquidpoint_xiranite_enr": "Flüssiges-Schweres-Xiranit-Vorkommen",
+    "item_minepoint_copper_ore": "Cuprium-Erz-Abbaustelle",
+    "item_minepoint_originium_ore": "Originium-Erz-Abbaustelle",
+    "item_minepoint_quartz_sand": "Amethyst-Erz-Abbaustelle"
   }
 }

@@ -80,6 +80,7 @@
             <ResourcePointCard
                 itemId={resourceItemId}
                 size="micro"
+                showTooltip={true}
             />
 
             {#each ingredients as {count, itemId}}
@@ -103,6 +104,7 @@
             <ResourcePointCard
                 itemId={resourceItemId}
                 size="micro"
+                showTooltip={true}
             />
 
             {#each ingredients as {count, itemId}}

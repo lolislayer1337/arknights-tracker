@@ -1895,5 +1895,18 @@
       "hub": "Nucleo di automazione",
       "manual": "Creazione"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "Stoccaggio di acqua pulita",
+    "item_minepoint_iron_ore": "Punto di estrazione: ferrium",
+    "item_liquidpoint_sewage": "Stoccaggio di acque reflue",
+    "item_liquidpoint_xiranite": "Stoccaggio di xiranite liquida",
+    "item_liquidpoint_acid": "Stoccaggio di acido per precipitazione",
+    "item_liquidpoint_plant_grass_1": "Stoccaggio di soluzione di jincao",
+    "item_liquidpoint_plant_grass_2": "Stoccaggio di soluzione di yazhen",
+    "item_liquidpoint_xiranite_enr": "Stoccaggio di xiranite pesante liquida",
+    "item_minepoint_copper_ore": "Punto di estrazione: cuprium",
+    "item_minepoint_originium_ore": "Punto di estrazione: Originium",
+    "item_minepoint_quartz_sand": "Punto di estrazione: ametista"
   }
 }

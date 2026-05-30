@@ -1894,5 +1894,18 @@
       "hub": "Núcleo de automatización",
       "manual": "Fabricación"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "Almacenamiento de Agua pura",
+    "item_minepoint_iron_ore": "Punto de minería de ferrio",
+    "item_liquidpoint_sewage": "Almacenamiento de Aguas residuales",
+    "item_liquidpoint_xiranite": "Almacenamiento de Xiranita líquida",
+    "item_liquidpoint_acid": "Almacenamiento de Ácido de precipitación",
+    "item_liquidpoint_plant_grass_1": "Almacenamiento de Solución de Jincao",
+    "item_liquidpoint_plant_grass_2": "Almacenamiento de Solución de Yazhen",
+    "item_liquidpoint_xiranite_enr": "Almacenamiento de Xiranita pesada líquida",
+    "item_minepoint_copper_ore": "Punto de minería de Cuprio",
+    "item_minepoint_originium_ore": "Punto de minería de originio",
+    "item_minepoint_quartz_sand": "Punto de minería de amatista"
   }
 }

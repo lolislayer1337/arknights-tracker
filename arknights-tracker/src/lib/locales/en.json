@@ -1962,5 +1962,18 @@
       "hub": "Automation-Core",
       "manual": "Crafting"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "Clean Water Storage",
+    "item_minepoint_iron_ore": "Ferrium Mining Spot",
+    "item_liquidpoint_sewage": "Sewage Storage",
+    "item_liquidpoint_xiranite": "Liquid Xiranite Storage",
+    "item_liquidpoint_acid": "Precipitation Acid Storage",
+    "item_liquidpoint_plant_grass_1": "Jincao Solution Storage",
+    "item_liquidpoint_plant_grass_2": "Yazhen Solution Storage",
+    "item_liquidpoint_xiranite_enr": "Liquid Heavy Xiranite Storage",
+    "item_minepoint_copper_ore": "Cuprium Mining Spot",
+    "item_minepoint_originium_ore": "Originium Mining Spot",
+    "item_minepoint_quartz_sand": "Amethyst Mining Spot"
   }
 }

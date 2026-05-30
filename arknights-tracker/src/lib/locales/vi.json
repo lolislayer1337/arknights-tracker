@@ -1895,5 +1895,18 @@
       "hub": "Lõi Tự Động Hóa",
       "manual": "Chế Tạo"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "Lưu Trữ Nước Sạch",
+    "item_minepoint_iron_ore": "Điểm Khai Thác Sắt",
+    "item_liquidpoint_sewage": "Lưu Trữ Nước Thải",
+    "item_liquidpoint_xiranite": "Lưu trữ Xiranite Lỏng",
+    "item_liquidpoint_acid": "Bể Chứa Axit Lắng Đọng",
+    "item_liquidpoint_plant_grass_1": "Lưu Trữ Dung Dịch Cỏ Sao Lụa",
+    "item_liquidpoint_plant_grass_2": "Lưu Trữ Dung Dịch Mầm Lá Kim",
+    "item_liquidpoint_xiranite_enr": "Bể Chứa Xiranite Nặng Hóa Lỏng",
+    "item_minepoint_copper_ore": "Điểm Khai Thác Đồng",
+    "item_minepoint_originium_ore": "Điểm Khai Thác Originium",
+    "item_minepoint_quartz_sand": "Điểm Khai Thác Thạch Anh Tím"
   }
 }

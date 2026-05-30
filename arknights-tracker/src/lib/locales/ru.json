@@ -1920,5 +1920,18 @@
       "hub": "Блок автоматизации",
       "manual": "Создание"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "Хранилище чистой воды",
+    "item_minepoint_iron_ore": "Место разработки феррия",
+    "item_liquidpoint_sewage": "Хранилище отработанной воды",
+    "item_liquidpoint_xiranite": "Хранилище жидкого ксиранита",
+    "item_liquidpoint_acid": "Хранилище осадочной кислоты",
+    "item_liquidpoint_plant_grass_1": "Хранилище раствора цзиньцао",
+    "item_liquidpoint_plant_grass_2": "Хранилище раствора ячжэня",
+    "item_liquidpoint_xiranite_enr": "Хранилище жидкого тяжелого ксиранита",
+    "item_minepoint_copper_ore": "Место разработки куприя",
+    "item_minepoint_originium_ore": "Место разработки ориджиния",
+    "item_minepoint_quartz_sand": "Место разработки аметиста"
   }
 }

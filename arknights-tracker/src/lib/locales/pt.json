@@ -1895,5 +1895,18 @@
       "hub": "Núcleo de Automação",
       "manual": "Confecção"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "Armazenamento de Água Limpa",
+    "item_minepoint_iron_ore": "Ponto de Mineração de Ferrium",
+    "item_liquidpoint_sewage": "Armazenamento de Esgoto",
+    "item_liquidpoint_xiranite": "Armazenamento de Xiranita Líquida",
+    "item_liquidpoint_acid": "Armazenamento de Ácido de Precipitação",
+    "item_liquidpoint_plant_grass_1": "Armazenamento de Solução de Capim-Seda",
+    "item_liquidpoint_plant_grass_2": "Armazenamento de Solução de Broto-Agulha",
+    "item_liquidpoint_xiranite_enr": "Armazenamento de Xiranita Pesada Líquida",
+    "item_minepoint_copper_ore": "Ponto de Mineração de Cuprium",
+    "item_minepoint_originium_ore": "Ponto de Mineração de Minério de Originium",
+    "item_minepoint_quartz_sand": "Ponto de Mineração de Ametista"
   }
 }

@@ -1895,5 +1895,18 @@
       "hub": "協議核心",
       "manual": "簡易製作"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "清水存放點",
+    "item_minepoint_iron_ore": "藍鐵礦礦點",
+    "item_liquidpoint_sewage": "汙水存放點",
+    "item_liquidpoint_xiranite": "液化息壤存放點",
+    "item_liquidpoint_acid": "沉積酸存放點",
+    "item_liquidpoint_plant_grass_1": "錦草溶液存放點",
+    "item_liquidpoint_plant_grass_2": "芽針溶液存放點",
+    "item_liquidpoint_xiranite_enr": "液化重息壤存放點",
+    "item_minepoint_copper_ore": "赤銅礦礦點",
+    "item_minepoint_originium_ore": "源礦礦點",
+    "item_minepoint_quartz_sand": "紫晶礦礦點"
   }
 }

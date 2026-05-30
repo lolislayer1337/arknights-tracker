@@ -1895,5 +1895,18 @@
       "hub": "프로토콜 코어",
       "manual": "간편 제작"
     }
+  },
+  "resourcePointNames": {
+    "item_liquidpoint_water": "청정수 보관 지점",
+    "item_minepoint_iron_ore": "페리움 광석 광산 지점",
+    "item_liquidpoint_sewage": "오염수 보관 지점",
+    "item_liquidpoint_xiranite": "액화 식양 보관 지점",
+    "item_liquidpoint_acid": "산성 침적물 보관 지점",
+    "item_liquidpoint_plant_grass_1": "금초 용액 보관 지점",
+    "item_liquidpoint_plant_grass_2": "야침 용액 보관 지점",
+    "item_liquidpoint_xiranite_enr": "액화 중식양 보관 지점",
+    "item_minepoint_copper_ore": "적동 광석 광산 지점",
+    "item_minepoint_originium_ore": "오리지늄 광물 광산 지점",
+    "item_minepoint_quartz_sand": "자수정 광석 광산 지점"
   }
 }
