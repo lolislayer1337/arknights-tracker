@@ -82,7 +82,7 @@
     bg-white dark:bg-[#383838] rounded-3xl border border-gray-200 dark:border-[#444] transition-colors">
 
     {#if (item)}
-        <div class="flex flex-col justify-start w-full h-full">
+        <div class="flex flex-col justify-start w-full">
 
             <div class="flex items-center pl-6 pr-6 pt-3 pb-3 min-h-16 overflow-hidden border-b border-gray-200 dark:border-[#444]">
                 <h2 class="font-sdk text-xl md:text-2xl font-bold text-[#21272C] dark:text-[#FDFDFD] leading-tight drop-shadow-sm">
@@ -90,7 +90,7 @@
                 </h2>
             </div>
 
-            <div class="flex flex-col justify-start w-full h-full pl-6 pr-6 pt-3 pb-3 gap-10">
+            <div class="flex flex-col justify-start w-full pl-6 pr-6 pt-3 pb-6 gap-10">
                 {#if (hasOutcomeFormulas)}
                     <div class="flex flex-col justify-start w-full gap-3">
 
