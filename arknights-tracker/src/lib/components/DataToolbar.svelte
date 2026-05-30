@@ -350,6 +350,26 @@
         return current.includes(value);
     };
 
+    function toggleFilterItemSubGroup(itemSubGroupList, isSelectedFunc) {
+        let isAnySelected = itemSubGroupList
+            .some((subGroup) => isSelectedFunc("itemSubGroups", subGroup));
+
+        let isAllSelected = itemSubGroupList
+            .every((subGroup) => isSelectedFunc("itemSubGroups", subGroup));
+
+        if (isAnySelected && !isAllSelected) {
+            for (let subGroup of itemSubGroupList) {
+                if (!isSelectedFunc("itemSubGroups", subGroup)) {
+                    toggleFilterItem("itemSubGroups", subGroup);
+                }
+            }
+        } else {
+            for (let subGroup of itemSubGroupList) {
+                toggleFilterItem("itemSubGroups", subGroup);
+            }
+        }
+    }
+
     function clearSearch() {
         searchQuery = "";
     }
@@ -1142,7 +1162,7 @@
                         <button
                             type="button"
                             class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-                            on:click={() => {}}
+                            on:click={() => {toggleFilterItemSubGroup(itemSubGroups.nature, isSelected)}}
                         >
                             {$t("sort.itemGroups.nature") || "Nature"}
                         </button>
@@ -1164,7 +1184,7 @@
                         <button
                                 type="button"
                                 class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-                                on:click={() => {}}
+                                on:click={() => {toggleFilterItemSubGroup(itemSubGroups.product, isSelected)}}
                         >
                             {$t("sort.itemGroups.product") || "Product"}
                         </button>
@@ -1186,7 +1206,7 @@
                         <button
                                 type="button"
                                 class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-                                on:click={() => {}}
+                                on:click={() => {toggleFilterItemSubGroup(itemSubGroups.usable, isSelected)}}
                         >
                             {$t("sort.itemGroups.usable") || "Usable"}
                         </button>
@@ -1208,7 +1228,7 @@
                         <button
                                 type="button"
                                 class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-                                on:click={() => {}}
+                                on:click={() => {toggleFilterItemSubGroup(itemSubGroups.gatherable, isSelected)}}
                         >
                             {$t("sort.itemGroups.gatherable") || "Gatherable"}
                         </button>
@@ -1230,7 +1250,7 @@
                         <button
                                 type="button"
                                 class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-                                on:click={() => {}}
+                                on:click={() => {toggleFilterItemSubGroup(itemSubGroups.facility, isSelected)}}
                         >
                             {$t("sort.itemGroups.facility") || "Facility"}
                         </button>
