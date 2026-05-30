@@ -1,5 +1,4 @@
 <script>
-    import {Item} from "$lib/classes/items/Item.js";
     import Images from "$lib/components/Images.svelte";
     import {ResourcePoint} from "$lib/classes/items/ResourcePoint.js";
 
