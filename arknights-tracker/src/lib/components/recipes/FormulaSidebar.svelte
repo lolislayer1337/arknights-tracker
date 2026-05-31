@@ -18,6 +18,10 @@
     import {ManualCraft} from "$lib/classes/crafts/ManualCraft.js";
     import {HubCraft} from "$lib/classes/crafts/HubCraft.js";
     import {ResourcePoint} from "$lib/classes/items/ResourcePoint.js";
+    import {Fuel} from "$lib/classes/items/Fuel.js";
+    import {PowerStation} from "$lib/classes/buildings/PowerStation.js";
+    import {PowerStationSearcher} from "$lib/classes/crafts/searchers/PowerStationSearcher.js";
+    import {PowerFormula} from "$lib/classes/crafts/PowerFormula.js";
 
     export let currentItemId = "";
 
@@ -28,6 +32,7 @@
     const hubCraftSearcher = new HubCraftSearcher();
     const minerSearcher = new MinerSearcher();
     const pumpSearcher = new PumpSearcher();
+    const powerStationSearcher = new PowerStationSearcher();
 
     let machineCraftSearchResultAsIncome;
     let manualCraftSearchResultAsIncome;
@@ -41,12 +46,14 @@
 
     let minerSearchResult;
     let pumpSearchResult;
+    let powerStationSearchResult;
 
     $: building = Building.getBuildingFromItemId(item?.id ?? "");
     $: buildingId = building?.id;
     $: isCrafter = Crafter.isCrafter(buildingId ?? "");
     $: miner = Miner.getMiner(buildingId ?? "");
     $: pump = Pump.getPump(buildingId ?? "");
+    $: powerStation = PowerStation.getPowerStation(buildingId ?? "");
 
     $: if (item) {
         machineCraftSearchResultAsIncome = machineCraftSearcher.searchByItemAsIncome(item.id);
@@ -60,6 +67,7 @@
 
         minerSearchResult = minerSearcher.searchByItemAsOutcome(item.id);
         pumpSearchResult = pumpSearcher.searchByItemAsOutcome(item.id);
+        powerStationSearchResult = powerStationSearcher.searchByItemAsIncome(item.id);
 
         if (buildingId && isCrafter) {
             machineCraftSearchResultAsCrafter = machineCraftSearcher.searchByCrafter(buildingId);
@@ -74,7 +82,8 @@
 
     $: hasIncomeFormulas = !(machineCraftSearchResultAsIncome?.isEmpty() ?? true)
         || !(manualCraftSearchResultAsIncome?.isEmpty() ?? true)
-        || !(hubCraftSearchResultAsIncome?.isEmpty() ?? true);
+        || !(hubCraftSearchResultAsIncome?.isEmpty() ?? true)
+        || !(powerStationSearchResult?.isEmpty() ?? true);
 
 </script>
 
@@ -244,6 +253,21 @@
 
                         {/each}
 
+                        {#each powerStationSearchResult.buildingIdList as powerStationId}
+
+                            <SidebarCraftSourceLabel
+                                text={$t(`buildingNames.${powerStationId}`)}
+                                iconId={PowerStation.getPowerStation(powerStationId).iconId}
+                                iconVariant="building-icon"
+                            />
+
+                            <Formula
+                                formula={PowerFormula.getPowerFormulaFromId(powerStationId, currentItemId)}
+                                highlightItemId={currentItemId}
+                            />
+
+                        {/each}
+
                     </div>
                 {/if}
 
@@ -303,6 +327,20 @@
                                     highlightItemId={currentItemId}
                                 />
                             {/if}
+                        {/each}
+
+                    </div>
+                {/if}
+
+                {#if (powerStation)}
+                    <div class="flex flex-col justify-start w-full gap-3">
+
+                        <SidebarSectorLabel text={$t("formulaSidebar.sector.availableFunctions")} />
+
+                        {#each powerStation.enableFuelIds as itemId}
+                            <Formula
+                                formula={PowerFormula.getPowerFormulaFromId(buildingId, itemId)}
+                            />
                         {/each}
 
                     </div>

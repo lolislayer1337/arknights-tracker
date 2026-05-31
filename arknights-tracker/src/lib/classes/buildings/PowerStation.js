@@ -1,5 +1,6 @@
 import {Building} from "$lib/classes/buildings/Building.js";
 import {powerStations} from "$lib/data/buildings/powerStations.js";
+import {fuel} from "$lib/data/items/fuel.js";
 
 export class PowerStation extends Building {
     _powerStationObj;
@@ -12,6 +13,10 @@ export class PowerStation extends Building {
 
     get msPerRound() {
         return this._powerStationObj.msPerRound;
+    }
+
+    get enableFuelIds() {
+        return Object.keys(fuel);
     }
 
     static getPowerStation(buildingId) {

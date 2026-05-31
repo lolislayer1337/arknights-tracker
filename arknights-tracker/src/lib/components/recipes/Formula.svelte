@@ -2,6 +2,7 @@
     import ItemStackCard from "$lib/components/ItemStackCard.svelte";
     import ResourcePointCard from "$lib/components/recipes/ResourcePointCard.svelte";
     import Icons from "$lib/components/Icons.svelte";
+    import FuelEnergyCard from "$lib/components/recipes/FuelEnergyCard.svelte";
 
     export let formula;
     export let highlightItemId = "";
@@ -11,7 +12,9 @@
     let ingredients;
     let outcomes;
     let craftTimeMs;
+
     let resourceItemId;
+    let powerProvide;
 
     $: if (mode === "machineCraft") {
         craftTimeMs = formula.craftTimeMs;
@@ -48,6 +51,16 @@
         craftTimeMs = formula.pumpTimeMs;
         resourceItemId = formula.pumpingLiquidId;
     }
+
+    $: if (mode === "powerFormula") {
+        ingredients = [{
+            count: 1,
+            itemId: formula.fuelId
+        }];
+        outcomes = [];
+        craftTimeMs = formula.powerTimeMs;
+        powerProvide = formula.powerProvide;
+    }
     
 </script>
 
@@ -55,7 +68,7 @@
 
     <div class="flex flex-row gap-2">
 
-        {#if (mode === "machineCraft" || mode === "manualCraft" || mode === "hubCraft")}
+        {#if (mode === "machineCraft" || mode === "manualCraft" || mode === "hubCraft" || mode === "powerFormula")}
 
             {#each ingredients as {count, itemId}, index}
                 {#if (index !== 0)}
@@ -158,6 +171,14 @@
                 showTooltip={true}
             />
         {/each}
+
+        {#if (mode === "powerFormula")}
+
+            <FuelEnergyCard
+                powerProvide={powerProvide}
+            />
+
+        {/if}
 
     </div>
 
