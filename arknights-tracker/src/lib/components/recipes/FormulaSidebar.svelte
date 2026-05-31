@@ -18,7 +18,6 @@
     import {ManualCraft} from "$lib/classes/crafts/ManualCraft.js";
     import {HubCraft} from "$lib/classes/crafts/HubCraft.js";
     import {ResourcePoint} from "$lib/classes/items/ResourcePoint.js";
-    import {Fuel} from "$lib/classes/items/Fuel.js";
     import {PowerStation} from "$lib/classes/buildings/PowerStation.js";
     import {PowerStationSearcher} from "$lib/classes/crafts/searchers/PowerStationSearcher.js";
     import {PowerFormula} from "$lib/classes/crafts/PowerFormula.js";
