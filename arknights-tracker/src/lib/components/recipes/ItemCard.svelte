@@ -2,6 +2,7 @@
     import Images from "$lib/components/Images.svelte";
     import {getRarityColor} from "$lib/utils/rarityUtils.js";
     import {FullBottle} from "$lib/classes/items/FullBottle.js";
+    import Icons from "$lib/components/Icons.svelte";
 
     export let item = {};
 
@@ -9,6 +10,8 @@
 
     $: fullBottle = FullBottle.getFullBottleFromItem(item);
     $: liquid = fullBottle?.liquidItem;
+
+    $: isEventItem = item.isEventItem();
 
     let isHovered = false;
     $: rarityColor = getRarityColor(item.rarity);
@@ -72,5 +75,11 @@
             style:background-color={rarityColor}
         ></div>
     </div>
+
+    {#if isEventItem}
+        <div class="absolute -top-2 -right-2 w-6 h-6 z-[35]">
+            <Icons name="eventStar"/>
+        </div>
+    {/if}
 
 </div>

@@ -31,12 +31,15 @@
     let isFullBottle;
     let fullBottle;
     let liquid;
+    let isEventItem;
 
     $: if (item) {
         isFullBottle = FullBottle.isFullBottle(item.id);
 
         fullBottle = FullBottle.getFullBottleFromItem(item);
         liquid = fullBottle?.liquidItem;
+
+        isEventItem = item.isEventItem();
     }
 
     let boxSize = (() => {
@@ -144,6 +147,12 @@
                 style:background-color={rarityColor}
             ></div>
         </div>
+
+        {#if isEventItem}
+            <div class="absolute -top-2 -right-2 w-5 h-5 z-[35]">
+                <Icons name="eventStar"/>
+            </div>
+        {/if}
 
     </div>
 
