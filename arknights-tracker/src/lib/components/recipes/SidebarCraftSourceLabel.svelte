@@ -20,7 +20,11 @@
 
     {#if (iconId && iconVariant)}
         <div class="flex justify-center items-center h-8 w-8">
-            <Images id={iconId} variant={iconVariant}/>
+            <Images
+                id={iconId}
+                variant={iconVariant}
+                className="w-full h-full object-contain blur-[0.3px] rotate-[0.01deg] backface-hidden transform-gpu transition-all duration-300"
+            />
         </div>
     {/if}
 
