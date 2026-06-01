@@ -1,8 +1,10 @@
 <script>
     import { t } from "$lib/i18n";
     import Icon from "$lib/components/Icons.svelte";
+    import {factoryEvents} from "$lib/data/events/factoryEvents.js";
+    import {FactoryEvent} from "$lib/classes/events/FactoryEvent.js";
 
-    export let mode = "operators"; // "operators" | "weapons" | "equipment" | "enemies"
+    export let mode = "operators"; // "operators" | "weapons" | "equipment" | "enemies" | "items"
     export let sortField = "rarity";
     export let sortDirection = "desc";
     export let searchQuery = "";
@@ -100,15 +102,17 @@
         "AllDamageTakenScalar",
         "HealOutputIncrease",
     ];
+
+    const factoryEventIds = Object.keys(factoryEvents);
+
     $: filterOptions = {
         rarity:
-            mode === "equipment"
-                ? [5, 4, 3, 2, 1]
-                : mode === "weapons"
-                  ? [6, 5, 4, 3]
-                  : mode === "enemies"
-                    ? [6, 5, 4, 3]
-                    : [6, 5, 4],
+            mode === "enemies" ? [6, 5, 4, 3]
+            : mode === "equipment" ? [5, 4, 3, 2, 1]
+            : mode === "items" ? [5, 4, 3, 2, 1]
+            : mode === "equipment" ? [5, 4, 3, 2, 1]
+            : mode === "weapons" ? [6, 5, 4, 3]
+            : [6, 5, 4],
         class: [
             "guard",
             "vanguard",
@@ -126,9 +130,91 @@
         partType: [0, 1, 2], // 0 = body, 1 = hand, 2 = edc
         pack: ["none", ...(availablePacks || [])],
         stats: hardcodedStats.filter((s) => s.toLowerCase() !== "def"),
+        itemSubGroups: [
+            "facility_battle",
+            "facility_crafter",
+            "facility_miner",
+            "facility_other",
+            "facility_powerStation",
+            "facility_pump",
+            "facility_soil",
+
+            "gatherable_drop",
+            "gatherable_muck",
+            "gatherable_plant",
+
+            "nature_flowerPlant",
+            "nature_grassPlant",
+            "nature_liquid",
+            "nature_ore",
+            "nature_soilPlant",
+            "nature_wood",
+
+            "product_activityXiranite",
+            "product_amethyst",
+            "product_battery",
+            "product_carbon",
+            "product_component",
+            "product_copper",
+            "product_fullBottle",
+            "product_iron",
+            "product_liquid",
+            "product_muck",
+            "product_originium",
+            "product_powder",
+            "product_xiranite",
+
+            "usable_bomb",
+            "usable_bottledProdFood",
+            "usable_other",
+            "usable_powder"
+        ],
+        factoryEvents: ["nonEvent", ...factoryEventIds]
     };
 
     export let filters = (() => {
+        if (mode === "items") {
+            return {
+                rarity: [5, 4, 3, 2, 1],
+                itemSubGroups: [
+                    "facility_battle",
+                    "facility_crafter",
+                    "facility_miner",
+                    "facility_other",
+                    "facility_powerStation",
+                    "facility_pump",
+                    "facility_soil",
+                    "gatherable_drop",
+                    "gatherable_muck",
+                    "gatherable_plant",
+                    "nature_flowerPlant",
+                    "nature_grassPlant",
+                    "nature_liquid",
+                    "nature_ore",
+                    "nature_soilPlant",
+                    "nature_wood",
+                    "product_activityXiranite",
+                    "product_amethyst",
+                    "product_battery",
+                    "product_carbon",
+                    "product_component",
+                    "product_copper",
+                    "product_fullBottle",
+                    "product_iron",
+                    "product_liquid",
+                    "product_muck",
+                    "product_originium",
+                    "product_powder",
+                    "product_xiranite",
+                    "usable_bomb",
+                    "usable_bottledProdFood",
+                    "usable_other",
+                    "usable_powder"
+                ],
+                factoryEvents: ["nonEvent", ...factoryEventIds]
+            }
+        }
+
         if (mode === "equipment") {
             return {
                 rarity: [5, 4, 3, 2, 1],
@@ -141,11 +227,11 @@
                     3: [],
                 },
             };
-        } else if (mode === "enemies") {
+        } if (mode === "enemies") {
             return {
                 rarity: [6, 5, 4, 3]
             };
-        } else if (mode === "weapons") {
+        } if (mode === "weapons") {
             return {
                 rarity: [6, 5, 4, 3],
                 type: [
@@ -159,37 +245,35 @@
                 attr2: [...attr2Skills],
                 attr3: [...attr3Skills],
             };
-        } else {
-            return {
-                rarity: [6, 5, 4],
-                class: [
-                    "guard",
-                    "vanguard",
-                    "caster",
-                    "defender",
-                    "supporter",
-                    "striker",
-                ],
-                element: ["cryo", "physical", "nature", "heat", "electric"],
-                weapon: [
-                    "sword",
-                    "polearm",
-                    "artsUnit",
-                    "greatSword",
-                    "handcannon",
-                ],
-            };
         }
+
+        return {
+            rarity: [6, 5, 4],
+            class: [
+                "guard",
+                "vanguard",
+                "caster",
+                "defender",
+                "supporter",
+                "striker",
+            ],
+            element: ["cryo", "physical", "nature", "heat", "electric"],
+            weapon: [
+                "sword",
+                "polearm",
+                "artsUnit",
+                "greatSword",
+                "handcannon",
+            ],
+        };
     })();
 
     $: sortOptions =
-        mode === "equipment"
-            ? ["rarity"]
-            : mode === "weapons"
-              ? ["rarity", "type"]
-              : mode === "enemies"
-                ? ["rarity"]
-                : ["rarity", "class", "element", "weapon"];
+        mode === "items" ? ["rarity", "itemGroup"]
+        : mode === "equipment" ? ["rarity"]
+        : mode === "weapons" ? ["rarity", "type"]
+        : mode === "enemies" ? ["rarity"]
+        : ["rarity", "class", "element", "weapon"];
 
     let isFilterOpen = false;
     let isSortDropdownOpen = false;
@@ -227,6 +311,8 @@
         partType: false,
         pack: false,
         stats: false,
+        itemSubGroups: false,
+        factoryEvents: false,
     };
 
     function toggleFilterGroup(groupKey) {
@@ -272,55 +358,85 @@
         return current.includes(value);
     };
 
+    function toggleFilterItemSubGroup(itemSubGroupList, isSelectedFunc) {
+        let isAnySelected = itemSubGroupList
+            .some((subGroup) => isSelectedFunc("itemSubGroups", subGroup));
+
+        let isAllSelected = itemSubGroupList
+            .every((subGroup) => isSelectedFunc("itemSubGroups", subGroup));
+
+        if (isAnySelected && !isAllSelected) {
+            for (let subGroup of itemSubGroupList) {
+                if (!isSelectedFunc("itemSubGroups", subGroup)) {
+                    toggleFilterItem("itemSubGroups", subGroup);
+                }
+            }
+        } else {
+            for (let subGroup of itemSubGroupList) {
+                toggleFilterItem("itemSubGroups", subGroup);
+            }
+        }
+    }
+
     function clearSearch() {
         searchQuery = "";
     }
 
     $: isFilterActive =
-        mode === "equipment"
-            ? filters.rarity?.length !== filterOptions.rarity.length ||
-              manualMode.rarity ||
-              filters.partType?.length !== filterOptions.partType.length ||
-              manualMode.partType ||
-              (filters.pack?.length > 0 &&
-                  filters.pack?.length !== filterOptions.pack.length) ||
-              manualMode.pack ||
-              (filters.stats &&
-                  (filters.stats.any?.length > 0 ||
-                      filters.stats[1]?.length > 0 ||
-                      filters.stats[2]?.length > 0 ||
-                      filters.stats[3]?.length > 0)) ||
-              manualMode.stats ||
-              showOwnedOnly
-            : mode === "weapons"
-              ? filters.rarity?.length !== filterOptions.rarity.length ||
-                manualMode.rarity ||
-                filters.type?.length !== filterOptions.type.length ||
-                manualMode.type ||
-                filters.attr1?.length !== filterOptions.attr1.length ||
-                manualMode.attr1 ||
-                filters.attr2?.length !== filterOptions.attr2.length ||
-                manualMode.attr2 ||
-                filters.attr3?.length !== filterOptions.attr3.length ||
-                manualMode.attr3 ||
-                showOwnedOnly
-              : mode === "enemies"
-                ? filters.rarity?.length !== filterOptions.rarity.length ||
-                  manualMode.rarity
-                : filters.rarity?.length !== filterOptions.rarity.length ||
-                  manualMode.rarity ||
-                  filters.class?.length !== filterOptions.class.length ||
-                  manualMode.class ||
-                  filters.element?.length !== filterOptions.element.length ||
-                  manualMode.element ||
-                  filters.weapon?.length !== filterOptions.weapon.length ||
-                  manualMode.weapon ||
-                  showOwnedOnly;
-                
+        mode === "items" ?
+            filters.rarity?.length !== filterOptions.rarity.length
+            || manualMode.rarity
+            || filters.itemSubGroups?.length !== filterOptions.itemSubGroups.length
+            || manualMode.itemSubGroups
+        : mode === "equipment" ?
+            filters.rarity?.length !== filterOptions.rarity.length
+            || manualMode.rarity
+            || filters.partType?.length !== filterOptions.partType.length
+            || manualMode.partType
+            || (filters.pack?.length > 0
+                && filters.pack?.length !== filterOptions.pack.length)
+            || manualMode.pack
+            || (filters.stats
+                && (filters.stats.any?.length > 0
+                    || filters.stats[1]?.length > 0
+                    || filters.stats[2]?.length > 0
+                    || filters.stats[3]?.length > 0))
+            || manualMode.stats
+            || showOwnedOnly
+        : mode === "weapons" ?
+            filters.rarity?.length !== filterOptions.rarity.length
+            || manualMode.rarity
+            || filters.type?.length !== filterOptions.type.length
+            || manualMode.type
+            || filters.attr1?.length !== filterOptions.attr1.length
+            || manualMode.attr1
+            || filters.attr2?.length !== filterOptions.attr2.length
+            || manualMode.attr2
+            || filters.attr3?.length !== filterOptions.attr3.length
+            || manualMode.attr3
+            || showOwnedOnly
+        : mode === "enemies" ?
+            filters.rarity?.length !== filterOptions.rarity.length
+            || manualMode.rarity
+        :
+            filters.rarity?.length !== filterOptions.rarity.length
+            || manualMode.rarity
+            || filters.class?.length !== filterOptions.class.length
+            || manualMode.class
+            || filters.element?.length !== filterOptions.element.length
+            || manualMode.element
+            || filters.weapon?.length !== filterOptions.weapon.length
+            || manualMode.weapon
+            || showOwnedOnly;
 
     function resetFilters() {
         manualMode = {};
-        if (mode === "equipment") {
+        if (mode === "items") {
+            filters = {
+                rarity: [...filterOptions.rarity],
+                itemSubGroups: [...filterOptions.itemSubGroups],
+            }
+        } else if (mode === "equipment") {
             filters = {
                 rarity: [...filterOptions.rarity],
                 partType: [...filterOptions.partType],
@@ -382,6 +498,54 @@
                   filterOptions.stats.slice(20),
               ]
             : [];
+
+    $: itemSubGroups = mode === "items"
+        ? {
+            nature: [
+                "nature_ore",
+                "nature_liquid",
+                "nature_flowerPlant",
+                "nature_grassPlant",
+                "nature_soilPlant",
+                "nature_wood",
+            ],
+            product: [
+                "product_liquid",
+                "product_originium",
+                "product_amethyst",
+                "product_iron",
+                "product_copper",
+                "product_powder",
+                "product_carbon",
+                "product_xiranite",
+                "product_activityXiranite",
+                "product_component",
+                "product_battery",
+                "product_muck",
+                "product_fullBottle",
+            ],
+            usable: [
+                "usable_powder",
+                "usable_bottledProdFood",
+                "usable_bomb",
+                "usable_other",
+            ],
+            gatherable: [
+                "gatherable_plant",
+                "gatherable_muck",
+                "gatherable_drop",
+            ],
+            facility: [
+                "facility_miner",
+                "facility_pump",
+                "facility_crafter",
+                "facility_powerStation",
+                "facility_soil",
+                "facility_battle",
+                "facility_other",
+            ]
+        }
+        : {};
 
     $: getStatClass = (stat, tab) => {
         const currentArr = filters.stats[tab] || [];
@@ -536,7 +700,7 @@
                 on:keydown|stopPropagation
             >
                 <div class="flex justify-between">
-                    {#if mode !== "equipment" && mode !== "enemies"}
+                    {#if mode !== "equipment" && mode !== "enemies" && mode !== "items"}
                         <div class="flex items-center gap-3">
                             <span class="text-sm font-bold dark:text-[#E0E0E0] text-gray-800">
                                 {$t("sort.ownedOnly") || "Owned Only"}
@@ -629,8 +793,9 @@
                                     </div>
                                     <span
                                         class="text-xs font-bold capitalize pointer-events-none"
-                                        >{$t(`classes.${cls}`) || cls}</span
-                                    >
+                                        >
+                                        {$t(`classes.${cls}`) || cls}
+                                    </span>
                                 </button>
                             {/each}
                         </div>
@@ -998,6 +1163,144 @@
                         </div>
                     </div>
                 {/if}
+
+                {#if mode === "items"}
+                    <div>
+
+                        <button
+                            type="button"
+                            class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                            on:click={() => {toggleFilterGroup("factoryEvents")}}
+                        >
+                            {$t("pages.events")}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each factoryEventIds as eventId}
+                                <button
+                                    type="button"
+                                    class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('factoryEvents', eventId)}"
+                                    on:click={() => toggleFilterItem("factoryEvents", eventId)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {$t(FactoryEvent.getEvent(eventId).title)}
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+
+                        <button
+                            type="button"
+                            class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                            on:click={() => {toggleFilterItemSubGroup(itemSubGroups.nature, isSelected)}}
+                        >
+                            {$t("sort.itemGroups.nature") || "Nature"}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each itemSubGroups.nature as subGroup}
+                                <button
+                                    type="button"
+                                    class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('itemSubGroups', subGroup)}"
+                                    on:click={() => toggleFilterItem("itemSubGroups", subGroup)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {$t(`sort.itemSubGroups.${subGroup}`) || subGroup}
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+
+                        <button
+                                type="button"
+                                class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                                on:click={() => {toggleFilterItemSubGroup(itemSubGroups.product, isSelected)}}
+                        >
+                            {$t("sort.itemGroups.product") || "Product"}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each itemSubGroups.product as subGroup}
+                                <button
+                                        type="button"
+                                        class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('itemSubGroups', subGroup)}"
+                                        on:click={() => toggleFilterItem("itemSubGroups", subGroup)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {$t(`sort.itemSubGroups.${subGroup}`) || subGroup}
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+
+                        <button
+                                type="button"
+                                class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                                on:click={() => {toggleFilterItemSubGroup(itemSubGroups.usable, isSelected)}}
+                        >
+                            {$t("sort.itemGroups.usable") || "Usable"}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each itemSubGroups.usable as subGroup}
+                                <button
+                                        type="button"
+                                        class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('itemSubGroups', subGroup)}"
+                                        on:click={() => toggleFilterItem("itemSubGroups", subGroup)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {$t(`sort.itemSubGroups.${subGroup}`) || subGroup}
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+
+                        <button
+                                type="button"
+                                class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                                on:click={() => {toggleFilterItemSubGroup(itemSubGroups.gatherable, isSelected)}}
+                        >
+                            {$t("sort.itemGroups.gatherable") || "Gatherable"}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each itemSubGroups.gatherable as subGroup}
+                                <button
+                                        type="button"
+                                        class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('itemSubGroups', subGroup)}"
+                                        on:click={() => toggleFilterItem("itemSubGroups", subGroup)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {$t(`sort.itemSubGroups.${subGroup}`) || subGroup}
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+
+                        <button
+                                type="button"
+                                class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                                on:click={() => {toggleFilterItemSubGroup(itemSubGroups.facility, isSelected)}}
+                        >
+                            {$t("sort.itemGroups.facility") || "Facility"}
+                        </button>
+                        <div class="flex flex-wrap gap-2">
+                            {#each itemSubGroups.facility as subGroup}
+                                <button
+                                        type="button"
+                                        class="h-[32px] px-2 pr-3 rounded flex items-center gap-2 border transition-all cursor-pointer
+                                            {getFilterClass('itemSubGroups', subGroup)}"
+                                        on:click={() => toggleFilterItem("itemSubGroups", subGroup)}
+                                >
+                                    <span class="text-xs font-bold capitalize pointer-events-none">
+                                        {$t(`sort.itemSubGroups.${subGroup}`) || subGroup}
+                                    </span>
+                                </button>
+                            {/each}
+                        </div>
+
+                    </div>
+                {/if}
             </div>
         {/if}
     </div>
@@ -1049,7 +1352,7 @@
             {/if}
         </div>
     </div>
-    {#if mode === "equipment" || mode === "enemies"}
+    {#if mode === "equipment" || mode === "enemies" || mode === "items"}
         <button
             type="button"
             class="h-[40px] w-[40px] flex shrink-0 items-center justify-center rounded-full transition-colors cursor-pointer {groupMode

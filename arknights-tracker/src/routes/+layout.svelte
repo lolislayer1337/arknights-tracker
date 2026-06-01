@@ -295,7 +295,22 @@
             </div>
             <div class="flex-1 overflow-y-auto overflow-x-hidden">
                 <nav class="flex flex-col gap-2 px-3">
-                    {#each [{ path: "/", label: "sidebar.home", icon: "mainPage" }, { path: "/records", label: "sidebar.records", icon: "records" }, { path: "/events", label: "sidebar.events", icon: "timeline" }, { path: "/history", label: "pages.bannerHistory", icon: "history" }, { type: "divider" }, { path: "/changelog", label: "pages.changelog", icon: "changelog" }, { path: "/operators", label: "sidebar.operators", icon: "operators" }, { path: "/weapons", label: "pages.weapons", icon: "weapons" }, { path: "/essences", label: "pages.essences", icon: "essence" }, { path: "/enemies", label: "pages.enemies", icon: "hongshan" }, { path: "/equipment", label: "pages.equipment", icon: "edc" }, { type: "divider" }, { path: "/settings", label: "sidebar.settings", icon: "settings" }] as item}
+                    {#each [
+                        { path: "/", label: "sidebar.home", icon: "mainPage" },
+                        { path: "/records", label: "sidebar.records", icon: "records" },
+                        { path: "/events", label: "sidebar.events", icon: "timeline" },
+                        { path: "/history", label: "pages.bannerHistory", icon: "history" },
+                        { type: "divider" },
+                        { path: "/changelog", label: "pages.changelog", icon: "changelog" },
+                        { path: "/operators", label: "sidebar.operators", icon: "operators" },
+                        { path: "/weapons", label: "pages.weapons", icon: "weapons" },
+                        { path: "/essences", label: "pages.essences", icon: "essence" },
+                        { path: "/enemies", label: "pages.enemies", icon: "hongshan" },
+                        { path: "/equipment", label: "pages.equipment", icon: "edc" },
+                        { path: "/recipes", label: "pages.recipes", icon: "recepies" },
+                        { type: "divider" },
+                        { path: "/settings", label: "sidebar.settings", icon: "settings" }
+                    ] as item}
                         {#if item.type === "divider"}
                             <div
                                 class="h-px bg-gray-200 dark:bg-[#444444] my-1 mx-2"
