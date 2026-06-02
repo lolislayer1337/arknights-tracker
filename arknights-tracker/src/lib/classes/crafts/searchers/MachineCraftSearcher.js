@@ -61,12 +61,17 @@ export class MachineCraftSearcher extends CraftSearcher{
 
     searchByFormulaIds(formulaIdList) {
         let result = {};
+        let nonDismantlerFormulaIdList = [];
+        let dismantlerFormulaIdList = [];
 
         for (let formulaId of formulaIdList) {
             let formula = MachineCraft.getMachineCraft(formulaId);
             let crafterId = formula.crafterId;
             let crafterMode = Crafter.getCrafter(crafterId)
                 .getModeNameByGroupId(formula.formulaGroupId);
+
+            if (crafterId === "dismantler_1") dismantlerFormulaIdList.push(formulaId);
+            else nonDismantlerFormulaIdList.push(formulaId);
 
             if (!result.hasOwnProperty(crafterId))
                 result[crafterId] = {};
@@ -76,8 +81,14 @@ export class MachineCraftSearcher extends CraftSearcher{
             result[crafterId][crafterMode].push(formulaId);
         }
 
+        let dismantlerResult = result.dismantler_1;
+        if (dismantlerResult) {
+            delete result.dismantler_1;
+            result.dismantler_1 = dismantlerResult;
+        }
+
         return new MachineCraftSearchResult({
-            craftList: formulaIdList,
+            craftList: [...nonDismantlerFormulaIdList, ...dismantlerFormulaIdList],
             resultMap: result
         })
     }
