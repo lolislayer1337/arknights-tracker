@@ -474,7 +474,7 @@ export const banners = [
     showOnMain: true
   },
   {
-    id: "weaponbox_1_3_1",
+    id: "weponbox_1_3_1",
     name: "Scarlet Knot Issue",
     type: "weapon",
     startTime: "2026-06-04 22:00:00",
@@ -485,8 +485,8 @@ export const banners = [
     featured5: [],
     isServerTime: true, 
     timezone: "UTC+8",
-    icon: "weaponbox_1_3_1.png",
-    miniIcon: "weaponbox_1_3_1.png",
+    icon: "weponbox_1_3_1.png",
+    miniIcon: "weponbox_1_3_1.png",
     url: "",
     layer: 13,
     color: "#B24A6F",
@@ -494,7 +494,7 @@ export const banners = [
     showOnMain: true
   },
   {
-    id: "weaponbox_1_3_2",
+    id: "weponbox_1_3_2",
     name: "Crimson Hued Issue",
     type: "weapon",
     startTime: "2026-06-26 12:00:00",
@@ -504,8 +504,8 @@ export const banners = [
     featured5: [],
     isServerTime: true, 
     timezone: "UTC+8",
-    icon: "weaponbox_1_3_2.png",
-    miniIcon: "weaponbox_1_3_2.png",
+    icon: "weponbox_1_3_2.png",
+    miniIcon: "weponbox_1_3_2.png",
     url: "",
     layer: 14,
     color: "#A61C1C",
