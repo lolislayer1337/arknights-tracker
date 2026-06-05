@@ -210,7 +210,7 @@ const BANNERS = [
     featured6: ["camille"],
   },
   {
-    id: "weaponbox_1_3_1",
+    id: "weponbox_1_3_1",
     name: "Scarlet Knot Issue",
     type: "weapon",
     startTime: "2026-06-04 22:00:00",
@@ -219,7 +219,7 @@ const BANNERS = [
     featured6: ["amaranthineTassel"],
   },
   {
-    id: "weaponbox_1_3_2",
+    id: "weponbox_1_3_2",
     name: "Crimson Hued Issue",
     type: "weapon",
     startTime: "2026-06-26 12:00:00",
