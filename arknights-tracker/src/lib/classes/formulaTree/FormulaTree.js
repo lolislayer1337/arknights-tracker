@@ -52,17 +52,17 @@ export class FormulaTree {
      * @param {MachineCraft|ManualCraft|HubCraft|MiningFormula|PumpingFormula} startFormula
      */
     setStartNode(startItemId, startFormula = null) {
-        this._startNode = new Node(
-            startFormula,
+        this._startNode = new ItemNode(
+            null,
             startItemId,
-            null
+            startFormula
         );
 
         this.updateNode(this._startNode);
     }
 
     /**
-     * @param {Node} startNode
+     * @param {ItemNode} startNode
      */
     updateNode(startNode) {
         startNode.resetChildNodes();
@@ -74,6 +74,11 @@ export class FormulaTree {
 
         while (stack.length > 0) {
             let node = stack.pop();
+
+            if (node.type !== "itemNode") {
+                continue;
+            }
+
             let item = Item.getItem(node.itemId);
 
             if (!node.formula) {
@@ -98,10 +103,10 @@ export class FormulaTree {
 
                     if (!ingredient) continue;
 
-                    let childNode = new Node(
-                        this._getFirstFormula(ingredient),
+                    let childNode = new ItemNode(
+                        node,
                         ingredientId,
-                        node
+                        this._getFirstFormula(ingredient)
                     );
 
                     node.addChildNode(childNode);
@@ -112,16 +117,22 @@ export class FormulaTree {
                 while (childNodes.length > 0) {
                     stack.push(childNodes.pop());
                 }
-            }
+            } else if (formula?.formulaType === "pumpingFormula") {
+                let itemId = formula.pumpingLiquidId;
+                let childNode = new ResourcePointNode(
+                    node,
+                    itemId
+                );
 
-            // console.log(this.getItemUseCount(item.id))
-            // if (this.getItemUseCount(item.id) <= 1) {
-            //     let childNodes = node.getChildNodesCopy();
-            //
-            //     while (childNodes.length > 0) {
-            //         stack.push(childNodes.pop());
-            //     }
-            // }
+                node.addChildNode(childNode);
+            } else if (formula?.formulaType === "miningFormula") {
+                let itemId = formula.miningItemId;
+                let childNode = new ResourcePointNode(
+                    node,
+                    itemId
+                );
+                node.addChildNode(childNode);
+            }
         }
 
         this.updateNodePositions();
@@ -131,6 +142,7 @@ export class FormulaTree {
         this._clearUsedItemList();
 
         for (let node of this.getIterator()) {
+            if (node.type === "resourcePointNode") continue;
             this._addItemToUsedItemList(node.itemId);
         }
     }
@@ -171,8 +183,8 @@ export class FormulaTree {
                     node._layer = layer;
 
                     while (tempNode.selfChildIndex === 0) {
-                        tempNode._layer--;
                         tempNode = tempNode.parentNode;
+                        tempNode._layer--;
                     }
                 }
 
@@ -301,9 +313,6 @@ export class FormulaTree {
 }
 
 class Node {
-    _formula;
-    _itemId;
-
     _parentNode;
     _childNodes = [];
 
@@ -312,26 +321,14 @@ class Node {
     _stage; // column
 
     /**
-     * @param {MachineCraft|ManualCraft|HubCraft|MiningFormula|PumpingFormula|null} formula
-     * @param {string} itemId
      * @param {Node} parentNode
      */
-    constructor(formula, itemId, parentNode) {
-        this._formula = formula;
-        this._itemId = itemId;
+    constructor(parentNode) {
         this._parentNode = parentNode;
     }
 
-    get formula() {
-        return this._formula;
-    }
-
-    set formula(formula) {
-        this._formula = formula;
-    }
-
-    get itemId() {
-        return this._itemId;
+    get type() {
+        return "node";
     }
 
     get selfChildIndex() {
@@ -383,5 +380,49 @@ class Node {
 
             yield node;
         }
+    }
+}
+
+class ItemNode extends Node {
+    _itemId;
+    _formula;
+
+    constructor(parentNode, itemId, formula) {
+        super(parentNode);
+        this._itemId = itemId;
+        this._formula = formula;
+    }
+
+    get type() {
+        return "itemNode"
+    }
+
+    get formula() {
+        return this._formula;
+    }
+
+    set formula(formula) {
+        this._formula = formula;
+    }
+
+    get itemId() {
+        return this._itemId;
+    }
+}
+
+class ResourcePointNode extends Node {
+    _itemId;
+
+    constructor(parentNode, itemId) {
+        super(parentNode);
+        this._itemId = itemId;
+    }
+
+    get type() {
+        return "resourcePointNode";
+    }
+
+    get itemId() {
+        return this._itemId;
     }
 }

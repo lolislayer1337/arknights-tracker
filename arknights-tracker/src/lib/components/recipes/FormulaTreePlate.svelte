@@ -3,6 +3,7 @@
     import {Item} from "$lib/classes/items/Item.js";
     import DragPlate from "$lib/components/DragPlate.svelte";
     import ItemStackCard from "$lib/components/ItemStackCard.svelte";
+    import ResourcePointCard from "$lib/components/recipes/ResourcePointCard.svelte";
 
     export let startItemId = "item_activity_xiranite_enr_hulu";
     export let startFormula;
@@ -41,9 +42,19 @@
 
             <div class="absolute top-[{getYpx(node.layer)}px] right-[{getXpx(node.stage)}px] top-0"
                  style="top: {getYpx(node.layer)}px; right:{getXpx(node.stage)}px">
-                <ItemStackCard
-                    itemId={node.itemId}
-                />
+                {#if node.type === "itemNode"}
+
+                    <ItemStackCard
+                        itemId={node.itemId}
+                    />
+
+                {:else if node.type === "resourcePointNode"}
+
+                    <ResourcePointCard
+                        itemId={node.itemId}
+                    />
+
+                {/if}
             </div>
 
         {/each}
