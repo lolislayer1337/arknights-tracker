@@ -145,6 +145,7 @@ export class FormulaTree {
         startNode._stage = 0;
 
         const stack = [startNode];
+        const minStageByLayer = {};
 
         let layer = 0;
         while (stack.length > 0) {
@@ -161,6 +162,26 @@ export class FormulaTree {
             if (node.parentNode) {
                 node._stage = node.parentNode._stage + 1;
                 node._layer = node.selfChildIndex === 0 ? layer : ++layer;
+            }
+
+            if (node.childNodes.length === 0) {
+                if (minStageByLayer[layer-1] > node.stage && node.layer !== 0) {
+                    layer--;
+                    let tempNode = node;
+                    node._layer = layer;
+
+                    while (tempNode.selfChildIndex === 0) {
+                        tempNode._layer--;
+                        tempNode = tempNode.parentNode;
+                    }
+                }
+
+                let tempNode = node;
+                while (tempNode.selfChildIndex === 0) {
+                    tempNode = tempNode.parentNode;
+                }
+
+                minStageByLayer[layer] = tempNode.stage;
             }
 
             maxLayer = Math.max(maxLayer, node._layer);
