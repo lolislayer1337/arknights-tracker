@@ -80,7 +80,7 @@
         this={asLink ? "a" : "div"}
         href={asLink ? url : undefined}
         role={asLink ? "link" : "presentation"}
-        class="relative flex flex-col cursor-pointer select-none group flex-shrink-0 {boxSize} no-underline focus:outline-none focus:ring-2 focus:ring-[#F9B90C] rounded-[6px] {highlightRing}"
+        class="relative flex flex-col cursor-pointer select-none group flex-shrink-0 {boxSize} no-underline focus:outline-none rounded-[6px] {highlightRing}"
         on:mouseenter={() => (isHovered = true)}
         on:mouseleave={() => (isHovered = false)}
     >
