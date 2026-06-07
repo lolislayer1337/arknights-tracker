@@ -1,5 +1,10 @@
 <script>
     import { page } from "$app/stores";
+    import { Miner } from "$lib/classes/buildings/Miner.js";
+    import { Pump } from "$lib/classes/buildings/Pump.js";
+    import { HubCraft } from "$lib/classes/crafts/HubCraft.js";
+    import { MachineCraft } from "$lib/classes/crafts/MachineCraft.js";
+    import { ManualCraft } from "$lib/classes/crafts/ManualCraft.js";
     import BottomSheet from "$lib/components/BottomSheet.svelte";
     import Button from "$lib/components/Button.svelte";
     import FormulaSidebar from "$lib/components/recipes/FormulaSidebar.svelte";
@@ -9,6 +14,27 @@
     $: startFormulaType = $page.url.searchParams.get("type");
     $: startFromulaId = $page.url.searchParams.get("formulaId");
     $: startFormulaBuildingId = $page.url.searchParams.get("buildingId");
+
+    let startFormula;
+
+    $: if (startFormulaType === "machineCraft" && startFromulaId) {
+        startFormula = MachineCraft.getMachineCraft(startFromulaId);
+
+    } else if (startFormulaType === "manualCraft" && startFromulaId) {
+        startFormula = ManualCraft.getManualCraft(startFromulaId);
+
+    } else if (startFormulaType === "hubCraft" && startFromulaId) {
+        startFormula = HubCraft.getHubCraft(startFromulaId);
+
+    } else if (startFormulaType === "miningFormula" && startFormulaBuildingId) {
+        startFormula = Miner.getMiner(startFormulaBuildingId)?.getMiningFormula(startItemId);
+
+    } else if (startFormulaType === "pumpingFormula" && startFormulaBuildingId) {
+        startFormula = Pump.getPump(startFormulaBuildingId)?.getPumpingFormula(startItemId);
+
+    } else {
+        startFormula = null;
+    }
 
     let isBottomSheetOpen = false;
     let selectedItemId = "item_plant_grass_1";
@@ -40,6 +66,7 @@
 
             <FormulaTreePlate
                 startItemId={startItemId}
+                startFormula={startFormula}
             />
 
         </div>
