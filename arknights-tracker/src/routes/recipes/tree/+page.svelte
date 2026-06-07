@@ -1,9 +1,14 @@
 <script>
-
+    import { page } from "$app/stores";
     import BottomSheet from "$lib/components/BottomSheet.svelte";
     import Button from "$lib/components/Button.svelte";
     import FormulaSidebar from "$lib/components/recipes/FormulaSidebar.svelte";
     import FormulaTreePlate from "$lib/components/recipes/FormulaTreePlate.svelte";
+
+    $: startItemId = $page.url.searchParams.get("itemId");
+    $: startFormulaType = $page.url.searchParams.get("type");
+    $: startFromulaId = $page.url.searchParams.get("formulaId");
+    $: startFormulaBuildingId = $page.url.searchParams.get("buildingId");
 
     let isBottomSheetOpen = false;
     let selectedItemId = "item_plant_grass_1";
@@ -33,7 +38,9 @@
 
         <div class="w-full h-[calc(100vh-144px)]">
 
-            <FormulaTreePlate />
+            <FormulaTreePlate
+                startItemId={startItemId}
+            />
 
         </div>
 
