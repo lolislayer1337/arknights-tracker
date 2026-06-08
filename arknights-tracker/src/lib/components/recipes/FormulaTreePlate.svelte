@@ -39,8 +39,8 @@
         selectedFormula = null;
         tree.updateNode(selectedItemNode);
         tree.updateNodePositions();
-        selectedItemNode = null;
-        isBottomSheetOpen = false;
+        // selectedItemNode = null;
+        // isBottomSheetOpen = false;
 
         forceTreeUpdate();
         console.log("sfgdfg")
