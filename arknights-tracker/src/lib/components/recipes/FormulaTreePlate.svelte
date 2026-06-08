@@ -106,7 +106,7 @@
 
 <DragPlate>
     <div class="relative shrink-0 bg-gray-600"
-         style="width: {getXpx(tree.maxStage) + 200}px; height: {getYpx(tree.maxLayer) + 200}px;">
+         style="width: 500px; height: 500px;">
 
         {#each tree.getIterator() as node}
 
