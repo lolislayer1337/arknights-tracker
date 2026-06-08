@@ -3,6 +3,7 @@
     import { Item } from "$lib/classes/items/Item.js";
     import DragPlate from "$lib/components/DragPlate.svelte";
     import ItemStackCard from "$lib/components/ItemStackCard.svelte";
+    import BuildingTreeNode from "$lib/components/recipes/BuildingTreeNode.svelte";
     import ResourcePointCard from "$lib/components/recipes/ResourcePointCard.svelte";
 
     export let startItemId = "item_activity_xiranite_enr_hulu";
@@ -58,11 +59,19 @@
     };
 
     function getXpx(stage) {
-        return 100 + stage * 200;
+        return 100 + stage * 600;
     }
 
     function getYpx(layer) {
         return 100 + layer * 200;
+    }
+
+    function getXBuildingNode(stage) {
+        return getXpx(stage) + 200;
+    }
+
+    function getYBuildingNode(layer) {
+        return getYpx(layer);
     }
 
     function forceTreeUpdate() {
@@ -78,7 +87,8 @@
         {#each tree.getIterator() as node}
 
             <div class="absolute"
-                 style="top: {getYpx(node.layer)}px; right:{getXpx(node.stage)}px">
+                 style="top: {getYpx(node.layer)}px; right: {getXpx(node.stage)}px"
+            >
                 {#if node.type === "itemNode"}
 
                     <button
@@ -105,6 +115,22 @@
 
                 {/if}
             </div>
+
+            {#if node.childNodes.length !== 0}
+
+                <div
+                    class="absolute flex items-center h-[110px]"
+                    style="top: {getYBuildingNode(node.layer)}px; right: {getXBuildingNode(node.stage)}px"
+                >
+
+                    <BuildingTreeNode
+                        formulaType={node.formula?.formulaType}
+                        buildingId={node.formula?.crafterId || node.formula?.minerId || node.formula?.pumpId}
+                    />
+
+                </div>
+
+            {/if}
 
         {/each}
 
