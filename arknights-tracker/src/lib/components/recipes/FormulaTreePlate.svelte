@@ -4,6 +4,7 @@
     import DragPlate from "$lib/components/DragPlate.svelte";
     import ItemStackCard from "$lib/components/ItemStackCard.svelte";
     import BuildingTreeNode from "$lib/components/recipes/BuildingTreeNode.svelte";
+    import ForceNodeContinuationButton from "$lib/components/recipes/ForceNodeContinuationButton.svelte";
     import ResourcePointCard from "$lib/components/recipes/ResourcePointCard.svelte";
 
     export let startItemId = "item_activity_xiranite_enr_hulu";
@@ -171,10 +172,12 @@
                 >
 
                     <button
-                        class="rounded-full h-16 w-16 flex items-center justify-center bg-[#383838]"
+                        class="rounded-full h-16 w-16"
                         on:click|preventDefault|stopPropagation={() => forceNodeContinuation(node)}
                     >
-                        a
+
+                        <ForceNodeContinuationButton />
+
                     </button>
 
                 </div>
