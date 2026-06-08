@@ -67,11 +67,9 @@
         isHeadItem = !selectedItemNode.parentNode;
 
     } else if (selectedBuildingNode) {
-        console.log("zsfgdfgb");
         sidebarMode = "building";
 
         currentItemId = selectedBuildingNode.itemId;
-
 
         currentFormulas = [];
 
@@ -80,6 +78,10 @@
             currentFormulas.push(formula);
 
             currentBuildingId = formula.crafterId || formula.minerId || formula.pumpId;
+
+            if (formula.formulaType === "manualCraft") sidebarMode = "manual";
+            if (formula.formulaType === "hubCraft") sidebarMode = "hub";
+            
         } else {
             currentBuildingId = null;
         }

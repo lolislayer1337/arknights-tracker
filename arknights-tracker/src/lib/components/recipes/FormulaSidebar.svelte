@@ -32,13 +32,15 @@
 
     export let itemsAsLink = false;
 
-    export let mode = ""; // "recipes" | "tree" | "building"
+    export let mode = ""; // "recipes" | "tree" | "building" | "manual" | "hub"
 
     export let selectedFormula;
 
     $: isRecipesMode = mode === "recipes";
     $: isTreeMode = mode === "tree";
     $: isBuildingMode = mode === "building";
+    $: isManualMode = mode === "manual";
+    $: isHubMode = mode === "hub";
 
     $: item = isBuildingMode
         ? Item.getItem(Building.getBuilding(currentBuildingId).itemId)
@@ -113,16 +115,18 @@
     $: treeSwitchButtonText = isTreeMode
         ? $t(`formulaSidebar.treeSwitchButton.changeTree`)
         : $t(`formulaSidebar.treeSwitchButton.openTree`);
-    $: headerText = isBuildingMode
-        ? $t(`buildingNames.${currentBuildingId}`)
-        : $t(`itemNames.${currentItemId}`)
+    $: headerText =
+        isBuildingMode ? $t(`buildingNames.${currentBuildingId}`)
+        : isManualMode ? $t("formulaSidebar.craftSource.manual")
+        : isHubMode ? $t("formulaSidebar.craftSource.hub")
+        : $t(`itemNames.${currentItemId}`);
 
 </script>
 
 <div class="flex h-full w-full
     bg-white dark:bg-[#383838] rounded-3xl border border-gray-200 dark:border-[#444] transition-colors">
 
-    {#if (item)}
+    {#if (item || isManualMode || isHubMode)}
         <div class="flex flex-col justify-start w-full">
 
             <div class="flex-shrink-0 flex items-center pl-6 pr-6 pt-3 pb-3 min-h-16 overflow-hidden border-b border-gray-200 dark:border-[#444]">
@@ -133,49 +137,53 @@
 
             <div class="flex-1 overflow-y-auto flex flex-col justify-start w-full pl-6 pr-6 pt-3 pb-6 gap-10">
 
-                {#if (isTreeMode || isBuildingMode) && currentFormulas}
+                {#if (isTreeMode || isBuildingMode || isManualMode || isHubMode) && currentFormulas}
                     <div class="flex flex-col justify-start w-full gap-3">
 
                         <SidebarSectorLabel text={$t("formulaSidebar.sector.currentFormulas")} />
 
                         {#each currentFormulas as formula}
 
-                            {#if formula.formulaType === "machineCraft"}
-                                <SidebarCraftSourceLabel
-                                    text={$t(`buildingNames.${formula.crafterId}`)}
-                                    iconId={Building.getBuilding(formula.crafterId).iconId}
-                                    iconVariant="building-icon"
-                                />
-                            {/if}
+                            {#if isTreeMode}
 
-                            {#if formula.formulaType === "manualCraft"}
-                                <SidebarCraftSourceLabel
-                                    text={$t("formulaSidebar.craftSource.manual")}
-                                    iconVariant="manualCraft"
-                                />
-                            {/if}
+                                {#if formula.formulaType === "machineCraft"}
+                                    <SidebarCraftSourceLabel
+                                        text={$t(`buildingNames.${formula.crafterId}`)}
+                                        iconId={Building.getBuilding(formula.crafterId).iconId}
+                                        iconVariant="building-icon"
+                                    />
+                                {/if}
 
-                            {#if formula.formulaType === "hubCraft"}
-                                <SidebarCraftSourceLabel
-                                    text={$t("formulaSidebar.craftSource.hub")}
-                                    iconVariant="hubCraft"
-                                />
-                            {/if}
+                                {#if formula.formulaType === "manualCraft"}
+                                    <SidebarCraftSourceLabel
+                                        text={$t("formulaSidebar.craftSource.manual")}
+                                        iconVariant="manualCraft"
+                                    />
+                                {/if}
 
-                            {#if formula.formulaType === "miningFormula"}
-                                <SidebarCraftSourceLabel
-                                    text={$t(`buildingNames.${formula.minerId}`)}
-                                    iconId={formula.miner.iconId}
-                                    iconVariant="building-icon"
-                                />
-                            {/if}
+                                {#if formula.formulaType === "hubCraft"}
+                                    <SidebarCraftSourceLabel
+                                        text={$t("formulaSidebar.craftSource.hub")}
+                                        iconVariant="hubCraft"
+                                    />
+                                {/if}
 
-                            {#if formula.formulaType === "pumpingFormula"}
-                                <SidebarCraftSourceLabel
-                                    text={$t(`buildingNames.${formula.pumpId}`)}
-                                    iconId={formula.pump.iconId}
-                                    iconVariant="building-icon"
-                                />
+                                {#if formula.formulaType === "miningFormula"}
+                                    <SidebarCraftSourceLabel
+                                        text={$t(`buildingNames.${formula.minerId}`)}
+                                        iconId={formula.miner.iconId}
+                                        iconVariant="building-icon"
+                                    />
+                                {/if}
+
+                                {#if formula.formulaType === "pumpingFormula"}
+                                    <SidebarCraftSourceLabel
+                                        text={$t(`buildingNames.${formula.pumpId}`)}
+                                        iconId={formula.pump.iconId}
+                                        iconVariant="building-icon"
+                                    />
+                                {/if}
+
                             {/if}
 
                             <Formula
