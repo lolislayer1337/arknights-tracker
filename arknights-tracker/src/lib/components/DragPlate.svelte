@@ -73,9 +73,12 @@
 
         const oldScale = scale;
 
-        const delta = e.deltaY > 0 ? -step : step;
-        scale = Math.min(maxScale, Math.max(minScale, scale + delta));
+        const delta = -e.deltaY * 0.001;
+        const newScale = Math.min(maxScale, Math.max(minScale, oldScale * Math.exp(delta)));
 
+        if (Math.abs(newScale - oldScale) < 0.001) return;
+
+        scale = newScale;
         const scaleChange = scale / oldScale;
         x = mouseX - scaleChange * (mouseX - x);
         y = mouseY - scaleChange * (mouseY - y);
@@ -220,7 +223,7 @@
             onclick={resetScale}
         >
             <span class="font-mono text-xl text-[#21272C] dark:text-[#FDFDFD]">
-                {scale * 100}%
+                {(scale * 100).toFixed(0)}%
             </span>
         </button>
 
