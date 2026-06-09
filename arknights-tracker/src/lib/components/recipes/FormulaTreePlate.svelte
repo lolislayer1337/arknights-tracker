@@ -95,6 +95,11 @@
 
     const itemNode2ForceNodeContinuationButtonXDistancePx = 50;
 
+    const node2PointXDistancePx = 25;
+    const pointYByNodeHeightPx = itemNodeHeightPx / 2;
+    
+    const pointRadiusPx = 6;
+
     function getXpx(stage) {
         return 100 + stage * (itemNodeWidthPx + itemNode2ItemNodeXDistancePx);
     }
@@ -111,6 +116,35 @@
         return getXpx(stage) + itemNodeWidthPx + itemNode2ForceNodeContinuationButtonXDistancePx;
     }
 
+    function getPointXItemNodeLeft(stage) {
+        let nodeX = getXpx(stage);
+
+        return nodeX + itemNodeWidthPx + node2PointXDistancePx;
+    }
+
+    function getPointXItemNodeRight(stage) {
+        let nodeX = getXpx(stage);
+
+        return nodeX - node2PointXDistancePx;
+    }
+
+    function getPointXBuildingNodeLeft(stage) {
+        let nodeX = getXBuildingNode(stage);
+
+        return nodeX + buildingNodeWidthPx + node2PointXDistancePx;
+    }
+
+    function getPointXBuildingNodeRight(stage) {
+        let nodeX = getXBuildingNode(stage);
+
+        return nodeX - node2PointXDistancePx;
+    }
+
+    function getPointYNode(layer) {
+        return getYpx(layer) + pointYByNodeHeightPx;
+    }
+
+
     function forceTreeUpdate() {
         tree = tree;
     }
@@ -122,6 +156,63 @@
         class="relative shrink-0 bg-gray-600"
         style="width: 500px; height: 500px;"
     >
+
+        <div
+            class="absolute right-0 top-0 text-[#21272C] dark:text-[#FDFDFD]"
+            style="width: {getXpx(tree.maxStage) + 500}px; height: {getYpx(tree.maxLayer) + 500}px;"
+        >
+
+            <svg
+                width="{getXpx(tree.maxStage) + 500}"
+                height="{getYpx(tree.maxLayer) + 500}"
+                viewBox="{getXpx(tree.maxStage) + 500} {getYpx(tree.maxLayer) + 500}"
+            >
+
+                <g transform="translate({getXpx(tree.maxStage) + 500}, 0) scale(-1, 1)">
+
+                    {#each tree.getIterator() as node}
+
+                        {#if node.formula}
+                            <circle
+                                cx="{getPointXItemNodeLeft(node.stage)}"
+                                cy="{getPointYNode(node.layer)}"
+                                r="{pointRadiusPx}"
+                                fill="currentColor"
+                            />
+                        {/if}
+
+                        {#if node.parentNode}
+                            <circle
+                                cx="{getPointXItemNodeRight(node.stage)}"
+                                cy="{getPointYNode(node.layer)}"
+                                r="{pointRadiusPx}"
+                                fill="currentColor"
+                            />
+                        {/if}
+
+                        {#if node.childNodes.length !== 0}
+                            <circle
+                                cx="{getPointXBuildingNodeLeft(node.stage)}"
+                                cy="{getPointYNode(node.layer)}"
+                                r="{pointRadiusPx}"
+                                fill="currentColor"
+                            />
+
+                            <circle
+                                cx="{getPointXBuildingNodeRight(node.stage)}"
+                                cy="{getPointYNode(node.layer)}"
+                                r="{pointRadiusPx}"
+                                fill="currentColor"
+                            />
+                        {/if}
+
+                    {/each}
+
+                </g>
+
+            </svg>
+
+        </div>
 
         {#each tree.getIterator() as node}
 
