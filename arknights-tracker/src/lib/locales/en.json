@@ -870,6 +870,7 @@
     "title": "Settings",
     "other": "Other",
     "disableDarkening": "Disable weapon and operator card darkening",
+    "toggleCtrlForZoom": "Hold Ctrl to zoom",
     "account": {
       "title": "Select Account",
       "add": "Add",

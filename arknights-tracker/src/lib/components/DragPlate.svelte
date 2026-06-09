@@ -1,4 +1,16 @@
 <script>
+
+    import DragPlateSettingsModal from "$lib/components/DragPlateSettingsModal.svelte";
+    import Icons from "$lib/components/Icons.svelte";
+    import { ctrlForZoom } from "$lib/stores/dragPlateSettings.js";
+
+    let isSettingsOpen = false;
+
+    function openSettings() {
+        isSettingsOpen = true;
+        console.log("Settings open");
+    }
+
     let scale = 1;
     let x = 0;
     let y = 0;
@@ -173,6 +185,10 @@
     }
 </script>
 
+<DragPlateSettingsModal
+    bind:isOpen={isSettingsOpen}
+/>
+
 <div
     class="relative h-full w-full bg-gray-300 dark:bg-[#252525] rounded-3xl border border-gray-200 dark:border-[#444] transition-colors overflow-hidden select-none touch-none"
     use:preventWheel
@@ -235,10 +251,20 @@
 
     </div>
 
-    <div class="absolute bottom-3 left-3 items-center justify-center flex flex-row bg-white dark:bg-[#383838] rounded-xl border border-gray-200 dark:border-[#444]">
+    <div class="absolute bottom-3 left-3 flex flex-row gap-2 ">
 
         <button
-            class="flex h-8 w-16 items-center justify-center"
+            class="flex h-8 w-8 items-center justify-center bg-white dark:bg-[#383838] rounded-xl border border-gray-200 dark:border-[#444]"
+            onclick={openSettings}
+        >
+            <Icons
+                name="settings"
+                class="h-5 w-5 text-[#21272C] dark:text-[#FDFDFD]"
+            />
+        </button>
+
+        <button
+            class="flex h-8 w-16 items-center justify-center bg-white dark:bg-[#383838] rounded-xl border border-gray-200 dark:border-[#444]"
             onclick={resetScale}
         >
             <span class="font-mono text-xl text-[#21272C] dark:text-[#FDFDFD]">
