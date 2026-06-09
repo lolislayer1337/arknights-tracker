@@ -33,6 +33,7 @@
     export let mode = ""; // "recipes" | "tree" | "building" | "manual" | "hub"
 
     export let selectedFormula;
+    export let isBottomSheetOpen;
 
     $: isRecipesMode = mode === "recipes";
     $: isTreeMode = mode === "tree";
@@ -107,6 +108,7 @@
 
     function handleFormulaClick(formula) {
         selectedFormula = formula;
+        isBottomSheetOpen = false;
     }
 
     // todo localization

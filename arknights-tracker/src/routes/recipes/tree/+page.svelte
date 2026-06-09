@@ -159,6 +159,7 @@
                 currentFormulas={currentFormulas}
                 isHeadItem={isHeadItem}
                 bind:selectedFormula={selectedFormula}
+                bind:isBottomSheetOpen={isBottomSheetOpen}
             />
 
         </div>
