@@ -18,10 +18,12 @@
     }
 
     function handleKeydown(e) {
-        if (e.key === "Escape") onClose();
+        if (e.key === "Escape") close();
     }
 
 </script>
+
+<svelte:window on:keydown={handleKeydown} />
 
 {#if isOpen}
 
