@@ -1442,7 +1442,7 @@
 
                                         <button
                                             type="button"
-                                            class="w-7 h-7 rounded-md bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white flex items-center justify-center transition-colors border border-red-500/30 flex-shrink-0 cursor-pointer ml-2"
+                                            class="w-7 h-7 rounded-md bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white flex items-center justify-center transition-colors border select-none border-red-500/30 flex-shrink-0 cursor-pointer ml-2"
                                             title={$t("common.remove") ||
                                                 "Remove"}
                                             on:click|preventDefault|stopPropagation={() =>
@@ -1583,7 +1583,7 @@
 
                                                                             <button
                                                                                 type="button"
-                                                                                class="w-5 h-5 rounded-md bg-[#4ADE80]/10 text-[#4ADE80] hover:bg-[#4ADE80] hover:text-white flex items-center justify-center transition-colors border border-[#4ADE80]/30 flex-shrink-0 cursor-pointer"
+                                                                                class="w-5 h-5 rounded-md bg-[#4ADE80]/10 text-[#4ADE80] hover:bg-[#4ADE80] hover:text-white flex items-center justify-center select-none transition-colors border border-[#4ADE80]/30 flex-shrink-0 cursor-pointer"
                                                                                 title={$t(
                                                                                     "common.add",
                                                                                 ) ||
