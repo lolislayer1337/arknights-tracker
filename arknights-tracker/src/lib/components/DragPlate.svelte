@@ -157,7 +157,10 @@
     }
 </script>
 
-<div class="relative h-full w-full bg-gray-300 dark:bg-[#252525] rounded-3xl border border-gray-200 dark:border-[#444] transition-colors overflow-hidden select-none touch-none">
+<div
+    class="relative h-full w-full bg-gray-300 dark:bg-[#252525] rounded-3xl border border-gray-200 dark:border-[#444] transition-colors overflow-hidden select-none touch-none"
+    onwheel={onWheel}
+>
 
     <div
         role="button"
@@ -168,7 +171,6 @@
         onmousemove={onMouseMove}
         onmouseup={onMouseUp}
         onmouseleave={onMouseUp}
-        onwheel={onWheel}
         ontouchstart={onTouchStart}
         ontouchmove={onTouchMove}
         ontouchend={onTouchEnd}
