@@ -2,13 +2,14 @@
     import { FormulaTree } from "$lib/classes/formulaTree/FormulaTree.js";
     import { Item } from "$lib/classes/items/Item.js";
     import DragPlate from "$lib/components/DragPlate.svelte";
+    import Icons from "$lib/components/Icons.svelte";
     import ItemStackCard from "$lib/components/ItemStackCard.svelte";
     import BuildingTreeNode from "$lib/components/recipes/BuildingTreeNode.svelte";
     import ForceNodeContinuationButton from "$lib/components/recipes/ForceNodeContinuationButton.svelte";
     import ResourcePointCard from "$lib/components/recipes/ResourcePointCard.svelte";
 
-    export let startItemId = "item_activity_xiranite_enr_hulu";
-    export let startFormula;
+    export let startItemId;
+    export let startFormula = null;
 
     export let isBottomSheetOpen;
 
@@ -18,10 +19,13 @@
 
     let tree = new FormulaTree();
 
-    let startItem;
-    let nodes = [];
+    function forceTreeUpdate() {
+        tree = tree;
+    }
 
-    $: startItem = Item.getItem(startItemId);
+    let startItem;
+
+    $: startItem = Item.getItem(startItemId ?? "");
 
     $: if (
         startItem
@@ -31,8 +35,6 @@
         tree.setStartNode(startItem.id, startFormula);
         forceTreeUpdate();
     }
-
-    $: nodes = [...tree.getIterator()];
 
     $: if (selectedFormula) {
         console.log(selectedItemNode.itemId);
@@ -159,10 +161,6 @@
         + `Q ${x1 + dx / 2} ${y2}, ${x2} ${y2}`;
     }
 
-    function forceTreeUpdate() {
-        tree = tree;
-    }
-
 </script>
 
 <DragPlate>
@@ -171,84 +169,86 @@
         style="width: 500px; height: 500px;"
     >
 
-        <div
-            class="absolute right-0 top-0 text-[#21272C] dark:text-[#FDFDFD]"
-            style="width: {getXpx(tree.maxStage) + 500}px; height: {getYpx(tree.maxLayer) + 500}px;"
-        >
+        {#if tree.startNode}
 
-            <svg
-                width="{getXpx(tree.maxStage) + 500}"
-                height="{getYpx(tree.maxLayer) + 500}"
-                viewBox="{getXpx(tree.maxStage) + 500} {getYpx(tree.maxLayer) + 500}"
+            <div
+                class="absolute right-0 top-0 text-[#21272C] dark:text-[#FDFDFD]"
+                style="width: {getXpx(tree.maxStage) + 500}px; height: {getYpx(tree.maxLayer) + 500}px;"
             >
 
-                <g transform="translate({getXpx(tree.maxStage) + 500}, 0) scale(-1, 1)">
+                <svg
+                    width="{getXpx(tree.maxStage) + 500}"
+                    height="{getYpx(tree.maxLayer) + 500}"
+                    viewBox="{getXpx(tree.maxStage) + 500} {getYpx(tree.maxLayer) + 500}"
+                >
 
-                    {#each tree.getIterator() as node}
+                    <g transform="translate({getXpx(tree.maxStage) + 500}, 0) scale(-1, 1)">
 
-                        {#if node.formula}
-                            <circle
-                                cx="{getPointXItemNodeLeft(node.stage)}"
-                                cy="{getPointYNode(node.layer)}"
-                                r="{pointRadiusPx}"
-                                fill="currentColor"
-                            />
-                        {/if}
+                        {#each tree.getIterator() as node}
 
-                        {#if node.parentNode}
-                            <circle
-                                cx="{getPointXItemNodeRight(node.stage)}"
-                                cy="{getPointYNode(node.layer)}"
-                                r="{pointRadiusPx}"
-                                fill="currentColor"
-                            />
-                        {/if}
+                            {#if node.formula}
+                                <circle
+                                    cx="{getPointXItemNodeLeft(node.stage)}"
+                                    cy="{getPointYNode(node.layer)}"
+                                    r="{pointRadiusPx}"
+                                    fill="currentColor"
+                                />
+                            {/if}
 
-                        {#if node.childNodes.length !== 0}
-                            <circle
-                                cx="{getPointXBuildingNodeLeft(node.stage)}"
-                                cy="{getPointYNode(node.layer)}"
-                                r="{pointRadiusPx}"
-                                fill="currentColor"
-                            />
+                            {#if node.parentNode}
+                                <circle
+                                    cx="{getPointXItemNodeRight(node.stage)}"
+                                    cy="{getPointYNode(node.layer)}"
+                                    r="{pointRadiusPx}"
+                                    fill="currentColor"
+                                />
+                            {/if}
 
-                            <circle
-                                cx="{getPointXBuildingNodeRight(node.stage)}"
-                                cy="{getPointYNode(node.layer)}"
-                                r="{pointRadiusPx}"
-                                fill="currentColor"
-                            />
+                            {#if node.childNodes.length !== 0}
+                                <circle
+                                    cx="{getPointXBuildingNodeLeft(node.stage)}"
+                                    cy="{getPointYNode(node.layer)}"
+                                    r="{pointRadiusPx}"
+                                    fill="currentColor"
+                                />
 
-                            <path
-                                d="{getLinePath(getPointXItemNodeLeft(node.stage), getPointYNode(node.layer),
-                                getPointXBuildingNodeRight(node.stage), getPointYNode(node.layer))}"
-                                stroke="currentColor"
-                                fill="none"
-                                stroke-width="{lineWidthPx}"
-                            />
-                        {/if}
+                                <circle
+                                    cx="{getPointXBuildingNodeRight(node.stage)}"
+                                    cy="{getPointYNode(node.layer)}"
+                                    r="{pointRadiusPx}"
+                                    fill="currentColor"
+                                />
 
-                        {#each node.childNodes as childNode}
+                                <path
+                                    d="{getLinePath(getPointXItemNodeLeft(node.stage), getPointYNode(node.layer),
+                                    getPointXBuildingNodeRight(node.stage), getPointYNode(node.layer))}"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    stroke-width="{lineWidthPx}"
+                                />
+                            {/if}
 
-                            <path
-                                d="{getLinePath(getPointXBuildingNodeLeft(node.stage), getPointYNode(node.layer),
-                                getPointXItemNodeRight(childNode.stage), getPointYNode(childNode.layer))}"
-                                stroke="currentColor"
-                                fill="none"
-                                stroke-width="{lineWidthPx}"
-                            />
+                            {#each node.childNodes as childNode}
+
+                                <path
+                                    d="{getLinePath(getPointXBuildingNodeLeft(node.stage), getPointYNode(node.layer),
+                                    getPointXItemNodeRight(childNode.stage), getPointYNode(childNode.layer))}"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    stroke-width="{lineWidthPx}"
+                                />
+
+                            {/each}
 
                         {/each}
 
-                    {/each}
+                    </g>
 
-                </g>
+                </svg>
 
-            </svg>
+            </div>
 
-        </div>
-
-        {#each tree.getIterator() as node}
+            {#each tree.getIterator() as node}
 
             <div
                 class="absolute"
@@ -327,6 +327,19 @@
             {/if}
 
         {/each}
+
+        {:else}
+
+            <div class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
+
+                <Icons
+                    name="noData"
+                    class="h-16 w-16"
+                />
+
+            </div>
+
+        {/if}
 
     </div>
 </DragPlate>
