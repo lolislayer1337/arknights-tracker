@@ -766,7 +766,7 @@ export const rawEvents = [
     color: "#3FB291",
     layer: 7,
     type: "inGamePermanent",
-    iconPosition: 45,
+    iconPosition: 51,
     version: "1.3"
   },
   {
@@ -781,7 +781,7 @@ export const rawEvents = [
     color: "#1d7c53",
     layer: 8,
     type: "inGame",
-    iconPosition: 45,
+    iconPosition: 51,
     version: "1.3"
   },
   {
