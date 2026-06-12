@@ -1,17 +1,19 @@
-export class Comparator {
+import { IComparator } from "$lib/classes/comparators/IComparator.js";
+
+export class FieldComparator extends IComparator {
     _fieldName;
     _valueOrders;
 
     /**
-     *
      * @param {string} fieldName
      */
     constructor(fieldName) {
+        super();
+
         this._fieldName = fieldName;
     }
 
     /**
-     *
      * @returns {string}
      */
     get fieldName() {
@@ -19,7 +21,6 @@ export class Comparator {
     }
 
     /**
-     *
      * @param {string} fieldName
      */
     set fieldName(fieldName) {
