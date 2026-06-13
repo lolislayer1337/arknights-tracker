@@ -183,7 +183,7 @@
 
             </div>
 
-            {#if isFilterOpen}
+            {#if isFilterDropdownOpen}
 
                 <div class="absolute top-12 left-0">
 

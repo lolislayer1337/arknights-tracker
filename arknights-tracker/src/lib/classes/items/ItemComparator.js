@@ -128,10 +128,10 @@ export class ItemComparator {
     _getComparatorByName(comparatorName) {
         switch (comparatorName) {
             case "rarity": return this._rarityComparator;
-            case "groupId": return this._groupComparator;
-            case "type": return this._typeComparator;
-            case "material": return this._materialComparator;
-            case "locale": return this._localeComparator;
+            case "itemGroups": return this._groupComparator;
+            case "itemTypes": return this._typeComparator;
+            case "itemMaterials": return this._materialComparator;
+            case "localeName": return this._localeComparator;
             default: return null;
         }
     }

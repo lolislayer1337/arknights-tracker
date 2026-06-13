@@ -2,11 +2,20 @@ import { IComparator } from "$lib/classes/comparators/IComparator.js";
 
 export class LocaleComparator extends IComparator {
     _getLocaleFunc;
+    _reversed = false;
 
     constructor(getLocaleFunc) {
         super();
 
         this._getLocaleFunc = getLocaleFunc;
+    }
+
+    get isReversed() {
+        return this._reversed;
+    }
+
+    set isReversed(value) {
+        this._reversed = value;
     }
 
     set getLocaleFunc(getLocaleFunc) {
@@ -21,7 +30,9 @@ export class LocaleComparator extends IComparator {
             return 0;
         }
 
-        return localeA.localeCompare(localeB);
+        let result = localeA.localeCompare(localeB);
+
+        return this.isReversed ? -result : result;
     }
 
     _getLocale(obj) {

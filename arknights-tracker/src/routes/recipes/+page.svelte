@@ -1,139 +1,45 @@
 <script>
-    import { t } from "$lib/i18n";
-    import { itemFilters, itemGroupMode, itemManual, itemSearch } from "$lib/stores/filterStore.js";
-    import { Item } from "$lib/classes/items/Item.js";
-    import { craftableItemsList } from "$lib/data/crafts/craftableItemsList.js";
     import { FactoryEvent } from "$lib/classes/events/FactoryEvent.js";
-
-    import FormulaSidebar from "$lib/components/recipes/FormulaSidebar.svelte";
-    import DataToolbar from "$lib/components/dataToolbar/DataToolbar.svelte";
-    import ItemCard from "$lib/components/recipes/ItemCard.svelte";
+    import { Item } from "$lib/classes/items/Item.js";
+    import { ItemComparator } from "$lib/classes/items/ItemComparator.js";
     import BottomSheet from "$lib/components/BottomSheet.svelte";
+    import DataToolbar from "$lib/components/dataToolbarV2/DataToolbar.svelte";
+    import RecipesFilterDropdown from "$lib/components/dataToolbarV2/filterDropdowns/RecipesFilterDropdown.svelte";
     import Icon from "$lib/components/Icon.svelte";
+    import FormulaSidebar from "$lib/components/recipes/FormulaSidebar.svelte";
+    import ItemCard from "$lib/components/recipes/ItemCard.svelte";
+    import { craftableItemsList } from "$lib/data/crafts/craftableItemsList.js";
+    import { t } from "$lib/i18n";
+    import { itemFilters, itemGroupMode, itemSearch, itemSortParams } from "$lib/stores/filterStore.js";
 
-    $: filters = $itemFilters;
+    $: selectedFilters = $itemFilters;
     $: searchQuery = $itemSearch;
     $: isGrouped = $itemGroupMode || false;
+    $: sortParams = $itemSortParams;
+
+    $: allFilters = {
+        rarity: sortParams.sortFieldParams.rarity,
+        events: sortParams.sortFieldParams.events,
+        itemGroups: sortParams.sortFieldParams.itemGroups,
+        itemTypes: sortParams.sortFieldParams.itemTypes,
+        itemMaterials: sortParams.sortFieldParams.itemMaterials
+    };
 
     const allItems = craftableItemsList.map((itemId) => Item.getItem(itemId));
 
-    let sortField = "itemGroup";
-    let sortDirection = "desc";
+    const itemComparator = new ItemComparator();
+    itemComparator.localeComparator.getLocaleFunc = (item) => $t(`itemNames.${item.id}`);
 
     $: filteredItems = (() => {
-        const baseFiltered = [...allItems].filter((item) => {
-            const query = searchQuery.toLowerCase().trim();
-            const localizedName = ($t(`itemNames.${item.id}`) || "").toLowerCase();
-            const idStr = (item.id || "").toLowerCase();
+        itemComparator.setComparatorsOrder(sortParams.sortFieldOrder);
+        itemComparator.rarityComparator.setValueOrder(sortParams.sortFieldParams.rarity);
+        itemComparator.groupComparator.setValueOrder(sortParams.sortFieldParams.itemGroups);
+        itemComparator.typeComparator.setValueOrder(sortParams.sortFieldParams.itemTypes);
+        itemComparator.materialComparator.setValueOrder(sortParams.sortFieldParams.itemMaterials);
+        itemComparator.localeComparator.isReversed = sortParams.sortFieldParams.localeName !== "a-z";
 
-            const matchesSearch = !query || localizedName.includes(query) || idStr.includes(query);
-
-            if (!matchesSearch) return false;
-
-            const matchesRarity =
-                filters.rarity.length === 0
-                || filters.rarity.includes(item.rarity);
-
-
-            let matchesGroup =
-                filters.itemSubGroups.length === 0
-                || filters.itemSubGroups.includes(item.subGroupId);
-
-            let matchesEvent = filters.factoryEvents.length === 0
-                || filters.factoryEvents.includes("nonEvent")
-                || filters.factoryEvents
-                    .some((eventId) => FactoryEvent.getFactoryEvent(eventId).containsEventItemId(item.id));
-
-            return matchesRarity && matchesGroup && matchesEvent;
-        });
-
-        const sortLogic = (itemA, itemB) => {
-            let diff = 0;
-            let aWeight = 0;
-            let bWeight = 0;
-
-            if (sortField === "itemGroup") {
-                aWeight = itemGroupWeight[itemA.groupId] ?? 0;
-                bWeight = itemGroupWeight[itemB.groupId] ?? 0;
-
-                if (aWeight === bWeight) {
-                    aWeight = itemSubGroupWeight[itemA.subGroupId] ?? -100;
-                    bWeight = itemSubGroupWeight[itemB.subGroupId] ?? -100;
-                }
-
-            } else if (sortField === "rarity") {
-                aWeight = itemA.rarity;
-                bWeight = itemB.rarity;
-            }
-
-            diff = bWeight - aWeight;
-
-            if (diff !== 0) {
-                return sortDirection === "desc" ? diff : -diff;
-            }
-
-            aWeight = itemA.rarity;
-            bWeight = itemB.rarity;
-
-            diff = aWeight - bWeight;
-
-            if (diff !== 0) {
-                return diff;
-            }
-
-            return itemA.id.localeCompare(itemB.id);
-        };
-
-        return baseFiltered.sort(sortLogic);
+        return itemComparator.getSortedList(allItems);
     })();
-
-    const itemGroupWeight = {
-        "nature": 5,
-        "gatherable": 2,
-        "product": 4,
-        "usable": 3,
-        "facility": 1
-    };
-
-    const itemSubGroupWeight = {
-        "facility_battle": 5,
-        "facility_crafter": 8,
-        "facility_miner": 10,
-        "facility_other": -10,
-        "facility_powerStation": 7,
-        "facility_pump": 9,
-        "facility_soil": 6,
-
-        "gatherable_drop": 8,
-        "gatherable_muck": 9,
-        "gatherable_plant": 10,
-
-        "nature_flowerPlant": 8,
-        "nature_grassPlant": 7,
-        "nature_liquid": 9,
-        "nature_ore": 10,
-        "nature_soilPlant": 6,
-        "nature_wood": 5,
-
-        "product_activityXiranite": 3,
-        "product_amethyst": 9,
-        "product_battery": 1,
-        "product_carbon": 5,
-        "product_component": 2,
-        "product_copper": 7,
-        "product_fullBottle": -10,
-        "product_iron": 8,
-        "product_liquid": 11,
-        "product_muck": 0,
-        "product_originium": 10,
-        "product_powder": 6,
-        "product_xiranite": 4,
-
-        "usable_bomb": 8,
-        "usable_bottledProdFood": 9,
-        "usable_other": -10,
-        "usable_powder": 10
-    };
 
     let selectedItemId = "";
     let isBottomSheetOpen = false;
@@ -170,13 +76,13 @@
     let flatDisplayLimit = 40;
 
     $: {
-        const _trigger = [
-            $itemSearch,
-            $itemFilters,
-            sortField,
-            sortDirection,
-            isGrouped
-        ];
+        // const _trigger = [
+        //     $itemSearch,
+        //     $itemFilters,
+        //     sortField,
+        //     sortDirection,
+        //     isGrouped
+        // ];
         displayLimit = 2;
         flatDisplayLimit = 40;
         setTimeout(checkScroll, 50);
@@ -224,15 +130,30 @@
         </div>
 
         <div class="w-full xl:w-[70%] mb-4">
+<!--            <DataToolbar-->
+<!--                bind:sortField-->
+<!--                bind:sortDirection-->
+<!--                bind:filters={$itemFilters}-->
+<!--                bind:searchQuery={$itemSearch}-->
+<!--                bind:manualMode={$itemManual}-->
+<!--                bind:groupMode={$itemGroupMode}-->
+<!--                mode="items"-->
+<!--            />-->
+
             <DataToolbar
-                bind:sortField
-                bind:sortDirection
-                bind:filters={$itemFilters}
-                bind:searchQuery={$itemSearch}
-                bind:manualMode={$itemManual}
-                bind:groupMode={$itemGroupMode}
-                mode="items"
-            />
+                showFilterDropdownButton={true}
+                showSearchInput={true}
+                showGroupButton={true}
+            >
+
+                <RecipesFilterDropdown
+                    slot="filterDropdown"
+                    filters={allFilters}
+                    bind:selectedFilters={$itemFilters}
+                />
+
+            </DataToolbar>
+
         </div>
 
         <div class="w-full pb-8">
