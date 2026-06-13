@@ -1,30 +1,21 @@
 import { IComparator } from "$lib/classes/comparators/IComparator.js";
 
 export class FieldComparator extends IComparator {
-    _fieldName;
+    _getValueFunc;
     _valueOrders;
 
-    /**
-     * @param {string} fieldName
-     */
-    constructor(fieldName) {
+    constructor(getValueFunc) {
         super();
 
-        this._fieldName = fieldName;
+        this._getValueFunc = getValueFunc;
     }
 
-    /**
-     * @returns {string}
-     */
-    get fieldName() {
-        return this._fieldName;
+    get getValueFunc() {
+        return this._getValueFunc;
     }
 
-    /**
-     * @param {string} fieldName
-     */
-    set fieldName(fieldName) {
-        this._fieldName = fieldName;
+    set getValueFunc(func) {
+        this._getValueFunc = func;
     }
 
     /**
@@ -59,6 +50,6 @@ export class FieldComparator extends IComparator {
     }
 
     _getObjectOrder(obj) {
-        return this._getValueOrder(obj?.[this._fieldName] ?? "");
+        return this._getValueOrder(this._getValueFunc?.(obj) ?? "");
     }
 }
