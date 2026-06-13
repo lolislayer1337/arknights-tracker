@@ -1,6 +1,7 @@
 import { FieldComparator } from "$lib/classes/comparators/FieldComparator.js";
 import { IComparator } from "$lib/classes/comparators/IComparator.js";
 import { LocaleComparator } from "$lib/classes/comparators/LocaleComparator.js";
+import { FullBottle } from "$lib/classes/items/FullBottle.js";
 import { Item } from "$lib/classes/items/Item.js";
 
 export class ItemComparator {
@@ -17,10 +18,10 @@ export class ItemComparator {
     _localeComparator;
 
     constructor({
-                    rarityComparator = new FieldComparator("rarity"),
-                    groupComparator = new FieldComparator("groupId"),
-                    typeComparator = new FieldComparator("type"),
-                    materialComparator = new FieldComparator("material"),
+                    rarityComparator = new FieldComparator((item) => item.rarity),
+                    groupComparator = new FieldComparator((item) => item.groupId),
+                    typeComparator = new FieldComparator((item) => item.type),
+                    materialComparator = new FieldComparator(ItemComparator._getMaterial),
                     localeComparator = new LocaleComparator((item) => item.id)
     } = {}) {
         this._rarityComparator = rarityComparator;
@@ -76,6 +77,20 @@ export class ItemComparator {
 
             if (diff !== 0) {
                 return diff;
+            }
+
+            if (comparator === this._materialComparator
+                && FullBottle.isFullBottle(itemA.id)
+                && FullBottle.isFullBottle(itemB.id)
+            ) {
+                let fullBottleA = FullBottle.getFullBottleFromItem(itemA);
+                let fullBottleB = FullBottle.getFullBottleFromItem(itemB);
+
+                diff = comparator.compare(fullBottleA.liquidItem, fullBottleB.liquidItem);
+
+                if (diff !== 0) {
+                    return diff;
+                }
             }
         }
 
@@ -134,5 +149,15 @@ export class ItemComparator {
             case "localeName": return this._localeComparator;
             default: return null;
         }
+    }
+
+    static _getMaterial(item) {
+        let fullBottle = FullBottle.getFullBottleFromItem(item);
+
+        if (fullBottle) {
+            return fullBottle.emptyBottleItem.material;
+        }
+
+        return item.material;
     }
 }
