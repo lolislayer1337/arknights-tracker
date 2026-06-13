@@ -132,7 +132,7 @@ export const items = {
         "iconId": "item_port_cmpt_mc_1",
         "rarity": 2,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_dismantler_1": {
@@ -140,7 +140,7 @@ export const items = {
         "iconId": "item_port_dismantler_1",
         "rarity": 3,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_filling_pd_mc_1": {
@@ -148,7 +148,7 @@ export const items = {
         "iconId": "item_port_filling_pd_mc_1",
         "rarity": 3,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_furnance_1": {
@@ -156,7 +156,7 @@ export const items = {
         "iconId": "item_port_furnance_1",
         "rarity": 1,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_grinder_1": {
@@ -164,7 +164,7 @@ export const items = {
         "iconId": "item_port_grinder_1",
         "rarity": 1,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_liquid_purifier_1": {
@@ -172,7 +172,7 @@ export const items = {
         "iconId": "item_port_liquid_purifier_1",
         "rarity": 4,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_mix_pool_1": {
@@ -180,7 +180,7 @@ export const items = {
         "iconId": "item_port_mix_pool_1",
         "rarity": 3,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_mix_pool_2": {
@@ -188,7 +188,7 @@ export const items = {
         "iconId": "item_port_mix_pool_2",
         "rarity": 3,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_planter_1": {
@@ -196,7 +196,7 @@ export const items = {
         "iconId": "item_port_planter_1",
         "rarity": 3,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_seedcol_1": {
@@ -204,7 +204,7 @@ export const items = {
         "iconId": "item_port_seedcol_1",
         "rarity": 3,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_shaper_1": {
@@ -212,7 +212,7 @@ export const items = {
         "iconId": "item_port_shaper_1",
         "rarity": 2,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_thickener_1": {
@@ -220,7 +220,7 @@ export const items = {
         "iconId": "item_port_thickener_1",
         "rarity": 4,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_tools_asm_mc_1": {
@@ -228,7 +228,7 @@ export const items = {
         "iconId": "item_port_tools_asm_mc_1",
         "rarity": 3,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_winder_1": {
@@ -236,7 +236,7 @@ export const items = {
         "iconId": "item_port_winder_1",
         "rarity": 1,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_xiranite_oven_1": {
@@ -244,7 +244,7 @@ export const items = {
         "iconId": "item_port_xiranite_oven_1",
         "rarity": 4,
         "groupId": "facility",
-        "type": "other",
+        "type": "crafter",
         "material": null
     },
     "item_port_miner_1": {
