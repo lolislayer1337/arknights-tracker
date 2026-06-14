@@ -2565,7 +2565,7 @@ export const items = {
         "rarity": 2,
         "groupId": "usable",
         "type": "powder",
-        "material": null
+        "material": "plant_grass_1"
     },
     "item_plant_grass_powder_2": {
         "id": "item_plant_grass_powder_2",
@@ -2573,7 +2573,7 @@ export const items = {
         "rarity": 2,
         "groupId": "usable",
         "type": "powder",
-        "material": null
+        "material": "plant_grass_2"
     },
     "item_plant_grass_spc_powder_1": {
         "id": "item_plant_grass_spc_powder_1",
@@ -2581,7 +2581,7 @@ export const items = {
         "rarity": 3,
         "groupId": "usable",
         "type": "powder",
-        "material": null
+        "material": "plant_grass_spc_1"
     },
     "item_plant_grass_spc_powder_2": {
         "id": "item_plant_grass_spc_powder_2",
@@ -2589,7 +2589,7 @@ export const items = {
         "rarity": 3,
         "groupId": "usable",
         "type": "powder",
-        "material": null
+        "material": "plant_grass_spc_2"
     },
     "item_plant_moss_powder_1": {
         "id": "item_plant_moss_powder_1",
@@ -2597,7 +2597,7 @@ export const items = {
         "rarity": 2,
         "groupId": "usable",
         "type": "powder",
-        "material": null
+        "material": "plant_flower_1"
     },
     "item_plant_moss_powder_2": {
         "id": "item_plant_moss_powder_2",
@@ -2605,7 +2605,7 @@ export const items = {
         "rarity": 2,
         "groupId": "usable",
         "type": "powder",
-        "material": null
+        "material": "plant_flower_2"
     },
     "item_plant_moss_spc_powder_1": {
         "id": "item_plant_moss_spc_powder_1",
@@ -2613,7 +2613,7 @@ export const items = {
         "rarity": 3,
         "groupId": "usable",
         "type": "powder",
-        "material": null
+        "material": "plant_flower_spc_1"
     },
     "item_plant_moss_spc_powder_2": {
         "id": "item_plant_moss_spc_powder_2",
@@ -2621,7 +2621,7 @@ export const items = {
         "rarity": 3,
         "groupId": "usable",
         "type": "powder",
-        "material": null
+        "material": "plant_flower_spc_2"
     },
     "item_drop_agdisk_1": {
         "id": "item_drop_agdisk_1",
