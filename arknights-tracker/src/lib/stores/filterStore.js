@@ -88,6 +88,8 @@ const initialOperatorFilters = {
     class: ["guard", "vanguard", "caster", "defender", "supporter", "striker"],
     element: ["cryo", "physical", "nature", "heat", "electric"],
     weapon: ["sword", "polearm", "artsUnit", "greatSword", "handcannon"],
+    skillMaterialType: "any",
+    skillMaterial: null
 };
 
 const initialEnemiesFilters = {
