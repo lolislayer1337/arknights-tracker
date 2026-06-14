@@ -14,7 +14,15 @@
             selectedFilters[groupName] = new Set();
         }
 
-        selectedFilters[groupName].clear();
+        let set = selectedFilters[groupName];
+
+        if (set.size === 0) {
+            for (let filter of filters[groupName]) {
+                set.add(filter);
+            }
+        } else {
+            set.clear();
+        }
 
         forceFiltersUpdate();
     }
