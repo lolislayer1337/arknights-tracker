@@ -74,6 +74,58 @@
         $itemSortParams = getDefaultItemSortParams();
     }
 
+    function checkSortParams(currentSortParams, defaultSortParams) {
+        if (!currentSortParams || !currentSortParams.sortFieldOrder || !currentSortParams.sortFieldParams) {
+            return false;
+        }
+
+        let fieldOrder = checkList(currentSortParams.sortFieldOrder, defaultSortParams.sortFieldOrder);
+
+        if (!fieldOrder) {
+            return false;
+        }
+
+        let { localeName, ...rest } = defaultSortParams.sortFieldParams;
+
+        for (let key of Object.keys(rest)) {
+            let check = checkList(currentSortParams.sortFieldParams[key], defaultSortParams.sortFieldParams[key]);
+
+            if (!check) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function checkList(currentList, defaultList) {
+        if (!currentList) {
+            return false;
+        }
+
+        let set = new Set(defaultList);
+
+        for (let item of currentList) {
+            let isDeleted = set.delete(item);
+
+            if (!isDeleted) {
+                return false;
+            }
+        }
+
+        return set.size === 0;
+    }
+
+    let defaultSortParams = getDefaultItemSortParams();
+    $: {
+        let isSortParamsCorrect = sortParams ? checkSortParams(sortParams, defaultSortParams) : true;
+
+        if (!isSortParamsCorrect) {
+            console.log("Incorrect item sort params");
+            sortParams = getDefaultItemSortParams();
+        }
+    }
+
     let isFilterActive = false;
     $: isFilterActive = Object.values(selectedFilters)
         .some((set) => set.size > 0);
