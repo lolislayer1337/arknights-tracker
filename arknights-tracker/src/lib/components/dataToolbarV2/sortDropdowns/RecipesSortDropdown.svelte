@@ -60,8 +60,48 @@
 
     $: isSortFieldOpen = (sortFieldName) => sortFieldName === openedSortField;
 
+    let draggedSortField = null;
+    let dragOverSortField = null;
 
+    function handleDragStart(event, sortFieldName) {
+        draggedSortField = sortFieldName;
+        event.dataTransfer.effectAllowed = 'move';
+        event.dataTransfer.setData('text/plain', sortFieldName);
+    }
 
+    function handleDragEnter(event, sortFieldName) {
+        event.preventDefault();
+
+        if (!draggedSortField || draggedSortField === sortFieldName) return;
+
+        dragOverSortField = sortFieldName;
+
+        const currentOrder = [...sortParams.sortFieldOrder];
+        const sourceIndex = currentOrder.indexOf(draggedSortField);
+        const targetIndex = currentOrder.indexOf(sortFieldName);
+
+        if (sourceIndex !== -1 && targetIndex !== -1 && sourceIndex !== targetIndex) {
+            currentOrder.splice(sourceIndex, 1);
+            currentOrder.splice(targetIndex, 0, draggedSortField);
+            sortParams.sortFieldOrder = currentOrder;
+        }
+    }
+
+    function handleDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDragEnd() {
+        draggedSortField = null;
+        dragOverSortField = null;
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        draggedSortField = null;
+        dragOverSortField = null;
+    }
 </script>
 
 <div
@@ -85,10 +125,21 @@
     </div>
 
     {#each sortParams.sortFieldOrder as sortFieldName}
-
-        <div class="flex flex-row">
-
-            <div class="h-4 w-4 pt-[1px] mr-3">
+        <div
+            class="flex flex-row transition-all duration-200 rounded-lg {
+                draggedSortField === sortFieldName
+                    ? 'opacity-40 scale-95'
+                    : ''
+            } "
+            draggable="true"
+            role="listitem"
+            on:dragstart={(e) => handleDragStart(e, sortFieldName)}
+            on:dragenter={(e) => handleDragEnter(e, sortFieldName)}
+            on:dragover={handleDragOver}
+            on:drop={handleDrop}
+            on:dragend={handleDragEnd}
+        >
+            <div class="h-4 w-4 pt-[1px] mr-3 cursor-grab active:cursor-grabbing">
 
                 <Icon
                     name="dragDots"
