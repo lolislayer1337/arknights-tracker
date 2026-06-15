@@ -25,6 +25,8 @@
                 return $t("sort.itemTypesTitle");
             case "itemMaterials":
                 return $t("sort.itemMaterialsTitle");
+            case "localeName":
+                return $t("sort.localeNameTitle");
             default:
                 return $t(`sort.${sortFieldName}`);
         }
