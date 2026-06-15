@@ -176,6 +176,10 @@
             ? (item.getEventIds()?.[0] ?? "nonEvent")
             : item[groupFieldName];
 
+        if (groupFieldName === "material" && groupId === null) {
+            groupId = "nonMaterial";
+        }
+
         groupId = groupId.toString();
 
         if (!groups.groupLists[groupId]) {
