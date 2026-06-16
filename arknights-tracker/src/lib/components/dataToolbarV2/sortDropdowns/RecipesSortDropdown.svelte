@@ -1,9 +1,11 @@
 <script>
+    import { DraggableList } from "$lib/classes/dragndrop/DraggableList.js";
     import { FactoryEvent } from "$lib/classes/events/FactoryEvent.js";
     import DropdownTemplate from "$lib/components/dataToolbarV2/DropdownTemplate.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import { t } from "$lib/i18n";
     import { getDefaultItemSortParams } from "$lib/stores/filterStore.js";
+    import { flip } from "svelte/animate";
 
     export let sortParams = {};
 
@@ -62,260 +64,259 @@
 
     $: isSortFieldOpen = (sortFieldName) => sortFieldName === openedSortField;
 
-    let draggedSortField = null;
-    let dragOverSortField = null;
+    // sort field drag
 
-    function handleSortFieldDragStart(event, sortFieldName) {
+    let sortFieldDragList = new DraggableList(sortParams.sortFieldOrder);
+
+    let currentDragCursorPosX = 0;
+    let currentDragCursorPosY = 0;
+
+    function forceDragListUpdate() {
+        sortFieldDragList = sortFieldDragList;
+    }
+
+    function forceSortFieldOrderUpdate() {
+        sortParams.sortFieldOrder = sortFieldDragList.itemList;
+    }
+
+    $: isSortFieldDragged = (sortField) => {
+       return sortFieldDragList.draggedItemId === sortField;
+    };
+
+    function sortFieldStartDrag(event, sortFieldName) {
+        console.log(`start ${sortFieldName}`);
+
+        currentDragCursorPosX = event.clientX;
+        currentDragCursorPosY = event.clientY;
+
         openedSortField = null;
-        draggedSortField = sortFieldName;
-        event.dataTransfer.effectAllowed = 'move';
-        event.dataTransfer.setData("text/plain", "sortField:" + sortFieldName);
+
+        sortFieldDragList.startDrag(sortFieldName);
+        forceDragListUpdate();
+
+        document.body.classList.add("cursor-grabbing");
     }
 
-    function handleSortFieldDragEnter(event, sortFieldName) {
-        event.preventDefault();
+    function sortFieldEndDrag() {
+        console.log(`end`);
+        sortFieldDragList.endDrag();
+        forceDragListUpdate();
+    }
 
-        if (!draggedSortField || draggedSortField === sortFieldName) return;
+    function onSortFieldEnter(event, sortFieldName) {
+        if (!sortFieldDragList.draggedItemId) {
+            return;
+        }
+        console.log(`enter ${sortFieldName}`);
 
-        dragOverSortField = sortFieldName;
+        let wasModified = sortFieldDragList.onEnter(sortFieldName);
 
-        const currentOrder = [...sortParams.sortFieldOrder];
-        const sourceIndex = currentOrder.indexOf(draggedSortField);
-        const targetIndex = currentOrder.indexOf(sortFieldName);
+        forceDragListUpdate();
 
-        if (sourceIndex !== -1 && targetIndex !== -1 && sourceIndex !== targetIndex) {
-            currentOrder.splice(sourceIndex, 1);
-            currentOrder.splice(targetIndex, 0, draggedSortField);
-            sortParams.sortFieldOrder = currentOrder;
+        if (wasModified) {
+            forceSortFieldOrderUpdate();
         }
     }
 
-    let draggedFilter = null;
-    let draggedFilterField = null;
-    let dragOverFilter = null;
+    function onSortFieldLeave(event, sortFieldName) {
+        if (!sortFieldDragList.draggedItemId) {
+            return;
+        }
+        console.log(`leave ${sortFieldName}`);
 
-    function handleFilterDragStart(event, sortFieldName, filterName) {
-        draggedFilter = filterName;
-        draggedFilterField = sortFieldName;
-        event.dataTransfer.effectAllowed = "move";
-        event.dataTransfer.setData("text/plain", "filter:" + sortFieldName + ":" + filterName);
-        event.stopPropagation();
+        sortFieldDragList.onLeave(sortFieldName);
+
+        forceDragListUpdate();
     }
 
-    let dragDebounceTimer = null;
+    function handleWindowPointerUp(event) {
+        sortFieldEndDrag();
 
-    function handleFilterDragEnter(event, sortFieldName, filterName) {
-        event.preventDefault();
-        event.stopPropagation();
+        document.body.classList.remove("cursor-grabbing");
+    }
 
-        if (!draggedFilter || !draggedFilterField) return;
-        if (draggedFilterField !== sortFieldName) return;
-        if (draggedFilter === filterName) return;
-
-        if (dragOverFilter === filterName) return;
-
-        dragOverFilter = filterName;
-
-        if (dragDebounceTimer) {
-            clearTimeout(dragDebounceTimer);
+    function handleWindowPointerMove(event) {
+        if (!sortFieldDragList.draggedItemId) {
+            return;
         }
 
-        dragDebounceTimer = setTimeout(() => {
-            const currentFilters = [...sortParams.sortFieldParams[sortFieldName]];
-            const sourceIndex = currentFilters.indexOf(draggedFilter);
-            const targetIndex = currentFilters.indexOf(filterName);
+        currentDragCursorPosX = event.clientX;
+        currentDragCursorPosY = event.clientY;
 
-            if (sourceIndex !== -1 && targetIndex !== -1 && sourceIndex !== targetIndex) {
-                const newFilters = [...currentFilters];
-                const [movedItem] = newFilters.splice(sourceIndex, 1);
-                newFilters.splice(targetIndex, 0, movedItem);
-
-                sortParams.sortFieldParams = {
-                    ...sortParams.sortFieldParams,
-                    [sortFieldName]: newFilters
-                };
-            }
-        }, 50);
     }
 
-    function handleDragOver(event) {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = 'move';
-    }
 
-    function handleDragEnd() {
-        draggedSortField = null;
-        dragOverSortField = null;
-        draggedFilter = null;
-        draggedFilterField = null;
-        dragOverFilter = null;
-    }
-
-    function handleDrop(event) {
-        event.preventDefault();
-        draggedSortField = null;
-        dragOverSortField = null;
-        draggedFilter = null;
-        draggedFilterField = null;
-        dragOverFilter = null;
-    }
 </script>
+
+<svelte:window
+    on:pointermove={handleWindowPointerMove}
+    on:pointerup={handleWindowPointerUp}
+/>
 
 <DropdownTemplate
     showResetButton={true}
     onResetButton={onSortReset}
 >
 
-    {#each sortParams.sortFieldOrder as sortFieldName}
+    <div class="flex flex-col gap-3 select-none">
 
-        <div
-            class="flex flex-row transition-all duration-200 rounded-lg {
-                draggedSortField === sortFieldName
-                    ? 'opacity-40 scale-95'
-                    : ''
-            }"
-            draggable="true"
-            role="listitem"
-            on:dragstart={(e) => handleSortFieldDragStart(e, sortFieldName)}
-            on:dragenter={(e) => handleSortFieldDragEnter(e, sortFieldName)}
-            on:dragover={handleDragOver}
-            on:drop={handleDrop}
-            on:dragend={handleDragEnd}
-        >
+        {#if sortFieldDragList.draggedItemId}
 
-            <div class="h-4 w-4 pt-[1px] mr-3 cursor-grab active:cursor-grabbing">
+            <div
+                class="fixed flex flex-row rounded-lg pointer-events-none select-none"
+                style="left: {currentDragCursorPosX-8}px; top: {currentDragCursorPosY-8}px"
+            >
 
-                <Icon
-                    name="dragDots"
-                    class="w-5 h-5 text-gray-500 dark:text-gray-400"
-                />
+                <div class="h-4 w-4 pt-[1px] mr-3 cursor-grabbing">
+
+                    <Icon
+                        name="dragDots"
+                        class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                    />
+
+                </div>
+
+                <div class="flex flex-row gap-2 items-center text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70">
+
+                    <span>
+                        {getSortFieldLocale(sortFieldDragList.draggedItemId)}
+                    </span>
+
+                </div>
 
             </div>
 
-            <div class="flex flex-col">
+        {/if}
 
-                <button
-                    class="flex flex-row gap-2 items-center text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-                    on:click={() => toggleSortField(sortFieldName)}
+        {#each sortParams.sortFieldOrder as sortFieldName (sortFieldName)}
+
+            <div
+                animate:flip={{ duration: 100 }}
+                class="flex flex-row transition-all duration-200 rounded-lg"
+                role="listitem"
+                on:pointerenter={(e) => onSortFieldEnter(e, sortFieldName)}
+                on:pointerleave={(e) => onSortFieldLeave(e, sortFieldName)}
+            >
+
+                <div
+                    class="h-4 w-4 pt-[1px] mr-3 cursor-grab"
+                    role="button"
+                    tabindex="0"
+                    on:pointerdown={(event) => sortFieldStartDrag(event, sortFieldName)}
                 >
 
-                    <span>
-                        {getSortFieldLocale(sortFieldName)}
-                    </span>
-
                     <Icon
-                        name="arrowDown"
-                        class="w-3 h-3 text-gray-500 transition-transform {
-                            isSortFieldOpen(sortFieldName)
-                                ? 'rotate-180'
-                                : ''
-                        }"
+                        name="dragDots"
+                        class="w-5 h-5 {isSortFieldDragged(sortFieldName) ? 'text-[#f9b90c]' : 'text-gray-500 dark:text-gray-400'}"
                     />
 
-                </button>
+                </div>
 
-                {#if isSortFieldOpen(sortFieldName)}
+                <div class="flex flex-col">
 
-                    {#if sortFieldName === "rarity"}
+                    <button
+                        class="flex flex-row gap-2 items-center text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
+                        on:click={() => toggleSortField(sortFieldName)}
+                    >
 
-                        <div class="flex flex-wrap gap-2 transition-transform">
+                        <span>
+                            {getSortFieldLocale(sortFieldName)}
+                        </span>
 
-                            {#each sortParams.sortFieldParams[sortFieldName] as filterName}
+                        <Icon
+                            name="arrowDown"
+                            class="w-3 h-3 text-gray-500 transition-transform {
+                                isSortFieldOpen(sortFieldName)
+                                    ? 'rotate-180'
+                                    : ''
+                            }"
+                        />
 
-                                <div
-                                    class="h-[32px] px-3 rounded flex items-center gap-1 border transition-all cursor-grab active:cursor-grabbing bg-gray-300 border-gray-400 text-black dark:text-[#E0E0E0] dark:bg-[#424242] dark:border-[#444444] hover:bg-gray-200 hover:dark:bg-[#4a4a4a] {
-                                        draggedFilter === filterName && draggedFilterField === sortFieldName
-                                            ? 'opacity-40 scale-90'
-                                            : ''
-                                    }"
-                                    role="listitem"
-                                    draggable="true"
-                                    on:dragstart={(e) => handleFilterDragStart(e, sortFieldName, filterName)}
-                                    on:dragenter={(e) => handleFilterDragEnter(e, sortFieldName, filterName)}
-                                    on:dragover={handleDragOver}
-                                    on:drop={handleDrop}
-                                    on:dragend={handleDragEnd}
-                                >
+                    </button>
 
-                                    <span class="capitalize font-bold pointer-events-none">
-                                        {filterName}
-                                    </span>
+                    {#if isSortFieldOpen(sortFieldName)}
+
+                        {#if sortFieldName === "rarity"}
+
+                            <div class="flex flex-wrap gap-2 transition-transform">
+
+                                {#each sortParams.sortFieldParams[sortFieldName] as filterName}
+
+                                    <div
+                                        class="h-[32px] px-3 rounded flex items-center gap-1 border transition-all cursor-grab active:cursor-grabbing bg-gray-300 border-gray-400 text-black dark:text-[#E0E0E0] dark:bg-[#424242] dark:border-[#444444] hover:bg-gray-200 hover:dark:bg-[#4a4a4a]"
+                                        role="listitem"
+                                    >
+
+                                        <span class="capitalize font-bold pointer-events-none">
+                                            {filterName}
+                                        </span>
+
+                                        <Icon
+                                            name="star"
+                                            class="w-3 h-3 text-current pointer-events-none"
+                                        />
+
+                                    </div>
+
+                                {/each}
+
+                            </div>
+
+                        {:else if sortFieldName === "localeName"}
+
+                            <button
+                                class="flex flex-row justify-between gap-2 px-2 min-w-full rounded-md h-8 bg-gray-300 dark:bg-[#2a2a2a] border border-gray-400 dark:border-[#444444]"
+                                on:click={switchLocaleSort}
+                            >
+
+                                <span class="font-bold text-xs text-gray-800 dark:text-gray-300 pl-2 pt-1.5 pointer-events-none">
+                                    {$t(`sort.localeName.${sortParams.sortFieldParams[sortFieldName]}`)}
+                                </span>
+
+                                <div class="relative flex flex-col h-full w-4 items-center justify-center">
 
                                     <Icon
-                                        name="star"
-                                        class="w-3 h-3 text-current pointer-events-none"
+                                        name="arrowDown"
+                                        class="absolute top-1/2 -translate-y-[85%] w-3 h-3 text-gray-500 rotate-180"
+                                    />
+
+                                    <Icon
+                                        name="arrowDown"
+                                        class="absolute top-1/2 -translate-y-[15%] w-3 h-3 text-gray-500"
                                     />
 
                                 </div>
 
-                            {/each}
+                            </button>
 
-                        </div>
+                        {:else}
 
-                    {:else if sortFieldName === "localeName"}
+                            <div class="flex flex-wrap gap-2">
 
-                        <button
-                            class="flex flex-row justify-between gap-2 px-2 min-w-full rounded-md h-8 bg-gray-300 dark:bg-[#2a2a2a] border border-gray-400 dark:border-[#444444]"
-                            on:click={switchLocaleSort}
-                        >
+                                {#each sortParams.sortFieldParams[sortFieldName] as filterName}
+                                    <div
+                                        class="h-[32px] px-3 rounded flex items-center gap-1 border transition-all cursor-grab active:cursor-grabbing bg-gray-300 border-gray-400 text-black dark:text-[#E0E0E0] dark:bg-[#424242] dark:border-[#444444] hover:bg-gray-200 hover:dark:bg-[#4a4a4a]"
+                                    >
+                                        <span class="text-xs capitalize font-bold pointer-events-none">
+                                            {getFilterNameLocale(sortFieldName, filterName)}
+                                        </span>
 
-                            <span class="font-bold text-xs text-gray-800 dark:text-gray-300 pl-2 pt-1.5 pointer-events-none">
-                                {$t(`sort.localeName.${sortParams.sortFieldParams[sortFieldName]}`)}
-                            </span>
+                                    </div>
 
-                            <div class="relative flex flex-col h-full w-4 items-center justify-center">
-
-                                <Icon
-                                    name="arrowDown"
-                                    class="absolute top-1/2 -translate-y-[85%] w-3 h-3 text-gray-500 rotate-180"
-                                />
-
-                                <Icon
-                                    name="arrowDown"
-                                    class="absolute top-1/2 -translate-y-[15%] w-3 h-3 text-gray-500"
-                                />
+                                {/each}
 
                             </div>
 
-                        </button>
-
-                    {:else}
-
-                        <div class="flex flex-wrap gap-2 transition-transform">
-
-                            {#each sortParams.sortFieldParams[sortFieldName] as filterName}
-                                <div
-                                    class="h-[32px] px-3 rounded flex items-center gap-1 border transition-all cursor-grab active:cursor-grabbing bg-gray-300 border-gray-400 text-black dark:text-[#E0E0E0] dark:bg-[#424242] dark:border-[#444444] hover:bg-gray-200 hover:dark:bg-[#4a4a4a] {
-                                        draggedFilter === filterName && draggedFilterField === sortFieldName
-                                            ? 'opacity-40 scale-90'
-                                            : ''
-                                    }"
-                                    role="listitem"
-                                    draggable="true"
-                                    on:dragstart={(e) => handleFilterDragStart(e, sortFieldName, filterName)}
-                                    on:dragenter={(e) => handleFilterDragEnter(e, sortFieldName, filterName)}
-                                    on:dragover={handleDragOver}
-                                    on:drop={handleDrop}
-                                    on:dragend={handleDragEnd}
-                                >
-                                    <span class="text-xs capitalize font-bold pointer-events-none">
-                                        {getFilterNameLocale(sortFieldName, filterName)}
-                                    </span>
-
-                                </div>
-
-                            {/each}
-
-                        </div>
+                        {/if}
 
                     {/if}
 
-                {/if}
+                </div>
 
             </div>
 
-        </div>
+        {/each}
 
-    {/each}
+    </div>
 
 </DropdownTemplate>
