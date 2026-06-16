@@ -156,6 +156,10 @@
     let touchSortFieldHovered = null;
 
     function handleWindowTouchMove(event) {
+        if (!sortFieldDragList.draggedItemId) {
+            return;
+        }
+
         const touch = event.touches[0];
         if (!touch) return;
 
@@ -175,6 +179,10 @@
     }
 
     function handleWindowTouchEnd(event) {
+        if (!sortFieldDragList.draggedItemId) {
+            return;
+        }
+
         if (touchSortFieldHovered) {
             onSortFieldLeave(event, touchSortFieldHovered);
             touchSortFieldHovered = null;
