@@ -7,7 +7,7 @@ export class DraggableList {
     /**
      * @param {string[]} itemList
      */
-    constructor(itemList) {
+    constructor(itemList = []) {
         this._itemList = itemList;
     }
 
@@ -48,15 +48,17 @@ export class DraggableList {
     }
 
     /**
+     * Returns true if itemList was modified else returns false
      * @param {string} enteredItemId
+     * @returns {boolean}
      */
     onEnter(enteredItemId) {
         if (enteredItemId === this._draggedItemId) {
-            return;
+            return false;
         }
 
         if (enteredItemId === this._enteredItemId) {
-            return;
+            return false;
         }
 
         this._enteredItemId = enteredItemId;
@@ -64,10 +66,11 @@ export class DraggableList {
         let draggedItemIndex = this._getItemIndex(this._draggedItemId);
         let enteredItemIndex = this._getItemIndex(enteredItemId);
         if (enteredItemIndex === -1 || draggedItemIndex === -1) {
-            return;
+            return false;
         }
 
         this._replaceItem(draggedItemIndex, enteredItemIndex);
+        return true;
     }
 
     /**
@@ -86,7 +89,7 @@ export class DraggableList {
     _replaceItem(oldIndex, newIndex) {
         const [replacedItem] = this._itemList.splice(oldIndex, 1);
 
-        const adjustedIndex = oldIndex < newIndex ? newIndex - 1 : newIndex;
+        const adjustedIndex = oldIndex < newIndex ? newIndex  : newIndex;
 
         this._itemList.splice(adjustedIndex, 0, replacedItem);
     }
