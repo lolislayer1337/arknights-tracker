@@ -25,7 +25,7 @@
         forceSelectedParamsUpdate();
     }
 
-    $: isManualMode = selectedParamSet.size === 0;
+    $: isManualMode = selectedParamSet.size !== 0;
 
     $: isParamSelected = (param) => isManualMode && selectedParamSet.has(param);
 
