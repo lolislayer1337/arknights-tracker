@@ -80,8 +80,11 @@
     </div>
 
     {#if isEventItem}
-        <div class="absolute -top-2 -right-2 w-6 h-6 z-[35]">
-            <Icon name="eventStar"/>
+        <div class="absolute -top-2 -right-2 w-7 h-7 z-[35]">
+            <Icon
+                name="eventStar"
+                class="w-7 h-7"
+            />
         </div>
     {/if}
 
