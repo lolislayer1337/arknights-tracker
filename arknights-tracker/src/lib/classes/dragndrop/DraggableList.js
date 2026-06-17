@@ -89,9 +89,7 @@ export class DraggableList {
     _replaceItem(oldIndex, newIndex) {
         const [replacedItem] = this._itemList.splice(oldIndex, 1);
 
-        const adjustedIndex = oldIndex < newIndex ? newIndex  : newIndex;
-
-        this._itemList.splice(adjustedIndex, 0, replacedItem);
+        this._itemList.splice(newIndex, 0, replacedItem);
     }
 
     _getItemIndex(itemId) {
