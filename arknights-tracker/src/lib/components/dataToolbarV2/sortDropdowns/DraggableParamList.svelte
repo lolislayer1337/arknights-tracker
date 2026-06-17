@@ -7,7 +7,7 @@
     export let getLocaleFunc = (param) => param?.toString() ?? "null";
 
     // bindable
-    export let paramList = []; // if binded, it will be updated on change order of elements
+    export let paramList = []; // if bound, it will be updated on change order of elements
     export let draggedParam = null;
 
 
@@ -37,8 +37,6 @@
     $: isParamDragged = (param) => param === dragList.draggedItemId;
 
     function startDrag(event, param) {
-        console.log(`start ${param}`);
-
         currentCursorPosX = event.clientX;
         currentCursorPosY = event.clientY;
 
@@ -49,16 +47,12 @@
     }
 
     function endDrag() {
-        console.log("end");
-
         dragList.endDrag();
         forceDragListUpdate();
     }
 
     function onParamEnter(param) {
         if (!dragList.draggedItemId) return;
-
-        console.log(`enter ${param}`);
 
         let wasModified = dragList.onEnter(param);
 
@@ -71,8 +65,6 @@
 
     function onParamLeave(param) {
         if (!dragList.draggedItemId) return;
-
-        console.log(`leave ${param}`);
 
         dragList.onLeave(param);
 

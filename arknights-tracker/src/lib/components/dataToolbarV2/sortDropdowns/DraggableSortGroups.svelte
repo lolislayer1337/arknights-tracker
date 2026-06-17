@@ -8,7 +8,7 @@
     export let getLocaleFunc = (group) => group?.toString() ?? "null";
 
     // bindable
-    export let groupList = []; // if binded, it will be updated on change order of elements
+    export let groupList = []; // if bound, it will be updated on change order of elements
     export let draggedGroup = null;
     export let openedGroup = null;
 
@@ -52,8 +52,6 @@
     $: isGroupDragged = (group) => dragList.draggedItemId === group;
 
     function startDrag(event, group) {
-        console.log(`start ${group}`);
-
         currentCursorPosX = event.clientX;
         currentCursorPosY = event.clientY;
 
@@ -66,16 +64,12 @@
     }
 
     function endDrag() {
-        console.log("end");
-
         dragList.endDrag();
         forceDragListUpdate();
     }
 
     function onGroupEnter(group) {
         if (!dragList.draggedItemId) return;
-
-        console.log(`enter ${group}`);
 
         let wasModified = dragList.onEnter(group);
 
@@ -88,8 +82,6 @@
 
     function onGroupLeave(group) {
         if (!dragList.draggedItemId) return;
-
-        console.log(`leave ${group}`);
 
         dragList.onLeave(group);
 
