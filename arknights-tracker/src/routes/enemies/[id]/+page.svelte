@@ -9,6 +9,7 @@
     import Button from "$lib/components/Button.svelte";
     import Image from "$lib/components/Image.svelte";
     import NotFound from "$lib/components/NotFound.svelte";
+    import Tooltip from "$lib/components/Tooltip.svelte";
 
     function tOrFallback(key, fallback) {
         const translated = $t(key);
@@ -192,11 +193,11 @@
         
         <div class="col-span-1 xl:col-span-7 flex flex-col gap-6">
             
-            <div class="bg-white dark:bg-[#2b2b2b] rounded-3xl flex flex-col overflow-hidden border border-gray-200 dark:border-[#444] transition-colors">
+            <div class="bg-white dark:bg-[#2b2b2b] rounded-3xl flex flex-col overflow-hidden border border-gray-200 dark:border-[#444] transition-colors min-w-[400px]">
                 <div class="relative min-h-[210px] flex p-6 overflow-hidden bg-white dark:bg-[#2b2b2b]">
                     <div class="pointer-events-none absolute inset-0 z-0 pointer-events-none card-gradient" style="--rarity-color: {rarityColor};"></div>
 
-                    <div class="absolute right-[0px] top-1/2 -translate-y-1/2 w-[250px] h-[250px] z-10 pointer-events-none">
+                    <div class="absolute right-[-30px] md:right-[0px] top-1/2 -translate-y-1/2 w-[250px] h-[250px] z-10 pointer-events-none">
                         <Image {id} variant="enemy-icon" className="w-full h-full object-contain drop-shadow-xl" interactive={true} alt={enemyName} />
                     </div>
 
@@ -360,6 +361,16 @@
                     <div>
                         <h2 class="text-xl font-bold text-[#21272C] dark:text-[#FDFDFD] font-sdk pb-2 mb-2">
                             {tOrFallback("stats.vulnerable", "Vulnerability")}
+                            <Tooltip
+                                text={$t("stats.enemiesResHint") ||
+                                    "Displays the coefficient of damage taken by the enemy according to the formula: Damage × Resistance (%). For example: 100% — no damage reduction, 50% — damage taken by the enemy is halved."}
+                            >
+                                <span
+                                    class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 mt-0.5 inline-flex items-center"
+                                >
+                                    <Icon name="info" class="m-0.5 w-4 h-4" />
+                                </span>
+                            </Tooltip>
                         </h2>
                         <div class="flex flex-wrap gap-x-8 gap-y-5">
                             {#each resistances as res}
@@ -372,10 +383,10 @@
                                             {$t(`resitances.${res.locKey}`) || res.key}
                                         </span>
                                         <div class="flex items-baseline gap-1.5 mt-1.5">
-                                            <span class="text-[16px] font-black {res.val < 1 ? 'text-green-500' : (res.val > 1 ? 'text-red-500' : 'text-[#21272C] dark:text-[#FDFDFD]')} leading-none">
+                                            <span class="text-[16px] font-black {res.val < 1 ? 'text-orange-400' : (res.val > 1 ? 'text-red-500' : 'text-[#21272C] dark:text-[#FDFDFD]')} leading-none">
                                                 {resLetter}
                                             </span>
-                                            <span class="text-[16px] font-bold {res.val < 1 ? 'text-green-500' : (res.val > 1 ? 'text-red-500' : 'text-[#21272C] dark:text-[#FDFDFD]')} leading-none">
+                                            <span class="text-[16px] font-bold {res.val < 1 ? 'text-orange-400' : (res.val > 1 ? 'text-red-500' : 'text-[#21272C] dark:text-[#FDFDFD]')} leading-none">
                                                 {resPercent}%
                                             </span>
                                         </div>
@@ -419,7 +430,7 @@
                         {#each advancedStats as stat}
                             <div class="flex flex-col">
                                 <span class="text-xs text-gray-500 dark:text-[#A0A0A0] font-bold uppercase">{stat.key}</span>
-                                <span class="text-lg font-bold text-[#21272C] dark:text-[#FDFDFD]">{stat.val}</span>
+                                <span class="text-lg font-bold text-[#21272C] dark:text-[#FDFDFD] truncate">{stat.val}</span>
                             </div>
                         {/each}
                     </div>
@@ -458,7 +469,7 @@
         role="dialog"
         tabindex="-1"
         aria-modal="true"
-        class="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur-sm p-4 animate-fadeIn outline-none"
+        class="md:ml-[var(--sb-w)] fixed inset-0 z-[100] flex items-center justify-center bg-black/60 dark:bg-black/80 backdrop-blur-sm p-4 animate-fadeIn outline-none"
         on:click|self={() => (showStatsTable = false)}
         on:keydown|self={(e) => {
             if (e.key === "Escape" || e.key === "Enter" || e.key === " ")
