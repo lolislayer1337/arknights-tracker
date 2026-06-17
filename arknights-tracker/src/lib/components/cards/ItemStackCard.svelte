@@ -1,6 +1,6 @@
 <script>
     import { t } from "$lib/i18n.js";
-    import { getRarityColor } from "$lib/utils/rarityUtils.js";
+    import { getRarityColor } from "$lib/utils/colorUtils.js";
     import { FullBottle } from "$lib/classes/items/FullBottle.js";
     import { Item } from "$lib/classes/items/Item.js";
 

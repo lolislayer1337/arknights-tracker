@@ -2,7 +2,7 @@
     import Image from "$lib/components/Image.svelte";
     import Icon from "$lib/components/Icon.svelte";
 
-    import { getRarityColor } from "$lib/utils/rarityUtils.js";
+    import { getRarityColor } from "$lib/utils/colorUtils.js";
     import { FullBottle } from "$lib/classes/items/FullBottle.js";
 
     export let item = {};
