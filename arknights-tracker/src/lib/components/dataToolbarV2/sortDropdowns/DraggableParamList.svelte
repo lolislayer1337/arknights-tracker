@@ -80,8 +80,15 @@
     }
 
 
+    let paramHovered = null;
+
     function handleWindowPointerUp() {
         if (!dragList.draggedItemId) return;
+
+        if (paramHovered) {
+            onParamLeave(paramHovered);
+            paramHovered = null;
+        }
 
         endDrag();
 
@@ -93,49 +100,27 @@
 
         currentCursorPosX = event.clientX;
         currentCursorPosY = event.clientY;
-    }
 
-
-    let paramTouchHovered = null;
-
-    function handleWindowTouchMove(event) {
-        if (!dragList.draggedItemId) return;
-
-
-        const touch = event.touches[0];
-        if (!touch) return;
-
-        const elementUnderPointer = document.elementFromPoint(touch.clientX, touch.clientY);
+        const elementUnderPointer = document.elementFromPoint(event.clientX, event.clientY);
         const paramItem = elementUnderPointer.closest("[data-param-id]");
         const newParam = paramItem?.dataset.paramId ?? null;
 
-        if (newParam === paramTouchHovered) return;
+        if (newParam === paramHovered) return;
 
-        if (paramTouchHovered) {
-            onParamLeave(paramTouchHovered);
+        if (paramHovered) {
+            onParamLeave(paramHovered);
         }
 
         if (newParam) {
             onParamEnter(newParam);
         }
 
-        paramTouchHovered = newParam;
-    }
-
-    function handleWindowTouchEnd() {
-        if (!dragList.draggedItemId) return;
-
-        if (paramTouchHovered) {
-            onParamLeave(paramTouchHovered);
-            paramTouchHovered = null;
-        }
+        paramHovered = newParam;
     }
 
 </script>
 
 <svelte:window
-    on:touchmove={handleWindowTouchMove}
-    on:touchend={handleWindowTouchEnd}
     on:pointermove={handleWindowPointerMove}
     on:pointerup={handleWindowPointerUp}
 />
@@ -147,10 +132,9 @@
         <div
             animate:flip={{ duration: 100 }}
             class="cursor-grab touch-none"
+            class:cursor-grabbing={draggedParam}
             role="listitem"
             data-param-id={param}
-            on:pointerenter={() => onParamEnter(param)}
-            on:pointerleave={() => onParamLeave(param)}
             on:pointerdown|preventDefault={(e) => startDrag(e, param)}
         >
 
