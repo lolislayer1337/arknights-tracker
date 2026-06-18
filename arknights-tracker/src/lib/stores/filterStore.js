@@ -139,6 +139,22 @@ const initialManualMode = {
     itemSubGroups: false
 };
 
+export function getOperatorSortOptions() {
+    return ["rarity", "class", "element", "weapon"];
+}
+
+export function getWeaponSortOptions() {
+    return ["rarity", "type"];
+}
+
+export function getEquipmentSortOptions() {
+    return ["rarity"];
+}
+
+export function getEnemySortOptions() {
+    return ["rarity"];
+}
+
 export function getDefaultItemSortParams() {
     return {
         sortFieldOrder: [
