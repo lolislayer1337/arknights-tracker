@@ -59,6 +59,80 @@ const initialEnemiesFilters = {
     rarity: [6, 5, 4, 3]
 };
 
+export function getOperatorFilters() {
+    return {
+        rarity: [6, 5, 4],
+        class: ["guard", "vanguard", "caster", "defender", "supporter", "striker"],
+        element: ["cryo", "physical", "nature", "heat", "electric"],
+        weapon: ["sword", "polearm", "artsUnit", "greatSword", "handcannon"],
+        skillMaterial: null
+    };
+}
+
+export function getWeaponFilters() {
+    return {
+        rarity: [6, 5, 4, 3],
+        type: ["sword", "polearm", "artsUnit", "greatSword", "handcannon"],
+        attr1: [
+            "attr_agi",
+            "attr_str",
+            "attr_will",
+            "attr_wisd",
+            "attr_main"
+        ],
+        attr2: [
+            "attr_atk",
+            "attr_firedam",
+            "attr_crirate",
+            "attr_heal",
+            "attr_hp",
+            "attr_usp",
+            "attr_icedam",
+            "attr_magicdam",
+            "attr_naturaldam",
+            "attr_phydam",
+            "attr_physpell",
+            "attr_pulsedam"
+        ],
+        attr3: [
+            "tacafter",
+            "magabn",
+            "burst",
+            "spirit",
+            "tactic",
+            "ult",
+            "break",
+            "combo",
+            "crit",
+            "force",
+            "heal",
+            "keyword",
+            "phyabn",
+            "smash"
+        ]
+    };
+}
+
+export function getEquipmentFilters() {
+    return {
+        rarity: [5, 4, 3, 2, 1],
+        partType: [0, 1, 2],
+        pack: [],
+        stats: {
+            any: [],
+            1: [],
+            2: [],
+            3: []
+        }
+    };
+}
+
+export function getEnemyFilters() {
+    return {
+        rarity: [6, 5, 4, 3]
+    };
+}
+
 const initialManualMode = {
     rarity: false, partType: false, pack: false, stats: false,
     class: false, element: false, weapon: false, type: false, attr1: false, attr2: false, attr3: false,
