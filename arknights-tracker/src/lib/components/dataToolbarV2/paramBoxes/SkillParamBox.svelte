@@ -16,7 +16,10 @@
 
 <TextParamBoxTemplate styleMode={styleMode}>
 
-    <div slot="left">
+    <div
+        slot="left"
+        class:hidden={!iconId}
+    >
 
         {#if iconId}
 
