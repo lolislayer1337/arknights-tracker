@@ -8,3 +8,15 @@ export function getRarityColor(rarity) {
         default: return "#8F8F8F";
     }
 }
+
+export function getTextColorByAttr(attr) {
+    return attrId2TextColor[attr] ?? "";
+}
+
+const attrId2TextColor = {
+    attr_firedam: "text-[#FE633D]",
+    attr_icedam: "text-[#22C6D0]",
+    attr_naturaldam: "text-[#AFCD47] dark:text-[#C3E354]",
+    attr_pulsedam: "text-[#FEC001]",
+    attr_phydam: "text-slate-500 dark:text-slate-300",
+};
