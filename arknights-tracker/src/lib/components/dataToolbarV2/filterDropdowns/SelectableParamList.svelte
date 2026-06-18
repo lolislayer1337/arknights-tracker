@@ -1,5 +1,6 @@
 <script>
     export let paramList = [];
+    export let maxSelectedParams = -1;
 
     export let getLocaleFunc;
     export let paramBox;
@@ -11,6 +12,52 @@
         selectedParamSet = new Set();
     }
 
+    let currentSet;
+    $: if (currentSet !== selectedParamSet) {
+        currentSet = selectedParamSet;
+
+        if (maxSelectedParams > 0) {
+            syncQueue();
+        }
+    }
+
+    let queue = [];
+    $: if (maxSelectedParams > 0) {
+        syncQueue();
+    } else {
+        queue = undefined;
+    }
+
+    function syncQueue() {
+        queue = [];
+
+        for (let param of selectedParamSet) {
+            addParamToQueue(param);
+        }
+    }
+
+    function deleteParamFromQueue(param) {
+        if (!queue) return;
+
+        queue.splice(queue.indexOf(param), 1);
+    }
+
+    function deleteFirstParamFromQueue() {
+        if (!queue) return null;
+
+        if (queue.length <= maxSelectedParams) return null;
+
+        return queue.shift();
+    }
+
+    function addParamToQueue(param) {
+        if (!queue) return null;
+
+        queue.push(param);
+
+        return deleteFirstParamFromQueue();
+    }
+
     function forceSelectedParamsUpdate() {
         selectedParamSet = selectedParamSet;
     }
@@ -20,6 +67,14 @@
 
         if (!wasDeleted) {
             selectedParamSet.add(param);
+
+            let deletedParam = addParamToQueue(param);
+
+            if (deletedParam) {
+                selectedParamSet.delete(param);
+            }
+        } else {
+            deleteParamFromQueue(param);
         }
 
         forceSelectedParamsUpdate();
