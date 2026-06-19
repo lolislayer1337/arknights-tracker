@@ -81,18 +81,18 @@ export function getWeaponFilters() {
             "attr_main"
         ],
         attr2: [
-            "attr_atk",
             "attr_firedam",
-            "attr_crirate",
-            "attr_heal",
-            "attr_hp",
-            "attr_usp",
             "attr_icedam",
-            "attr_magicdam",
             "attr_naturaldam",
+            "attr_pulsedam",
             "attr_phydam",
+            "attr_atk",
+            "attr_crirate",
+            "attr_hp",
+            "attr_heal",
+            "attr_usp",
             "attr_physpell",
-            "attr_pulsedam"
+            "attr_magicdam",
         ],
         attr3: [
             "tacafter",
