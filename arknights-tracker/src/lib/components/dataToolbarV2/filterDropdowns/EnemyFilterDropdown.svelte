@@ -32,8 +32,6 @@
         selectedFilters = selectedFilters;
     }
 
-    $: console.log(selectedFilters);
-
 </script>
 
 <DropdownTemplate
