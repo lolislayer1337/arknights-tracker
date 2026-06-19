@@ -63,7 +63,7 @@ export function getOperatorFilters() {
     return {
         rarity: [6, 5, 4],
         class: ["guard", "vanguard", "caster", "defender", "supporter", "striker"],
-        element: ["cryo", "physical", "nature", "heat", "electric"],
+        element: ["cryo", "nature", "heat", "electric", "physical"],
         weapon: ["sword", "polearm", "artsUnit", "greatSword", "handcannon"],
         skillMaterialType: ["any", "basic_combo", "battle_ultimate", "ascension"],
         skillMaterial: [
