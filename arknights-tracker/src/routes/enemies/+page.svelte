@@ -8,6 +8,7 @@
 
     import WeaponCard from "$lib/components/cards/WeaponCard.svelte";
     import Icon from "$lib/components/Icon.svelte";
+    import { filterCheck } from "$lib/utils/filterUtils.js";
 
     $: searchQuery = $enemySearch || "";
     $: isGrouped = $enemyGroupMode || false;
@@ -63,15 +64,6 @@
             return sortDirection === "asc" ? diff : -diff;
         });
     })();
-
-    function filterCheck(filterParamSet, value) {
-        // console.log(filterParamSet, value);
-        if (!filterParamSet || filterParamSet.size === 0) {
-            return true;
-        }
-
-        return filterParamSet.has(value);
-    }
 
     let isFilterActive = false;
     $: isFilterActive = Object.values(selectedFilters)
