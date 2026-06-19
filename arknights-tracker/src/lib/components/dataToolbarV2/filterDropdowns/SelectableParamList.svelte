@@ -71,7 +71,7 @@
             let deletedParam = addParamToQueue(param);
 
             if (deletedParam) {
-                selectedParamSet.delete(param);
+                selectedParamSet.delete(deletedParam);
             }
         } else {
             deleteParamFromQueue(param);
