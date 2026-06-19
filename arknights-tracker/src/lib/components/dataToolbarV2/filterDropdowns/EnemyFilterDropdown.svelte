@@ -1,6 +1,7 @@
 <script>
     import DropdownTemplate from "$lib/components/dataToolbarV2/DropdownTemplate.svelte";
     import SelectableParamList from "$lib/components/dataToolbarV2/filterDropdowns/SelectableParamList.svelte";
+    import GroupTitle from "$lib/components/dataToolbarV2/GroupTitle.svelte";
     import RarityParamBox from "$lib/components/dataToolbarV2/paramBoxes/RarityParamBox.svelte";
     import { t } from "$lib/i18n";
 
@@ -39,16 +40,14 @@
     onResetButton={onFilterReset}
 >
 
-    <div>
+    <div class="flex flex-col items-start gap-2">
 
-        <button
-            class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-            on:click={() => toggleFilterGroup("rarity")}
+        <GroupTitle
+            asButton={true}
+            onClick={() => toggleFilterGroup("rarity")}
         >
-
             {$t("sort.rarity")}
-
-        </button>
+        </GroupTitle>
 
         <SelectableParamList
             paramList={filters.rarity}

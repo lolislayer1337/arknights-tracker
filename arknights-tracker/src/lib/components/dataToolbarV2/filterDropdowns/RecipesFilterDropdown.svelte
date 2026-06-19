@@ -2,6 +2,7 @@
     import { FactoryEvent } from "$lib/classes/events/FactoryEvent.js";
     import DropdownTemplate from "$lib/components/dataToolbarV2/DropdownTemplate.svelte";
     import SelectableParamList from "$lib/components/dataToolbarV2/filterDropdowns/SelectableParamList.svelte";
+    import GroupTitle from "$lib/components/dataToolbarV2/GroupTitle.svelte";
     import RarityParamBox from "$lib/components/dataToolbarV2/paramBoxes/RarityParamBox.svelte";
     import TextParamBox from "$lib/components/dataToolbarV2/paramBoxes/TextParamBox.svelte";
     import { t } from "$lib/i18n";
@@ -41,14 +42,14 @@
     onResetButton={onFilterReset}
 >
 
-    <div>
+    <div class="flex flex-col items-start gap-2">
 
-        <button
-            class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-            on:click={() => {toggleFilterGroup("rarity")}}
+        <GroupTitle
+            asButton={true}
+            onClick={() => toggleFilterGroup("rarity")}
         >
             {$t("sort.rarity")}
-        </button>
+        </GroupTitle>
 
         <SelectableParamList
             paramList={filters.rarity}
@@ -58,14 +59,14 @@
 
     </div>
 
-    <div>
+    <div class="flex flex-col items-start gap-2">
 
-        <button
-            class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-            on:click={() => {toggleFilterGroup("events")}}
+        <GroupTitle
+            asButton={true}
+            onClick={() => toggleFilterGroup("events")}
         >
             {$t("sort.eventsTitle")}
-        </button>
+        </GroupTitle>
 
         <SelectableParamList
             paramList={filters.events}
@@ -76,14 +77,14 @@
 
     </div>
 
-    <div>
+    <div class="flex flex-col items-start gap-2">
 
-        <button
-            class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-            on:click={() => {toggleFilterGroup("itemGroups")}}
+        <GroupTitle
+            asButton={true}
+            onClick={() => toggleFilterGroup("itemGroups")}
         >
             {$t("sort.itemGroup")}
-        </button>
+        </GroupTitle>
 
         <SelectableParamList
             paramList={filters.itemGroups}
@@ -94,14 +95,14 @@
 
     </div>
 
-    <div>
+    <div class="flex flex-col items-start gap-2">
 
-        <button
-            class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-            on:click={() => {toggleFilterGroup("itemTypes")}}
+        <GroupTitle
+            asButton={true}
+            onClick={() => toggleFilterGroup("itemTypes")}
         >
             {$t("sort.itemTypesTitle")}
-        </button>
+        </GroupTitle>
 
         <SelectableParamList
             paramList={filters.itemTypes}
@@ -112,14 +113,14 @@
 
     </div>
 
-    <div>
+    <div class="flex flex-col items-start gap-2">
 
-        <button
-            class="text-sm dark:text-[#E0E0E0] font-bold text-gray-800 mb-2 hover:opacity-70"
-            on:click={() => {toggleFilterGroup("itemMaterials")}}
+        <GroupTitle
+            asButton={true}
+            onClick={() => toggleFilterGroup("itemMaterials")}
         >
             {$t("sort.itemMaterialsTitle")}
-        </button>
+        </GroupTitle>
 
         <SelectableParamList
             paramList={filters.itemMaterials}
