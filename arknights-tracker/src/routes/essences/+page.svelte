@@ -3,7 +3,10 @@
     import Button from "$lib/components/Button.svelte";
     import WeaponCard from "$lib/components/cards/WeaponCard.svelte";
     import DataToolbar from "$lib/components/dataToolbarV2/DataToolbar.svelte";
+    import SelectableParamList from "$lib/components/dataToolbarV2/filterDropdowns/SelectableParamList.svelte";
     import WeaponFilterDropdown from "$lib/components/dataToolbarV2/filterDropdowns/WeaponFilterDropdown.svelte";
+    import GroupTitle from "$lib/components/dataToolbarV2/GroupTitle.svelte";
+    import SkillParamBox from "$lib/components/dataToolbarV2/paramBoxes/SkillParamBox.svelte";
     import SortSelectorDropdown from "$lib/components/dataToolbarV2/sortDropdowns/SortSelectorDropdown.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import Image from "$lib/components/Image.svelte";
@@ -218,6 +221,28 @@
     let invAttr1 = null;
     let invAttr2 = null;
     let invAttr3 = null;
+
+    let invAttr1Set = new Set();
+    let invAttr2Set = new Set();
+    let invAttr3Set = new Set();
+
+    $: if (invAttr1Set) {
+        let skill = invAttr1Set.values().next().value ?? null;
+
+        setInvAttr(1, skill);
+    }
+
+    $: if (invAttr2Set) {
+        let skill = invAttr2Set.values().next().value ?? null;
+
+        setInvAttr(2, skill);
+    }
+
+    $: if (invAttr3Set) {
+        let skill = invAttr3Set.values().next().value ?? null;
+
+        setInvAttr(3, skill);
+    }
 
     const rarityColors = {
         6: "#F4700C", // Красный/Оранжевый
@@ -978,118 +1003,51 @@
             {/if}
         {:else if activeTab === "inventory"}
             <div class="flex flex-col gap-6 pt-2 pb-8">
-                <div>
-                    <h3
-                        class="text-sm font-bold dark:text-[#E0E0E0] text-gray-800 mb-3"
-                    >
+                <div class="flex flex-col gap-2">
+
+                    <GroupTitle>
                         {$t("essencesPage.attr1")}
-                    </h3>
-                    <div class="flex flex-wrap gap-2">
-                        {#each attr1Skills as skill}
-                            <button
-                                type="button"
-                                class="h-[32px] px-2 pr-3 rounded flex items-center justify-center gap-1.5 border transition-all cursor-pointer {invAttr1 ===
-                                skill
-                                    ? 'bg-[#F9B90C]/20 border-[#F9B90C] text-gray-900 dark:text-[#E0E0E0] dark:bg-[#FFB200]/50 dark:border-[#FFB200]'
-                                    : 'bg-white/50 dark:bg-[#383838]/50 border-gray-200 dark:border-[#444444] text-gray-700 dark:text-[#E0E0E0] hover:bg-white hover:dark:bg-[#424242]'}"
-                                on:click={() => setInvAttr(1, skill)}
-                            >
-                                {#if skillIcons[skill]}
-                                    <div
-                                        class="w-5 h-5 bg-[#2A2A2A] dark:bg-[#2A2A2A] border border-[#3A3A3A] rounded-[4px] flex items-center justify-center pointer-events-none"
-                                    >
-                                        <Icon
-                                            name={skillIcons[skill]}
-                                            class="w-3 h-3 text-white pointer-events-none"
-                                        />
-                                    </div>
-                                {/if}
-                                <span
-                                    class="text-xs font-bold pointer-events-none"
-                                    >{$t(`skills.${skill}`) || skill}</span
-                                >
-                            </button>
-                        {/each}
-                    </div>
+                    </GroupTitle>
+
+                    <SelectableParamList
+                        paramBox={SkillParamBox}
+                        paramList={attr1Skills}
+                        maxSelectedParams={1}
+                        bind:selectedParamSet={invAttr1Set}
+                    />
+
                 </div>
 
-                <div>
-                    <h3
-                        class="text-sm font-bold dark:text-[#E0E0E0] text-gray-800 mb-3"
-                    >
+                <div class="flex flex-col gap-2">
+
+                    <GroupTitle>
                         {$t("essencesPage.attr2")}
-                    </h3>
-                    <div class="flex flex-wrap gap-2">
-                        {#each attr2Skills as skill}
-                            <button
-                                type="button"
-                                class="h-[32px] px-2 pr-3 rounded flex items-center justify-center gap-1.5 border transition-all cursor-pointer {invAttr2 ===
-                                skill
-                                    ? 'bg-[#F9B90C]/20 border-[#F9B90C] text-gray-900 dark:text-[#E0E0E0] dark:bg-[#FFB200]/50 dark:border-[#FFB200]'
-                                    : 'bg-white/50 dark:bg-[#383838]/50 border-gray-200 dark:border-[#444444] text-gray-700 dark:text-[#E0E0E0] hover:bg-white hover:dark:bg-[#424242]'}"
-                                on:click={() => setInvAttr(2, skill)}
-                            >
-                                {#if skillIcons[skill]}
-                                    {#if elementColors[skill]}
-                                        <Icon
-                                            name={skillIcons[skill]}
-                                            class="w-4 h-4 pointer-events-none {elementColors[
-                                                skill
-                                            ]}"
-                                        />
-                                    {:else}
-                                        <div
-                                            class="w-5 h-5 bg-[#2A2A2A] dark:bg-[#2A2A2A] border border-[#3A3A3A] rounded-[4px] flex items-center justify-center pointer-events-none"
-                                        >
-                                            <Icon
-                                                name={skillIcons[skill]}
-                                                class="w-3 h-3 text-white pointer-events-none"
-                                            />
-                                        </div>
-                                    {/if}
-                                {/if}
-                                <span
-                                    class="text-xs font-bold pointer-events-none {elementColors[
-                                        skill
-                                    ] || 'text-current'}"
-                                >
-                                    {$t(`skills.${skill}`) || skill}
-                                </span>
-                            </button>
-                        {/each}
-                    </div>
+                    </GroupTitle>
+
+                    <SelectableParamList
+                        paramBox={SkillParamBox}
+                        paramList={attr2Skills}
+                        maxSelectedParams={1}
+                        bind:selectedParamSet={invAttr2Set}
+                    />
+
                 </div>
 
-                <div>
-                    <h3
-                        class="text-sm font-bold dark:text-[#E0E0E0] text-gray-800 mb-3"
-                    >
+                <div class="flex flex-col gap-2">
+
+                    <GroupTitle>
                         {$t("essencesPage.attr3")}
-                    </h3>
-                    <div class="flex flex-wrap gap-2">
-                        {#each attr3Skills as skill}
-                            <button
-                                type="button"
-                                class="h-[32px] px-2 pr-3 rounded flex items-center justify-center gap-1.5 border transition-all cursor-pointer {invAttr3 ===
-                                skill
-                                    ? 'bg-[#F9B90C]/20 border-[#F9B90C] text-gray-900 dark:text-[#E0E0E0] dark:bg-[#FFB200]/50 dark:border-[#FFB200]'
-                                    : 'bg-white/50 dark:bg-[#383838]/50 border-gray-200 dark:border-[#444444] text-gray-700 dark:text-[#E0E0E0] hover:bg-white hover:dark:bg-[#424242]'}"
-                                on:click={() => setInvAttr(3, skill)}
-                            >
-                                {#if skillIcons[skill]}
-                                    <Icon
-                                        name={skillIcons[skill]}
-                                        class="w-4 h-4 text-current pointer-events-none"
-                                    />
-                                {/if}
-                                <span
-                                    class="text-xs font-bold pointer-events-none"
-                                    >{$t(`skills.${skill}`) || skill}</span
-                                >
-                            </button>
-                        {/each}
-                    </div>
+                    </GroupTitle>
+
+                    <SelectableParamList
+                        paramBox={SkillParamBox}
+                        paramList={attr3Skills}
+                        maxSelectedParams={1}
+                        bind:selectedParamSet={invAttr3Set}
+                    />
+
                 </div>
+
             </div>
         {/if}
     </div>
