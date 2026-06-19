@@ -270,6 +270,10 @@
         invAttr2 = null;
         invAttr3 = null;
         isBottomSheetOpen = false;
+
+        invAttr1Set = new Set();
+        invAttr2Set = new Set();
+        invAttr3Set = new Set();
     }
 
     $: invSelectedCount = [invAttr1, invAttr2, invAttr3].filter(Boolean).length;
