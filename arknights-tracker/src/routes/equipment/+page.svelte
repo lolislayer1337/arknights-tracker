@@ -38,7 +38,7 @@
         ...new Set( allEquipment.map((eq) => eq.pack).filter((pack) => pack) ),
     ];
 
-    const allFilters = getEquipmentFilters();
+    let allFilters = getEquipmentFilters();
     allFilters.pack = availablePacks;
 
     // onMount(() => {
@@ -78,7 +78,6 @@
             const matchesPack = filterCheck(selectedFilters.pack, itemPack);
 
             const allItemAttributes = [
-                ...(eq.equipAttr || []),
                 ...(eq.displayAttr || []),
             ].map((a) => String(a.attrType || "").toLowerCase());
 
@@ -141,6 +140,65 @@
         return baseFiltered.sort(sortLogic);
     })();
 
+    $: equipmentFilteredByAttr = allEquipment.filter((eq) => {
+        const allItemAttributes = [
+            ...(eq.displayAttr || []),
+        ].map((a) => String(a.attrType || "").toLowerCase());
+
+        const passesAttr1 = filterCheckLowerCase(selectedFilters.stats_1, allItemAttributes[1]);
+        const passesAttr2 = filterCheckLowerCase(selectedFilters.stats_2, allItemAttributes[2]);
+        const passesAttr3 = filterCheckLowerCase(selectedFilters.stats_3, allItemAttributes[3]);
+
+        return passesAttr1 && passesAttr2 && passesAttr3;
+    });
+
+    $: if (equipmentFilteredByAttr) {
+        let attrFilters1 = getEquipmentAttrSet(equipmentFilteredByAttr, 1);
+        let attrFilters2 = getEquipmentAttrSet(equipmentFilteredByAttr, 2);
+        let attrFilters3 = getEquipmentAttrSet(equipmentFilteredByAttr, 3);
+
+        allFilters.stats_1 = getFilteredAttrGroupList(allFilters.stats, attrFilters1);
+        allFilters.stats_2 = getFilteredAttrGroupList(allFilters.stats, attrFilters2);
+        allFilters.stats_3 = getFilteredAttrGroupList(allFilters.stats, attrFilters3);
+
+        console.log(allFilters);
+
+        forceUpdateFilterList();
+    }
+
+    function getFilteredAttrGroupList(allAttrGroupList, attrSet) {
+        let groupList = [];
+
+        for (let group of allAttrGroupList) {
+            let list = [];
+
+            for (let attr of group) {
+
+                if (attrSet.has(attr)) {
+                    list.push(attr);
+                }
+            }
+
+            groupList.push(list);
+        }
+
+        return groupList;
+    }
+
+    function getEquipmentAttrSet(equipmentList, attrIndex) {
+        let set = new Set();
+
+        for (let eq of equipmentList) {
+            let attr = eq.displayAttr[attrIndex]?.attrType;
+
+            if (attr) {
+                set.add(attr);
+            }
+        }
+
+        return set;
+    }
+
     function getPartTypeId(partType) {
         switch (partType) {
             case 0: return "body";
@@ -148,6 +206,10 @@
             case 2: return "edc";
             default: return "";
         }
+    }
+
+    function forceUpdateFilterList() {
+        allFilters = allFilters;
     }
 
     let isFilterActive = false;
