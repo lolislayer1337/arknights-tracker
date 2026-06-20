@@ -111,7 +111,10 @@ export function getEquipmentFilters() {
                 "AllDamageTakenScalar",
                 "HealOutputIncrease"
             ]
-        ]
+        ],
+        stats_1: [],
+        stats_2: [],
+        stats_3: []
     };
 }
 

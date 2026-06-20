@@ -178,7 +178,7 @@
 
             <GroupedSelectableParamList
                 paramBox={EquipSkillParamBox}
-                paramGroups={filters.stats}
+                paramGroups={filters.stats_1}
                 bind:selectedParamSet={selectedFilters.stats_1}
             />
 
@@ -186,7 +186,7 @@
 
             <GroupedSelectableParamList
                 paramBox={EquipSkillParamBox}
-                paramGroups={filters.stats}
+                paramGroups={filters.stats_2}
                 bind:selectedParamSet={selectedFilters.stats_2}
             />
 
@@ -194,7 +194,7 @@
 
             <GroupedSelectableParamList
                 paramBox={EquipSkillParamBox}
-                paramGroups={filters.stats}
+                paramGroups={filters.stats_3}
                 bind:selectedParamSet={selectedFilters.stats_3}
             />
 
