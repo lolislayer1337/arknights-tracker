@@ -18,8 +18,7 @@
         clueEfficiencyBoost: "facskill_spaceship_guestroom_clue",
         moodDropHour_manufacturingCabin: "facskill_spaceship_manufacture_power_consume",
         moodDropHour_receptionRoom: "facskill_spaceship_guestroom_power_consume",
-        moodDropHour_growthChamber: "facskill_spaceship_plant_power_consume",
-        moodDropHour_controlNexus: "facskill_spaceship_manufacture_power_consume"
+        moodDropHour_growthChamber: "facskill_spaceship_plant_power_consume"
     };
 
     $: iconId = FILTER_ICON_MAP[paramId] || paramId;

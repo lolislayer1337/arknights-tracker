@@ -180,8 +180,8 @@
         {#if isGrouped}
             {#each displayedGroups as group}
                 <div class="flex flex-col gap-1 animate-fadeIn">
-                    <div class="flex items-center gap-3 mb-2">
-                        <Icon name={group.groupId.replace('wiki_group_monster_', '')} class="w-6 h-6 text-gray-700 dark:text-gray-300" />
+                    <div class="flex items-center mb-2 {group.groupId === "none" ? 'gap-0' : 'gap-3'}">
+                        <Icon name={group.groupId.replace('wiki_group_monster_', '')} class="text-gray-700 dark:text-gray-300 {group.groupId === "none" ? 'w-0 h-0' : 'w-6 h-6'}" />
                         <h3 class="text-xl font-bold text-[#21272C] dark:text-[#E4E4E4] font-sdk">
                             {group.groupId === "none" 
                                 ? ($t("global.noData") || "No data") 

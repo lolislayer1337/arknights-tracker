@@ -38,7 +38,6 @@ export function getOperatorFilters() {
             "mineralGrowthEfficiency",
             "moodRegen",
             "clueEfficiencyBoost",
-            "moodDropHour_controlNexus",
             "moodDropHour_receptionRoom",
             "moodDropHour_manufacturingCabin",
             "moodDropHour_growthChamber"
