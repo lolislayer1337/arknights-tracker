@@ -1,0 +1,104 @@
+// routes/leaderboard.js
+const express = require('express');
+const { PrismaClient } = require('@prisma/client');
+
+const router = express.Router();
+const prisma = new PrismaClient();
+
+// In-Memory cache dictionary
+const leaderboardCache = {}; // Key: eventType, Value: { data, expiry }
+const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
+
+router.get('/', async (req, res) => {
+    const eventType = req.query.event_type || 'contract';
+    const now = Date.now();
+    
+    // Check cache
+    if (leaderboardCache[eventType] && now < leaderboardCache[eventType].expiry) {
+        console.log(`[Leaderboard Cache] Serving from cache for event type: ${eventType}`);
+        return res.json({ status: 'success', data: leaderboardCache[eventType].data });
+    }
+
+    try {
+        console.log(`[Leaderboard DB Query] Fetching leaderboard for event type: ${eventType}`);
+        
+        const entries = await prisma.userLeaderboard.findMany({
+            where: {
+                event_type: eventType,
+                account_detail: {
+                    user: {
+                        is_private: 0
+                    }
+                }
+            },
+            orderBy: { clear_time: 'asc' }, // Rank by clear time ascending
+            include: {
+                account_detail: {
+                    include: {
+                        user: {
+                            select: {
+                                name: true,
+                                picture: true,
+                                avatar_strike: true,
+                                is_private: true
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Format entries for the frontend
+        const formatted = entries.map(entry => {
+            let accountInfo = {};
+            try {
+                accountInfo = JSON.parse(entry.account_detail.account_info);
+            } catch (e) {
+                console.warn(`Failed to parse account_info JSON for game_uid: ${entry.game_uid}`);
+            }
+
+            let leaderboardInfo = {};
+            try {
+                leaderboardInfo = JSON.parse(entry.leaderboard_info);
+            } catch (e) {
+                // Ignore
+            }
+
+            return {
+                id: entry.id,
+                game_uid: entry.game_uid,
+                clear_time: entry.clear_time,
+                leaderboard_info: leaderboardInfo,
+                user: {
+                    name: entry.account_detail.user.name || "Operator",
+                    picture: entry.account_detail.user.picture,
+                    avatar_strike: entry.account_detail.user.avatar_strike
+                },
+                level: accountInfo.detail?.base?.level || accountInfo.base?.level || 1,
+                serverId: accountInfo.detail?.base?.serverId || accountInfo.base?.serverId || '3',
+                // Chars used during completion or current roster for visual listing
+                chars: accountInfo.detail?.chars || accountInfo.chars || []
+            };
+        });
+
+        // Update Cache
+        leaderboardCache[eventType] = {
+            data: formatted,
+            expiry: now + CACHE_DURATION_MS
+        };
+
+        res.json({ status: 'success', data: formatted });
+    } catch (e) {
+        console.error("[Leaderboard API Error]:", e.message);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.clearCache = function() {
+    console.log("[Leaderboard Cache] Clearing all entries from memory");
+    for (const key in leaderboardCache) {
+        delete leaderboardCache[key];
+    }
+};
+
+module.exports = router;

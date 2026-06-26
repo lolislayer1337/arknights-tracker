@@ -21,7 +21,8 @@
     "cloud_title": "Cloud Sync",
     "cloud_text1": "Goyfield.moe provides the option to link your Google account to create cloud backups of your pull data. Your username and email address are displayed solely within the settings interface and are not shared with third parties.",
     "cloud_text2": "Unlike local storage, when using this feature, your pull data is securely stored in our cloud database (Firebase). You can sign out of your account at any time via Settings.",
-    "close": "Close"
+    "close": "Close",
+    "cloud_text3": "With the integration of Goyfield Profiles and Leaderboards, we store your profile display name, WebP avatar ID, associated game UIDs, and crisis event clear records. Custom image uploads are limited to 10 per month and are scanned to protect other users from inappropriate content. In the event of a policy violation, a strike is recorded and the image is only stored in your browser's local cache."
   },
   "maintenance_title": "Maintenance",
   "maintenance_desc": "Technical work to update the site is currently underway. Please check back a little later!",
@@ -32,7 +33,8 @@
     "settings": "Settings",
     "operators": "Operators",
     "theme_dark": "Dark",
-    "theme_light": "Light"
+    "theme_light": "Light",
+    "leaderboard": "Leaderboard"
   },
   "footer": {
     "devResources": "Developer Resources",
@@ -365,7 +367,9 @@
     "enemies": "Enemies",
     "recipes": "Recipes",
     "recipeTree": "Recipe Chain",
-    "openRecipe": "Open recipes"
+    "openRecipe": "Open recipes",
+    "leaderboard": "Leaderboard",
+    "profile": "Profile"
   },
   "events": {
     "type": {
@@ -2167,5 +2171,64 @@
     "receptionRoom": "Reception Room",
     "manufacturingCabin": "Manufacturing Cabin",
     "growthChamber": "Growth Chamber"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "event_type": "Event Type",
+    "contract": "Crisis Contract",
+    "monument": "Monument of Valley",
+    "rank": "Rank",
+    "operator": "Player",
+    "level": "Level",
+    "time": "Clear Time",
+    "sec": "{time}s",
+    "team": "Team",
+    "no_entries": "No clear records found for this leaderboard.",
+    "filter_all": "All Servers",
+    "server": "Server",
+    "not_synced_title": "Leaderboard Sync Required",
+    "not_synced_desc": "To participate in the leaderboards, you must register a profile and sync your in-game roster.",
+    "not_synced_btn": "Link Profile",
+    "unauthorized": "Please log in to participate"
+  },
+  "profile": {
+    "title": "Player Profile",
+    "register_title": "Create Goyfield Profile",
+    "register_subtitle": "To create a profile in Goyfield, you must integrate with Google Firebase. This step is necessary to store account data.",
+    "register_name": "Username",
+    "register_btn": "Save Profile",
+    "choose_avatar": "Choose Avatar",
+    "sync_title": "Google Integration",
+    "sync_subtitle": "Integrating with Google links your account to Firebase, enabling gacha synchronization and leaderboard participation.",
+    "sync_btn": "Sign In with Google",
+    "update_btn": "Sync Game",
+    "update_hint": "Update your game roster and clear times from Endfield servers.",
+    "overview": "Overview",
+    "operators_count": "Operators",
+    "exploration_level": "Exploration Level",
+    "weapons": "Weapons",
+    "files": "Files",
+    "awake_day": "Awakening Day",
+    "sanity": "Sanity",
+    "protopass": "Protopass",
+    "weekly_routine": "Weekly Routine",
+    "activity_points": "Activity Points",
+    "stats": "Statistics",
+    "crisis_contract": "Crisis Contract",
+    "monument": "Monument",
+    "clear_time_label": "Completion Time:",
+    "sec_val": "{time} sec.",
+    "operators_title": "Operators",
+    "more": "More →",
+    "strike_warning": "Warning: Your avatar was flagged for inappropriate content. It will only be visible locally.",
+    "monthly_upload_limit": "Custom avatars are limited to 10 uploads per month.",
+    "sync_step1": "Go to the official site and ensure you are logged in",
+    "sync_step2": "Open the link to retrieve your account token",
+    "sync_step3": "Paste the full response or token below",
+    "settings_title": "Profile Settings",
+    "settings_hide_data": "Hide account details on leaderboard",
+    "settings_logout": "Log out",
+    "confirm_unlink": "Are you sure you want to unlink this game account?",
+    "unlink_success": "Game account successfully unlinked."
   }
 }

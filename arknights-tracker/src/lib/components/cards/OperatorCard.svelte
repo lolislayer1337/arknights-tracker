@@ -22,6 +22,9 @@
     export let materialCount = 0;
     export let baseSkills = null;
     export let activeBaseSkillFilters = null;
+    export let level = undefined;
+    export let potential = undefined;
+    export let owned = undefined;
 
     $: uniqueBaseSkills = (() => {
         if (!baseSkills) return [];
@@ -84,7 +87,9 @@
 
     $: accountPots = $manualPotentials[currentAccountId] || {};
     $: currentPot =
-        accountPots[operator.id] !== undefined
+        potential !== undefined
+            ? potential
+            : accountPots[operator.id] !== undefined
             ? isAlwaysOwned
                 ? Math.max(0, accountPots[operator.id])
                 : accountPots[operator.id]
@@ -92,7 +97,7 @@
 
     $: manualPot = accountPots[operator.id];
     $: actualPulls = manualPot !== undefined ? manualPot + 1 : gachaPulls;
-    $: hasOperator = currentPot >= 0;
+    $: hasOperator = owned !== undefined ? owned : currentPot >= 0;
     $: constCount = hasOperator ? currentPot : 0;
     $: isMaxPot = constCount >= 5;
     $: isAccountEmpty = (() => {
@@ -381,6 +386,11 @@
                         </span>
                     </div>
                 </div>
+            {/if}
+            {#if level !== undefined}
+                <span class="absolute bottom-1 right-1 font-mono text-[9px] bg-black/80 text-white px-1.5 py-0.5 rounded-md z-30 select-none border border-white/5">
+                    Lvl {level}
+                </span>
             {/if}
         </div>
     </a>

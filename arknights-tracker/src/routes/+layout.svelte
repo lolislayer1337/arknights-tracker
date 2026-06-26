@@ -262,6 +262,8 @@
                     {#each [
                         { path: "/", label: "sidebar.home", icon: "mainPage" },
                         { path: "/records", label: "sidebar.records", icon: "records" },
+                        { path: "/leaderboard", label: "sidebar.leaderboard", icon: "leaderboard" },
+                        { path: "/profile", label: "pages.profile", icon: "profile" },
                         { path: "/events", label: "sidebar.events", icon: "timeline" },
                         { path: "/history", label: "pages.bannerHistory", icon: "history" },
                         { type: "divider" },
