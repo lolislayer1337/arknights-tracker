@@ -153,7 +153,8 @@
     "weap-standard": "Standard Weapon",
     "weap-special": "Event Weapon",
     "weapon-all": "Weapon Banners",
-    "joint": "Joint Banners"
+    "joint": "Joint Banners",
+    "weponbox_1_3_2": "Crimson Hued Issue"
   },
   "import": {
     "title": "Import Headhunting Records",
@@ -349,7 +350,9 @@
     "weaponbox_constant_5": "Thunderous Peal Issue",
     "joint_1_2_2": "Fest of Brilliance",
     "weponbox_1_2_2": "Smelting Fire Issue",
-    "weponbox_1_2_3": "Swift Walker Issue"
+    "weponbox_1_2_3": "Swift Walker Issue",
+    "special_1_3_2": "Expunger of Sin",
+    "weponbox_1_3_2": "Crimson Hued Issue"
   },
   "pages": {
     "home": "Home",
@@ -430,7 +433,8 @@
     "contingencyReadiness": "Contingency Readiness",
     "seatchForSwordVaultDale": "Search for Sword Vault Dale",
     "monumentalEtchingDirgeOfGrief": "Monumental Etching: Dirge of Grief",
-    "umbralMonument": "Umbral Monument"
+    "umbralMonument": "Umbral Monument",
+    "peacekeepersNocturneSignIn": "Peacekeeper's Nocturne Sign-In"
   },
   "mouths": {
     "january": "January",
@@ -1111,7 +1115,8 @@
     "zhuangfy": "Zhuang Fangyi",
     "zhuangFangyi": "Zhuang Fangyi",
     "miFu": "Mi Fu",
-    "mifu": "Mi Fu"
+    "mifu": "Mi Fu",
+    "camille": "Camille"
   },
   "weaponsList": {
     "industry01": "Industry 0.1",
@@ -1184,7 +1189,8 @@
     "flickersInTheMist": "Flickers in the Mist",
     "phantomPain": "Phantom Pain",
     "amaranthineTassel": "Amaranthine Tassel",
-    "beaconOfDuty": "Beacon of Duty"
+    "beaconOfDuty": "Beacon of Duty",
+    "blessingOfLustrousCarmine": "Blessing of Lustrous Carmine"
   },
   "cookies": {
     "title": "We use cookies",

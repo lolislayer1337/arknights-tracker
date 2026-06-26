@@ -438,6 +438,17 @@ export const weapons = {
       "magabn"
     ]
   },
+  "blessingOfLustrousCarmine": {
+    "id": "blessingOfLustrousCarmine",
+    "name": "Blessing of Lustrous Carmine",
+    "rarity": 6,
+    "weapon": "polearm",
+    "skills": [
+      "attr_agi",
+      "attr_firedam",
+      "tacafter"
+    ]
+  },
   "peco5": {
     "id": "peco5",
     "name": "Peco 5",

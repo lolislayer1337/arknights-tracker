@@ -152,7 +152,8 @@
     "weap-special": "Event-Waffe",
     "weapon-all": "Waffenbanner",
     "joint": "Feier der Exzellenz",
-    "weponbox_1_3_1": "Scharlachknoten-Ausgabe"
+    "weponbox_1_3_1": "Scharlachknoten-Ausgabe",
+    "weponbox_1_3_2": "„Blutrot“-Ausgabe"
   },
   "import": {
     "title": "Rekrutierungsverlauf importieren",
@@ -344,7 +345,9 @@
     "weponbox_1_2_2": "Hüttenfeuer-Ausgabe",
     "weponbox_1_2_3": "Schnellschreiter-Ausgabe",
     "special_1_3_1": "Fäuste ohne Reue",
-    "weponbox_1_3_1": "Scharlachknoten-Ausgabe"
+    "weponbox_1_3_1": "Scharlachknoten-Ausgabe",
+    "special_1_3_2": "Sündentilger",
+    "weponbox_1_3_2": "„Blutrot“-Ausgabe"
   },
   "pages": {
     "home": "Home",
@@ -424,7 +427,8 @@
     "contingencyReadiness": "Krisenbereitschaft",
     "seatchForSwordVaultDale": "Die Suche nach dem Tal des Schwertverlieses",
     "monumentalEtchingDirgeOfGrief": "Monumentales Ätzen: Klagegesang",
-    "umbralMonument": "Schattenmonument"
+    "umbralMonument": "Schattenmonument",
+    "peacekeepersNocturneSignIn": "„Nächtlicher Friedenswächter“-Anmeldung"
   },
   "mouths": {
     "january": "Januar",
@@ -991,7 +995,8 @@
     "rossi": "Rossi",
     "zhuangFangyi": "Zhuang Fangyi",
     "miFu": "Mi Fu",
-    "mifu": "Mi Fu"
+    "mifu": "Mi Fu",
+    "camille": "Camille"
   },
   "weaponsList": {
     "industry01": "Industrie 0.1",
@@ -1064,7 +1069,8 @@
     "flickersInTheMist": "Schimmer im Nebel",
     "phantomPain": "Phantomschmerz",
     "amaranthineTassel": "Amaranthfarbene Quaste",
-    "beaconOfDuty": "Leuchtfeuer der Pflicht"
+    "beaconOfDuty": "Leuchtfeuer der Pflicht",
+    "blessingOfLustrousCarmine": "Segen des schimmernden Scharlachs"
   },
   "cookies": {
     "title": "Wir verwenden Cookies",

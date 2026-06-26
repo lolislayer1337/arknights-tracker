@@ -152,7 +152,8 @@
     "weapSpecial": "Arma de Evento",
     "weapon-all": "Banners de Armas",
     "joint": "Festival do Brilhantismo",
-    "weponbox_1_3_1": "Distribuição Nó Escarlate"
+    "weponbox_1_3_1": "Distribuição Nó Escarlate",
+    "weponbox_1_3_2": "Distribuição Tom Carmesim"
   },
   "import": {
     "title": "Importar Histórico de Busca",
@@ -344,7 +345,9 @@
     "weponbox_1_2_2": "Distribuição Fogo Fundente",
     "weponbox_1_2_3": "Distribuição Caminhante Veloz",
     "special_1_3_1": "Punhos Sem Remorsos",
-    "weponbox_1_3_1": "Distribuição Nó Escarlate"
+    "weponbox_1_3_1": "Distribuição Nó Escarlate",
+    "special_1_3_2": "Expurgador de Pecados",
+    "weponbox_1_3_2": "Distribuição Tom Carmesim"
   },
   "pages": {
     "home": "Início",
@@ -424,7 +427,8 @@
     "contingencyReadiness": "Preparação de Contingência",
     "seatchForSwordVaultDale": "A Procura do Vale do Cofre de Espadas",
     "monumentalEtchingDirgeOfGrief": "Entalhe Monumental: Lamento da Dor",
-    "umbralMonument": "Monumento Umbral"
+    "umbralMonument": "Monumento Umbral",
+    "peacekeepersNocturneSignIn": "Login em Noturno do Pacificador"
   },
   "mouths": {
     "january": "Janeiro",
@@ -992,7 +996,8 @@
     "zhuangfy": "Zhuang Fangyi",
     "zhuangFangyi": "Zhuang Fangyi",
     "miFu": "Mi Fu",
-    "mifu": "Mi Fu"
+    "mifu": "Mi Fu",
+    "camille": "Camille"
   },
   "weaponsList": {
     "industry01": "Indústria 0.1",
@@ -1065,7 +1070,8 @@
     "flickersInTheMist": "Brilhos na Névoa",
     "phantomPain": "Dor Fantasma",
     "amaranthineTassel": "Borla de Amarantina",
-    "beaconOfDuty": "Sinalizador do Dever"
+    "beaconOfDuty": "Sinalizador do Dever",
+    "blessingOfLustrousCarmine": "Bênção do Carmim Lustroso"
   },
   "cookies": {
     "title": "Usamos cookies",
