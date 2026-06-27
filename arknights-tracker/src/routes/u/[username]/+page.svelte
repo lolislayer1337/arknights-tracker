@@ -5,7 +5,15 @@
     import { fade } from "svelte/transition";
     import Icon from "$lib/components/Icon.svelte";
     import OperatorCard from "$lib/components/cards/OperatorCard.svelte";
+    import Image from "$lib/components/Image.svelte";
+    import PotentialIcon from "$lib/components/operators/PotentialIcon.svelte";
+    import Tooltip from "$lib/components/Tooltip.svelte";
     import { characters } from "$lib/data/characters.js";
+    import { weapons } from "$lib/data/weapons.js";
+    import { equipment } from "$lib/data/items/equipment.js";
+    import { getImagePath } from "$lib/utils/imageUtils.js";
+    import { currentLocale } from "$lib/stores/locale.js";
+    import { formatContractDescription } from "$lib/utils/richText.js";
 
     $: username = $page.params.username;
 
@@ -88,6 +96,66 @@
         };
     }
 
+    const weaponIdMap = {
+        "wpn_sword_0012": "thermiteCutter",
+        "wpn_greatsword_0010": "industry01",
+        "wpn_greatsword_0006": "exemplar",
+        "wpn_greatsword_0007": "formerFinery",
+        "wpn_greatsword_0008": "thunderberge",
+        "wpn_greatsword_0009": "sunderedPrince",
+        "wpn_greatsword_0011": "quencher"
+    };
+
+    function getWeaponData(weapon) {
+        if (!weapon) return null;
+        const gameId = weapon.id;
+        const mappedId = weaponIdMap[gameId];
+        const staticData = (mappedId && weapons[mappedId]) || Object.values(weapons || {}).find(w => w.id === gameId || w.gameId === gameId);
+        if (staticData) {
+            return staticData;
+        }
+        return {
+            id: gameId,
+            name: weapon.name || gameId,
+            rarity: Number(weapon.rarity?.value || weapon.rarity || 4),
+            type: weapon.type || "sword"
+        };
+    }
+
+    function getWeaponIcon(weapon) {
+        if (!weapon) return "";
+        const mapped = getWeaponData(weapon);
+        if (mapped && mapped.id && !mapped.id.startsWith("wpn_")) {
+            return getImagePath(mapped.id, "weapon-icon");
+        }
+        return weapon.icon || "";
+    }
+
+    function getEquipIcon(equip) {
+        if (!equip) return "";
+        if (equip.id) {
+            return getImagePath(equip.id, "equipment");
+        }
+        return equip.icon || "";
+    }
+
+    let equipmentNames = {};
+    $: if (typeof window !== 'undefined' && $currentLocale) {
+        loadEquipmentNames($currentLocale);
+    }
+    async function loadEquipmentNames(lang) {
+        try {
+            const safeLang = (lang || "en").toLowerCase().replace("-", "");
+            const mod = await import(`../../../lib/locales/${safeLang}/equipment.json`);
+            equipmentNames = mod.default || mod;
+        } catch (e) {
+            try {
+                const mod = await import(`../../../lib/locales/en/equipment.json`);
+                equipmentNames = mod.default || mod;
+            } catch (err) {}
+        }
+    }
+
     $: if (username) {
         loadProfile(username);
     }
@@ -132,6 +200,26 @@
 
     function getServerLabel(serverId) {
         return serverId === "2" ? "Asia" : "Americas / Europe";
+    }
+
+    function getContractTagStyle(level) {
+        const lvl = Number(level) || 0;
+        if (lvl >= 40) {
+            return {
+                border: "#D83742",
+                bg: "radial-gradient(circle, rgba(255,255,255,0.12) 0.5px, transparent 0.5px) 0 0 / 3px 3px, linear-gradient(to left, #171201, #61201A)"
+            };
+        }
+        if (lvl >= 20) {
+            return {
+                border: "#E97126",
+                bg: "radial-gradient(circle, rgba(255,255,255,0.12) 0.5px, transparent 0.5px) 0 0 / 3px 3px, linear-gradient(to left, #131800, #694012)"
+            };
+        }
+        return {
+            border: "#828282",
+            bg: "radial-gradient(circle, rgba(255,255,255,0.12) 0.5px, transparent 0.5px) 0 0 / 3px 3px, linear-gradient(to left, #050505, #313434)"
+        };
     }
 
     function getAvatarUrl(pictureId) {
@@ -199,30 +287,39 @@
                 <div class="flex flex-wrap items-center gap-4">
                     {#if profile.details && profile.details.length > 0}
                         {#each profile.details as d}
+                            {@const tagStyle = getContractTagStyle(d.info?.contract?.level)}
                             <div
                                 on:click={() => selectedGameUid = d.game_uid}
                                 on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') selectedGameUid = d.game_uid; }}
                                 role="button"
                                 tabindex="0"
-                                class="bg-white/5 border text-left p-3 rounded-xl flex items-center gap-4 w-60 hover:bg-white/10 transition-all cursor-pointer select-none outline-none focus-visible:ring-1 focus-visible:ring-[#FFE145]
-                                {selectedGameUid === d.game_uid ? 'border-[#FFE145]' : 'border-white/10'}"
+                                class="bg-white/5 border text-left p-3 rounded-xl flex items-center gap-4 w-[285px] hover:bg-white/10 transition-all cursor-pointer select-none outline-none focus-visible:ring-1 focus-visible:ring-[#FFE145]
+                                {selectedGameUid === d.game_uid ? 'border-2 border-[#FFE145]' : 'border-2 border-white/5 dark:border-white/10'}"
                             >
                                 <img
                                     src={d.info?.base?.avatarUrl || (d.info?.chars?.[0]?.charData?.avatarSqUrl) || "/images/operators/icons/endministrator1.png"}
                                     alt="Roster Leader"
-                                    class="w-10 h-10 rounded bg-white/10 border border-white/20 object-cover"
+                                    referrerpolicy="no-referrer"
+                                    class="w-12 h-12 rounded bg-white/10 border border-white/20 object-cover shrink-0"
                                     on:error={(e) => e.target.src = '/images/operators/icons/endministrator1.png'}
                                 />
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex items-center justify-between font-mono">
-                                        <span class="text-sm font-bold text-white truncate">{d.info?.base?.name || "Operator"}</span>
-                                        <span class="text-xs text-[#FFE145] font-black">{d.info?.base?.level || 1}级</span>
+                                <div class="flex-1 min-w-0 flex flex-col gap-0.5">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-md font-bold dark:text-white text-gray-900 font-sdk truncate">{d.info?.base?.name || "Profile"}</span>
+                                        <div class="flex items-center gap-1 border px-2 py-0.5 rounded-[3px] text-[19px] font-black text-white leading-none shrink-0 h-[24px] min-w-[62px] justify-center" 
+                                             style="border-color: {tagStyle.border}; background: {tagStyle.bg};">
+                                            <span>{d.info?.contract?.level || 0}</span>
+                                            <Icon name="contract2" class="w-5 h-5 text-white shrink-0" />
+                                        </div>
                                     </div>
                                     <div class="text-[10px] text-gray-400 font-mono truncate">UID: {d.game_uid}</div>
-                                    <div class="text-[9px] text-gray-500 font-mono truncate">{getServerLabel(d.info?.base?.serverId)}</div>
+                                    <div class="bg-gray-200 text-gray-600 dark:bg-[#383838] dark:text-[#B0B0B0] px-1.5 py-0.5 rounded text-[9px] font-medium font-sans w-fit truncate">
+                                        {getServerLabel(d.info?.base?.serverId)}
+                                    </div>
                                 </div>
-                                <div class="bg-[#FFE145]/10 border border-[#FFE145]/30 text-[#FFE145] rounded-lg w-10 h-10 flex items-center justify-center font-sdk font-bold text-lg">
-                                    {d.info?.contract?.level || "-"}
+                                <div class="flex flex-col items-center justify-center shrink-0 min-w-[36px] border-l border-white/10 pl-3">
+                                    <span class="bg-gray-800 text-white dark:bg-white dark:text-black font-black text-[9px] px-1 rounded-[2px] tracking-tighter uppercase leading-none mb-0.5 select-none">Lv.</span>
+                                    <span class="text-2xl font-black dark:text-white text-gray-900 font-mono leading-none">{d.info?.base?.level || 1}</span>
                                 </div>
                             </div>
                         {/each}
@@ -295,49 +392,145 @@
                     <!-- COLUMN 2: Crisis Contract details -->
                     <div>
                         <div class="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl h-full flex flex-col">
-                            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-6">
-                                <h2 class="text-xl font-bold dark:text-white text-gray-900 font-sdk">
-                                    {$t("profile.crisis_contract")}
-                                </h2>
-                                <span class="bg-[#FFE145]/15 border border-[#FFE145]/40 text-[#FFE145] font-black font-sdk px-3 py-1.5 rounded-lg text-lg">
-                                    Level {activeAccount.info?.contract?.level || "-"}
-                                </span>
+                            <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
+                                <div class="flex items-center gap-2">
+                                    <Icon name="contract" class="w-6 h-6 text-[#FFE145]" />
+                                    <h2 class="text-xl font-bold dark:text-white text-gray-900 font-sdk">
+                                        {$t("profile.crisis_contract")}
+                                    </h2>
+                                </div>
                             </div>
 
-                            {#if activeAccount.info?.contract}
-                                <div class="text-sm font-mono text-gray-400 mb-6">
-                                    {$t("profile.clear_time_label")} 
-                                    <span class="text-white font-bold text-lg ml-1">
-                                        {activeAccount.info.contract.clearTime} сек.
-                                    </span>
+                            {#if activeAccount.info?.contract && activeAccount.info.contract.level > 0}
+                                {@const tagStyle = getContractTagStyle(activeAccount.info.contract.level)}
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="text-sm font-sdk dark:text-gray-400 text-gray-600">
+                                        {$t("profile.clear_time_label")} 
+                                        <span class="dark:text-white text-gray-900 font-bold text-lg ml-1 font-mono">
+                                            {activeAccount.info.contract.clearTime} сек.
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-1 border px-2 py-0.5 rounded-[3px] text-[19px] font-black text-white leading-none shrink-0 h-[24px] min-w-[62px] justify-center" 
+                                         style="border-color: {tagStyle.border}; background: {tagStyle.bg};">
+                                        <span>{activeAccount.info.contract.level || 0}</span>
+                                        <Icon name="contract2" class="w-5 h-5 text-white shrink-0" />
+                                    </div>
                                 </div>
 
-                                <!-- Operator slots used for contract clear -->
-                                <div class="grid grid-cols-2 gap-4 flex-1">
+                                <div class="flex flex-row justify-center gap-2 flex-wrap">
                                     {#each activeAccount.info.contract.chars as char}
                                         {@const opData = getOperatorData(char)}
-                                        <div class="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-3">
-                                            <img
-                                                src={opData.id.startsWith('http') ? opData.id : `/images/operators/icons/${opData.id}.png`}
-                                                alt={opData.name}
-                                                class="w-14 h-14 rounded-lg bg-white/10 border border-white/20 object-cover"
-                                                on:error={(e) => e.target.src = '/images/operators/icons/endministrator1.png'}
-                                            />
-                                            <div class="min-w-0 flex-1">
-                                                <div class="text-xs font-bold text-white truncate font-mono">{opData.name}</div>
-                                                <div class="text-[10px] text-gray-400 font-mono mt-1">Level {char.level}</div>
-                                                <div class="flex items-center gap-1 mt-1 text-[9px] text-[#FFE145] font-black">
-                                                    {#each Array(char.potential || 1) as _}
-                                                        ★
-                                                    {/each}
+                                        <div class="flex flex-col bg-[#111111] border border-white/10 rounded-b-[4px] min-w-0 w-[84px] max-w-[84px] shrink-0 shadow-md relative">
+                                            <div class="relative w-full h-[150px] bg-white/5 overflow-hidden shrink-0">
+                                                <Image id={opData.id} variant="operator-preview" className="w-full h-full object-cover" />
+                                                <div class="absolute bottom-2 left-2 z-30 flex flex-col items-start leading-none select-none">
+                                                    <span class="text-[8px] font-black text-white/70 uppercase tracking-wider" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">LV</span>
+                                                    <span class="text-[24px] font-black text-white leading-none tracking-tighter" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.9);">{char.level}</span>
                                                 </div>
+                                            </div>
+
+                                            {#if char.weapon}
+                                                {@const weaponData = getWeaponData(char.weapon)}
+                                                {@const weaponName = $t(`weaponsList.${weaponData?.id}`) !== `weaponsList.${weaponData?.id}` ? $t(`weaponsList.${weaponData?.id}`) : (weaponData?.name || char.weapon.id)}
+                                                <Tooltip text={weaponName}>
+                                                    <div class="relative w-[96px] h-[68px] flex items-center justify-between p-1 overflow-hidden shrink-0 z-20 ml-[-12px]"
+                                                         style="border: 1px solid transparent; background: linear-gradient(to right, #363634, #111111) padding-box, linear-gradient(to right, #464644, #1b1b1a) border-box;">
+                                                        
+                                                        <img 
+                                                            src={getWeaponIcon(char.weapon)} 
+                                                            alt="Weapon" 
+                                                            class="absolute left-[40%] top-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 object-contain opacity-50 pointer-events-none rotate-[-15deg]"
+                                                            on:error={(e) => e.target.src = char.weapon.icon}
+                                                        />
+                                                        
+                                                        <div class="flex flex-col justify-between h-full z-10 items-start">
+                                                            <PotentialIcon pot={char.weapon.refineLevel !== undefined ? char.weapon.refineLevel + 1 : 1} size={20} />
+                                                            <div class="flex flex-col items-start leading-none">
+                                                                <span class="text-[7px] text-white/50 font-black">LV</span>
+                                                                <span class="text-[16px] text-white font-nums font-black leading-none" style="text-shadow: 1px 1px 0 #111;">
+                                                                    {char.weapon.level}
+                                                                </span>
+                                                                <div class="w-6 h-[2px] bg-[#E3A000] mt-0.5"></div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="flex flex-col gap-0.5 z-10 items-end justify-center h-full pr-1">
+                                                            {#each char.weapon.weaponTerms || [] as term}
+                                                                <div class="flex items-center gap-0.5 px-1 py-0.5 rounded-[2px]" style="background: linear-gradient(to right, #111111, #2D2D2B);">
+                                                                    <svg class="w-2.5 h-1.5 rotate-[-25deg]" viewBox="0 0 16 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M2 2C2 0.9 2.9 0 4 0H10L14 5L10 10H4C2.9 10 2 9.1 2 8V2Z" fill="#FFE145" />
+                                                                    </svg>
+                                                                    <span class="text-[9px] font-black text-[#FFE145] font-nums leading-none">{term}</span>
+                                                                </div>
+                                                            {/each}
+                                                        </div>
+                                                    </div>
+                                                </Tooltip>
+                                            {/if}
+
+                                            <div class="grid grid-cols-2 gap-1 p-1 bg-[#111111] rounded-b-[4px]">
+                                                {#each ['bodyEquip', 'armEquip', 'firstAccessory', 'secondAccessory'] as eqKey}
+                                                    {@const equip = char.equips?.[eqKey]}
+                                                    {#if equip}
+                                                        {@const tier = Math.max(0, (equip.enhanceStatus || 1) - 1)}
+                                                        {@const eqData = equipment[equip.id]}
+                                                        <Tooltip text={equipmentNames[equip.id]?.name || equip.id}>
+                                                            <div class="relative flex items-center justify-between w-[38px] h-[28px] p-0.5 min-w-0"
+                                                                 style="border: 1px solid transparent; background: linear-gradient(to right, #101010, #1A4558) padding-box, linear-gradient(to right, #3D3F3A, #194457) border-box;">
+                                                                
+                                                                <div class="relative w-[14px] h-[8px] flex items-center justify-center shrink-0 ml-0.5">
+                                                                    <svg class="w-full h-full" viewBox="0 0 54 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                        <rect x="33.3789" y="15" width="4.23793" height="14.7562" rx="2.11897" transform="rotate(30 33.3789 15)" fill={tier >= 1 ? "#26BAFB" : "#8F8F8F"} />
+                                                                        <rect x="41.8555" y="15" width="4.23793" height="14.7562" rx="2.11897" transform="rotate(30 41.8555 15)" fill={tier >= 2 ? "#26BAFB" : "#8F8F8F"} />
+                                                                        <rect x="50.3281" y="15" width="4.23793" height="14.7562" rx="2.11897" transform="rotate(30 50.3281 15)" fill={tier >= 3 ? "#26BAFB" : "#8F8F8F"} />
+                                                                        <path d="M28 17L20 29H8L0 17L8 5H20L28 17ZM14 12C11.2386 12 9 14.2386 9 17C9 19.7614 11.2386 22 14 22C16.7614 22 19 19.7614 19 17C19 14.2386 16.7614 12 14 12Z" fill={tier >= 3 ? "#26BAFB" : "#8F8F8F"} />
+                                                                        {#if tier >= 1}
+                                                                            <path d="M28.0068 17L20.0068 29H8.00684L4.39844 23.5859L9.8877 19.834C10.7895 21.1422 12.2978 22 14.0068 22C16.7683 22 19.0068 19.7614 19.0068 17C19.0068 15.9584 18.6885 14.9912 18.6885 14.1904L23.625 10.4453L28.0068 17Z" fill="#26BAFB" />
+                                                                        {/if}
+                                                                        <path d="M31 0L36.1962 9H25.8038L31 0Z" fill={tier >= 3 ? "#26BAFB" : "#8F8F8F"} />
+                                                                        {#if tier >= 1 && tier < 3}
+                                                                            <path d="M33.5981 4.5L36.197 9H25.8047L33.5981 4.5Z" fill="#26BAFB" />
+                                                                        {/if}
+                                                                    </svg>
+                                                                </div>
+
+                                                                <img 
+                                                                    src={getEquipIcon(equip)} 
+                                                                    alt={eqKey} 
+                                                                    class="w-[22px] h-[22px] object-contain pointer-events-none mr-0.5 shrink-0"
+                                                                    on:error={(e) => e.target.src = equip.icon}
+                                                                />
+                                                                
+                                                                <div class="left-0.5 w-[14px] h-[1.5px] bg-[#E3A000] absolute bottom-0.5"></div>
+                                                            </div>
+                                                        </Tooltip>
+                                                    {:else}
+                                                        <div class="bg-[#101010]/60 border border-white/5 w-[38px] h-[28px] min-w-0"></div>
+                                                    {/if}
+                                                {/each}
                                             </div>
                                         </div>
                                     {/each}
                                 </div>
+
+                                <div class="grid grid-cols-[repeat(auto-fill,56px)] gap-1.5 mt-4 border-t border-white/10 pt-4 justify-center">
+                                    {#each activeAccount.info.contract.indicators || [] as ind}
+                                        {@const tagName = $t(`contractTagNames.${ind.id}`) || ind.name}
+                                        {@const tagDesc = formatContractDescription(ind.id, $t(`contractTagDesc.${ind.id}`) || ind.desc)}
+                                        {@const cleanDesc = tagDesc ? tagDesc.replace(/<[^>]*>/g, "") : ""}
+                                        <Tooltip text={tagName + (cleanDesc ? ": " + cleanDesc : "")}>
+                                            <div class="w-12 h-12 bg-black/40 border border-white/10 rounded-lg p-1.5 flex items-center justify-center cursor-pointer hover:border-white/30 transition-all">
+                                                <img src={getImagePath(ind.id, "contract-tag-icon")} alt={tagName} class="w-full h-full object-contain" on:error={(e) => e.target.src = ind.icon} />
+                                            </div>
+                                        </Tooltip>
+                                    {/each}
+                                </div>
                             {:else}
-                                <div class="flex-1 flex flex-col items-center justify-center text-center text-gray-500 font-mono text-sm py-12">
-                                    No Contingency Contract records.
+                                <div class="text-center py-10 text-gray-400 italic flex flex-col items-center bg-gray-50 dark:bg-[#2C2C2C] rounded-2xl border border-dashed border-gray-200 dark:border-[#333] w-full">
+                                    <Icon name="noData" class="w-8 h-8 mb-2 opacity-30" />
+                                    <p class="text-sm">
+                                        {$t("emptyState.noData") || "No records found"}
+                                    </p>
                                 </div>
                             {/if}
                         </div>

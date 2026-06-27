@@ -14,12 +14,16 @@
         return acc;
     }, {});
 
+    const charactersByApiId = Object.values(characters || {}).reduce((acc, char) => {
+        if (char && char.apiId) acc[char.apiId] = char;
+        return acc;
+    }, {});
+
     let entries = [];
     let loading = true;
     let selectedEvent = "contract"; // "contract" or "monument"
     let serverFilter = "all"; // "all", "3" (Americas/Europe), "2" (Asia)
 
-    // Player details modal/popup
     let selectedEntry = null;
 
     async function loadLeaderboard() {
@@ -41,7 +45,6 @@
         loadLeaderboard();
     }
 
-    // Filtered list based on selected server
     $: filteredEntries = entries.filter(e => {
         if (serverFilter === "all") return true;
         return String(e.serverId) === serverFilter;
@@ -68,6 +71,12 @@
 
     function getSvelteCharId(char) {
         if (!char) return "";
+        const charId = char.charData?.id || char.id || char.charId || "";
+
+        if (charId && charactersByApiId[charId]) {
+            return charactersByApiId[charId].id;
+        }
+
         const rawName = char.charData?.name || char.name || "";
         const nameLower = rawName.toLowerCase().trim();
 
@@ -106,7 +115,7 @@
             return ruMapping[nameLower];
         }
 
-        return char.charData?.id || char.id || "";
+        return charId;
     }
 
     function mapProfessionToClass(key) {

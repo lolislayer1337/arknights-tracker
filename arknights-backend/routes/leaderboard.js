@@ -4,16 +4,12 @@ const { PrismaClient } = require('@prisma/client');
 
 const router = express.Router();
 const prisma = new PrismaClient();
-
-// In-Memory cache dictionary
 const leaderboardCache = {}; // Key: eventType, Value: { data, expiry }
 const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutes
 
 router.get('/', async (req, res) => {
     const eventType = req.query.event_type || 'contract';
     const now = Date.now();
-    
-    // Check cache
     if (leaderboardCache[eventType] && now < leaderboardCache[eventType].expiry) {
         console.log(`[Leaderboard Cache] Serving from cache for event type: ${eventType}`);
         return res.json({ status: 'success', data: leaderboardCache[eventType].data });
@@ -31,7 +27,7 @@ router.get('/', async (req, res) => {
                     }
                 }
             },
-            orderBy: { clear_time: 'asc' }, // Rank by clear time ascending
+            orderBy: { clear_time: 'asc' },
             include: {
                 account_detail: {
                     include: {
@@ -48,7 +44,6 @@ router.get('/', async (req, res) => {
             }
         });
 
-        // Format entries for the frontend
         const formatted = entries.map(entry => {
             let accountInfo = {};
             try {
@@ -76,12 +71,10 @@ router.get('/', async (req, res) => {
                 },
                 level: accountInfo.detail?.base?.level || accountInfo.base?.level || 1,
                 serverId: accountInfo.detail?.base?.serverId || accountInfo.base?.serverId || '3',
-                // Chars used during completion or current roster for visual listing
                 chars: accountInfo.detail?.chars || accountInfo.chars || []
             };
         });
 
-        // Update Cache
         leaderboardCache[eventType] = {
             data: formatted,
             expiry: now + CACHE_DURATION_MS

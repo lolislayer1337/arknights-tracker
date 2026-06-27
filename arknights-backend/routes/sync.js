@@ -208,12 +208,13 @@ router.post('/sync', async (req, res) => {
                     const realDetail = detail.detail || detail;
                     const contractId = realDetail.crisisContract?.[0]?.id;
                     if (contractId) {
+                        const ccTs = String(Math.floor(Date.now() / 1000));
                         const ccPath = "/api/v1/game/endfield/card/crisis-contract";
                         const ccQuery = `roleId=${acc.role_id}&serverId=${acc.server_id}&userId=&contractId=${contractId}`;
                         const ccHeaders = {
                             "Accept": "application/json", "cred": cred,
-                            "sign": generateSign(ccPath, ccQuery, ts, token),
-                            "platform": "3", "timestamp": ts, "vname": "1.0.0", "sk-language": "ru_RU",
+                            "sign": generateSign(ccPath, ccQuery, ccTs, token),
+                            "platform": "3", "timestamp": ccTs, "vname": "1.0.0", "sk-language": "ru_RU",
                             "User-Agent": "Mozilla/5.0"
                         };
                         try {
@@ -224,6 +225,35 @@ router.post('/sync', async (req, res) => {
                             if (ccRes.data.code === 0) {
                                 contractDetail = ccRes.data.data?.crisisContract;
                                 console.log("[Sync API Crisis Contract Detailed Info Loaded]:", JSON.stringify(contractDetail, null, 2));
+                                const recordId = contractDetail?.history?.bestRecord?.id;
+                                if (recordId) {
+                                    const recTs = String(Math.floor(Date.now() / 1000));
+                                    const recPath = "/api/v1/game/endfield/card/crisis-contract/record";
+                                    const recQuery = `roleId=${acc.role_id}&serverId=${acc.server_id}&userId=&contractId=${contractId}&recordId=${recordId}`;
+                                    const recHeaders = {
+                                        "Accept": "application/json",
+                                        "cred": cred,
+                                        "sign": generateSign(recPath, recQuery, recTs, token),
+                                        "platform": "3",
+                                        "timestamp": recTs,
+                                        "vname": "1.0.0",
+                                        "sk-language": "ru_RU",
+                                        "User-Agent": "Mozilla/5.0"
+                                    };
+                                    try {
+                                        const recRes = await axios.get(
+                                            `https://zonai.skport.com${recPath}?${recQuery}`,
+                                            { headers: recHeaders }
+                                        );
+                                        console.log("[Sync API Crisis Contract Record Detail Response]:", JSON.stringify(recRes.data, null, 2));
+                                        if (recRes.data.code === 0 && recRes.data.data?.recordDetail) {
+                                            contractDetail.bestRecordDetail = recRes.data.data.recordDetail;
+                                            console.log("[Sync API Crisis Contract Record Detail Loaded]");
+                                        }
+                                    } catch (recErr) {
+                                        console.error("[Sync API Crisis Contract Record Detail Fetch Error]:", recErr.message);
+                                    }
+                                }
                             }
                         } catch (err) {
                             console.error("[Sync API Crisis Contract Fetch Error]:", err.message);
@@ -490,6 +520,63 @@ router.get('/profile-by-name/:name', async (req, res) => {
     }
 });
 
+const nameScoreToTagId = {
+    "Среда: разгон_3": "activity_contract_tag_201",
+    "Изменение: азарт_1": "activity_contract_tag_101",
+    "Изменение: азарт_2": "activity_contract_tag_102",
+    "Команда: боевой озноб_1": "activity_contract_tag_203",
+    "Команда: боевой озноб_2": "activity_contract_tag_204",
+    "Команда: потеря тепла_1": "activity_contract_tag_205",
+    "Команда: потеря тепла_2": "activity_contract_tag_206",
+    "Команда: гнутые края_1": "activity_contract_tag_207",
+    "Команда: гнутые края_2": "activity_contract_tag_208",
+    "Команда: обезглавливание_1": "activity_contract_tag_117",
+    "Команда: обезглавливание_2": "activity_contract_tag_118",
+    "Команда: слабая основа_3": "activity_contract_tag_209",
+    "Команда: сдержанность_1": "activity_contract_tag_122",
+    "Команда: сдержанность_2": "activity_contract_tag_123",
+    "Изменение: защитный эффект_1": "activity_contract_tag_124",
+    "Изменение: восстановление_1": "activity_contract_tag_119",
+    "Изменение: восстановление_2": "activity_contract_tag_120",
+    "Среда: разделение_2": "activity_contract_tag_125",
+    "Среда: гипоксия_1": "activity_contract_tag_103",
+    "Среда: трясина_3": "activity_contract_tag_104",
+    "Команда: утомление_3": "activity_contract_tag_127",
+    "Изменение: токсичные отходы_1": "activity_contract_tag_129",
+    "Изменение: токсичные отходы_2": "activity_contract_tag_130",
+    "Изменение: шоковая заморозка_2": "activity_contract_tag_135",
+    "Среда: термораспад_1": "activity_contract_tag_132",
+    "Среда: биораспад_1": "activity_contract_tag_133",
+    "Среда: электрораспад_1": "activity_contract_tag_134",
+    "Среда: увядание_1": "activity_contract_tag_107",
+    "Среда: увядание_2": "activity_contract_tag_108",
+    "Среда: ограниченное время_1": "activity_contract_tag_111_2",
+    "Среда: ограниченное время_2": "activity_contract_tag_112_2",
+    "Среда: ограниченное время_3": "activity_contract_tag_301",
+    "Среда: реконструкция_2": "activity_contract_tag_310",
+    "Среда: реконструкция_3": "activity_contract_tag_311",
+    "Изменение: натиск_2": "activity_contract_tag_136",
+    "Среда: физиораспад_1": "activity_contract_tag_210",
+    "Команда: слабость_1": "activity_contract_tag_302",
+    "Команда: слабость_2": "activity_contract_tag_303",
+    "Команда: слабость_3": "activity_contract_tag_304",
+    "Изменение: охват_1": "activity_contract_tag_308",
+    "Среда: дрожь_3": "activity_contract_tag_306",
+    "Среда: синхронизированный рост_2": "activity_contract_tag_307",
+    "Команда: отягощение_1": "activity_contract_tag_312",
+    "Изменение: жизнеспособность_1": "activity_contract_tag_114",
+    "Изменение: жизнеспособность_2": "activity_contract_tag_115",
+    "Изменение: жизнеспособность_3": "activity_contract_tag_116"
+};
+
+const nameToTagId = {};
+for (const key in nameScoreToTagId) {
+    const nameOnly = key.substring(0, key.lastIndexOf("_"));
+    if (nameOnly && !nameToTagId[nameOnly]) {
+        nameToTagId[nameOnly] = nameScoreToTagId[key];
+    }
+}
+
 function normalizeGameAccountInfo(rawInfo, serverId, contractDetail) {
     if (rawInfo && rawInfo.base && rawInfo.stats && !contractDetail) {
         return rawInfo;
@@ -508,35 +595,6 @@ function normalizeGameAccountInfo(rawInfo, serverId, contractDetail) {
         awakeDay = Math.max(1, Math.floor(diffSeconds / 86400));
     }
 
-    let contractLevel = 0;
-    let contractClearTime = 0;
-    let contractChars = [];
-
-    if (contractDetail) {
-        contractLevel = contractDetail.status?.highest || 0;
-        const bestRecord = contractDetail.history?.bestRecord;
-        if (bestRecord && bestRecord.isPass) {
-            contractClearTime = parseFloat(bestRecord.passTs) || 0;
-            contractChars = (bestRecord.chars || []).map(c => ({
-                id: c.charId,
-                name: c.name || "Operator",
-                level: c.level || 1,
-                potentialLevel: c.potentialLevel || 0,
-                potential: c.potentialLevel + 1,
-                charData: {
-                    id: c.charId,
-                    name: c.name || "Operator",
-                    avatarSqUrl: c.avatarUrl
-                }
-            }));
-        }
-    } else if (crisisContractList.length > 0) {
-        const latestContract = crisisContractList[0];
-        contractLevel = latestContract.highest || 0;
-        contractClearTime = latestContract.clearTime || latestContract.costTime || latestContract.time || 0;
-        contractChars = latestContract.chars || [];
-    }
-
     const mappedChars = (detail.chars || []).map(c => {
         return {
             id: c.charData?.id || c.id,
@@ -547,6 +605,98 @@ function normalizeGameAccountInfo(rawInfo, serverId, contractDetail) {
             charData: c.charData
         };
     });
+
+    let contractLevel = 0;
+    let contractClearTime = 0;
+    let contractChars = [];
+    let contractIndicators = [];
+
+    if (contractDetail) {
+        contractLevel = contractDetail.status?.highest || 0;
+        const bestRecord = contractDetail.history?.bestRecord;
+        if (bestRecord && bestRecord.isPass) {
+            contractClearTime = parseFloat(bestRecord.passTs) || 0;
+            contractIndicators = (contractDetail.bestRecordDetail?.indicators || bestRecord.indicators || contractDetail.indicators || []).map(ind => {
+                const name = ind.name || "";
+                const score = ind.score || 1;
+                const lookupKey = `${name}_${score}`;
+                const tagId = nameScoreToTagId[lookupKey] || nameToTagId[name] || ind.id || "";
+                return {
+                    id: tagId,
+                    icon: ind.icon || "",
+                    name: name,
+                    desc: ind.desc || ""
+                };
+            });
+            const detailCharsList = contractDetail.bestRecordDetail?.chars || bestRecord.chars || [];
+            contractChars = detailCharsList.map(c => {
+                const rosterChar = mappedChars.find(rc => rc.id === c.charId);
+                return {
+                    id: c.charId,
+                    name: rosterChar ? rosterChar.name : "Operator",
+                    level: c.level || 1,
+                    potentialLevel: c.potentialLevel || 0,
+                    potential: c.potentialLevel + 1,
+                    weapon: c.weapon ? {
+                        id: c.weapon.id,
+                        icon: c.weapon.icon,
+                        level: c.weapon.level,
+                        refineLevel: c.weapon.refineLevel,
+                        rarity: c.weapon.rarity && typeof c.weapon.rarity === 'object' ? Number(c.weapon.rarity.value) : c.weapon.rarity,
+                        weaponTerms: c.weapon.weaponTerms || []
+                    } : null,
+                    equips: c.equips ? {
+                        bodyEquip: c.equips.bodyEquip ? {
+                            id: c.equips.bodyEquip.id,
+                            icon: c.equips.bodyEquip.icon,
+                            enhanceStatus: c.equips.bodyEquip.enhanceStatus,
+                            rarity: c.equips.bodyEquip.rarity && typeof c.equips.bodyEquip.rarity === 'object' ? Number(c.equips.bodyEquip.rarity.value) : c.equips.bodyEquip.rarity
+                        } : null,
+                        armEquip: c.equips.armEquip ? {
+                            id: c.equips.armEquip.id,
+                            icon: c.equips.armEquip.icon,
+                            enhanceStatus: c.equips.armEquip.enhanceStatus,
+                            rarity: c.equips.armEquip.rarity && typeof c.equips.armEquip.rarity === 'object' ? Number(c.equips.armEquip.rarity.value) : c.equips.armEquip.rarity
+                        } : null,
+                        firstAccessory: c.equips.firstAccessory ? {
+                            id: c.equips.firstAccessory.id,
+                            icon: c.equips.firstAccessory.icon,
+                            enhanceStatus: c.equips.firstAccessory.enhanceStatus,
+                            rarity: c.equips.firstAccessory.rarity && typeof c.equips.firstAccessory.rarity === 'object' ? Number(c.equips.firstAccessory.rarity.value) : c.equips.firstAccessory.rarity
+                        } : null,
+                        secondAccessory: c.equips.secondAccessory ? {
+                            id: c.equips.secondAccessory.id,
+                            icon: c.equips.secondAccessory.icon,
+                            enhanceStatus: c.equips.secondAccessory.enhanceStatus,
+                            rarity: c.equips.secondAccessory.rarity && typeof c.equips.secondAccessory.rarity === 'object' ? Number(c.equips.secondAccessory.rarity.value) : c.equips.secondAccessory.rarity
+                        } : null
+                    } : null,
+                    charData: rosterChar ? rosterChar.charData : {
+                        id: c.charId,
+                        name: "Operator",
+                        avatarSqUrl: c.avatarUrl
+                    }
+                };
+            });
+        }
+    } else if (crisisContractList.length > 0) {
+        const latestContract = crisisContractList[0];
+        contractLevel = latestContract.highest || 0;
+        contractClearTime = latestContract.clearTime || latestContract.costTime || latestContract.time || 0;
+        contractChars = latestContract.chars || [];
+        contractIndicators = (latestContract.indicators || []).map(ind => {
+            const name = ind.name || "";
+            const score = ind.score || 1;
+            const lookupKey = `${name}_${score}`;
+            const tagId = nameScoreToTagId[lookupKey] || nameToTagId[name] || ind.id || "";
+            return {
+                id: tagId,
+                icon: ind.icon || "",
+                name: name,
+                desc: ind.desc || ""
+            };
+        });
+    }
 
     const normalized = {
         base: {
@@ -573,7 +723,8 @@ function normalizeGameAccountInfo(rawInfo, serverId, contractDetail) {
         contract: {
             level: contractLevel,
             clearTime: contractClearTime,
-            chars: contractChars
+            chars: contractChars,
+            indicators: contractIndicators
         },
         chars: mappedChars,
         detail: detail

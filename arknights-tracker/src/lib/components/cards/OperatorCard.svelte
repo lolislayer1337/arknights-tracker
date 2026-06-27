@@ -215,6 +215,15 @@
                         class="absolute bottom-0 left-0 right-0 h-[60%] bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none z-10"
                     ></div>
                 {/if}
+
+                {#if level !== undefined}
+                    <span
+                        class="absolute bottom-3.5 right-1 z-30 font-black text-white leading-none tracking-tight font-nums text-[15px] select-none"
+                        style="text-shadow: 1px 1px 0 #111, -1px -1px 0 #111, 1px -1px 0 #111, -1px 1px 0 #111, 0 2px 2px rgba(0,0,0,0.5);"
+                    >
+                        Lv. {level}
+                    </span>
+                {/if}
             </div>
 
             <div
@@ -386,11 +395,6 @@
                         </span>
                     </div>
                 </div>
-            {/if}
-            {#if level !== undefined}
-                <span class="absolute bottom-1 right-1 font-mono text-[9px] bg-black/80 text-white px-1.5 py-0.5 rounded-md z-30 select-none border border-white/5">
-                    Lvl {level}
-                </span>
             {/if}
         </div>
     </a>
