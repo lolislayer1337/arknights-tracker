@@ -5,9 +5,67 @@ const { checkNsfw, saveWebpImage } = require('../imageHelper');
 const axios = require('axios');
 const crypto = require('crypto');
 const leaderboardRouter = require('./leaderboard');
+const fs = require('fs');
+const path = require('path');
 
 const router = express.Router();
 const prisma = new PrismaClient();
+
+let bannedWords = new Set();
+
+async function loadBannedWords() {
+    const listPath = path.join(__dirname, '../banned_words.txt');
+    const localPath = path.join(__dirname, '../banned_words_local.txt');
+    if (!fs.existsSync(listPath)) {
+        try {
+            const res = await axios.get('https://raw.githubusercontent.com/censor-text/profanity-list/main/list/en.txt');
+            fs.writeFileSync(listPath, res.data);
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+    if (!fs.existsSync(localPath)) {
+        try {
+            fs.writeFileSync(localPath, 'custombannedwordexample\n');
+        } catch (e) {}
+    }
+    try {
+        if (fs.existsSync(listPath)) {
+            const data = fs.readFileSync(listPath, 'utf8');
+            data.split(/\r?\n/).forEach(w => {
+                const trimmed = w.trim().toLowerCase();
+                if (trimmed) bannedWords.add(trimmed);
+            });
+        }
+        if (fs.existsSync(localPath)) {
+            const data = fs.readFileSync(localPath, 'utf8');
+            data.split(/\r?\n/).forEach(w => {
+                const trimmed = w.trim().toLowerCase();
+                if (trimmed) bannedWords.add(trimmed);
+            });
+        }
+    } catch (e) {
+        console.error(e.message);
+    }
+}
+loadBannedWords();
+
+function checkProfanity(name) {
+    if (!name) return false;
+    const tokens = name.toLowerCase().split(/[^a-z]+/);
+    for (const token of tokens) {
+        if (!token) continue;
+        if (bannedWords.has(token)) {
+            return true;
+        }
+        for (const word of bannedWords) {
+            if (word.length >= 4 && token.includes(word)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 function generateSign(path, query, timestamp, token) {
     const headerCa = JSON.stringify({ platform: "3", timestamp: timestamp, dId: "", vName: "1.0.0" });
@@ -29,7 +87,20 @@ router.post('/profile', async (req, res) => {
         const updateData = {
             updated_at: new Date()
         };
-        if (name !== undefined) updateData.name = name;
+        let trimmedName = undefined;
+        if (name !== undefined) {
+            trimmedName = name.trim();
+            if (trimmedName.length < 3 || trimmedName.length > 20) {
+                return res.status(400).json({ error: "Username must be between 3 and 20 characters long." });
+            }
+            if (!/^[a-zA-Z0-9_]+$/.test(trimmedName)) {
+                return res.status(400).json({ error: "Username can only contain English letters, numbers, and underscores." });
+            }
+            if (checkProfanity(trimmedName)) {
+                return res.status(400).json({ error: "Username contains inappropriate language." });
+            }
+            updateData.name = trimmedName;
+        }
         if (is_private !== undefined) updateData.is_private = Number(is_private);
         if (picture !== undefined) updateData.picture = picture;
 
@@ -38,7 +109,7 @@ router.post('/profile', async (req, res) => {
             update: updateData,
             create: {
                 firebase_uid: firebaseUid,
-                name: name || payload.name || "Operator",
+                name: trimmedName || payload.name || "Operator",
                 picture: picture || null,
                 is_private: is_private !== undefined ? Number(is_private) : 0
             }
@@ -75,7 +146,7 @@ router.get('/profile/:uid', async (req, res) => {
 });
 
 router.post('/sync', async (req, res) => {
-    const { idToken, gameToken, testRecords } = req.body;
+    const { idToken, gameToken, testRecords, serverId } = req.body;
     try {
         const payload = await verifyFirebaseIdToken(idToken);
         const firebaseUid = payload.sub;
@@ -118,7 +189,7 @@ router.post('/sync', async (req, res) => {
             }
 
             const grantRes = await axios.post(
-                "https://as.gryphline.com/user/oauth2/v2/grant",
+                process.env.GRYPHLINE_AUTH_URL,
                 { token: tokenToUse, appCode: "6eb76d4e13aa36e6", type: 0 },
                 { headers: { "Content-Type": "application/json" } }
             );
@@ -129,18 +200,18 @@ router.post('/sync', async (req, res) => {
             }
 
             const credRes = await axios.post(
-                "https://zonai.skport.com/api/v1/user/auth/generate_cred_by_code",
+                process.env.SKPORT_CRED_URL,
                 { kind: 1, code: grantRes.data.data.code },
                 { headers: { "Content-Type": "application/json" } }
             );
 
             const { cred, token } = credRes.data.data;
             const ts = String(Math.floor(Date.now() / 1000));
-            const bindPath = "/api/v1/game/player/binding";
+            const bindPath = process.env.SKPORT_BIND_PATH;
             const sign = generateSign(bindPath, "", ts, token);
 
             const bindRes = await axios.get(
-                `https://zonai.skport.com${bindPath}`,
+                `${process.env.SKPORT_BASE_URL}${bindPath}`,
                 {
                     headers: {
                         "Accept": "application/json", "cred": cred, "sign": sign,
@@ -182,9 +253,14 @@ router.post('/sync', async (req, res) => {
                 }
             }
 
-            for (const acc of accountsToTry) {
+            let filteredAccounts = accountsToTry;
+            if (serverId && serverId !== 'both') {
+                filteredAccounts = accountsToTry.filter(acc => acc.server_id === String(serverId));
+            }
+
+            for (const acc of filteredAccounts) {
                 const ts = String(Math.floor(Date.now() / 1000));
-                const rosPath = "/api/v1/game/endfield/card/detail";
+                const rosPath = process.env.SKPORT_DETAIL_PATH;
                 const query = `roleId=${acc.role_id}&serverId=${acc.server_id}`;
                 
                 const rosHeaders = {
@@ -195,7 +271,7 @@ router.post('/sync', async (req, res) => {
                 };
 
                 const rosRes = await axios.get(
-                    `https://zonai.skport.com${rosPath}?${query}`,
+                    `${process.env.SKPORT_BASE_URL}${rosPath}?${query}`,
                     { headers: rosHeaders }
                 );
 
@@ -209,7 +285,7 @@ router.post('/sync', async (req, res) => {
                     const contractId = realDetail.crisisContract?.[0]?.id;
                     if (contractId) {
                         const ccTs = String(Math.floor(Date.now() / 1000));
-                        const ccPath = "/api/v1/game/endfield/card/crisis-contract";
+                        const ccPath = process.env.SKPORT_CC_PATH;
                         const ccQuery = `roleId=${acc.role_id}&serverId=${acc.server_id}&userId=&contractId=${contractId}`;
                         const ccHeaders = {
                             "Accept": "application/json", "cred": cred,
@@ -219,7 +295,7 @@ router.post('/sync', async (req, res) => {
                         };
                         try {
                             const ccRes = await axios.get(
-                                `https://zonai.skport.com${ccPath}?${ccQuery}`,
+                                `${process.env.SKPORT_BASE_URL}${ccPath}?${ccQuery}`,
                                 { headers: ccHeaders }
                             );
                             if (ccRes.data.code === 0) {
@@ -228,7 +304,7 @@ router.post('/sync', async (req, res) => {
                                 const recordId = contractDetail?.history?.bestRecord?.id;
                                 if (recordId) {
                                     const recTs = String(Math.floor(Date.now() / 1000));
-                                    const recPath = "/api/v1/game/endfield/card/crisis-contract/record";
+                                    const recPath = process.env.SKPORT_CC_REC_PATH;
                                     const recQuery = `roleId=${acc.role_id}&serverId=${acc.server_id}&userId=&contractId=${contractId}&recordId=${recordId}`;
                                     const recHeaders = {
                                         "Accept": "application/json",
@@ -242,7 +318,7 @@ router.post('/sync', async (req, res) => {
                                     };
                                     try {
                                         const recRes = await axios.get(
-                                            `https://zonai.skport.com${recPath}?${recQuery}`,
+                                            `${process.env.SKPORT_BASE_URL}${recPath}?${recQuery}`,
                                             { headers: recHeaders }
                                         );
                                         console.log("[Sync API Crisis Contract Record Detail Response]:", JSON.stringify(recRes.data, null, 2));
@@ -399,8 +475,8 @@ router.post('/upload-avatar', async (req, res) => {
             mustReset = true;
         }
 
-        if (uploadCount >= 10) {
-            return res.status(429).json({ error: "Monthly upload limit reached (max 10 uploads per month)." });
+        if (uploadCount >= 30) {
+            return res.status(429).json({ error: "Monthly upload limit reached (max 30 uploads per month)." });
         }
 
         const isNsfw = await checkNsfw(image, filename || '');
@@ -616,7 +692,16 @@ function normalizeGameAccountInfo(rawInfo, serverId, contractDetail) {
         const bestRecord = contractDetail.history?.bestRecord;
         if (bestRecord && bestRecord.isPass) {
             contractClearTime = parseFloat(bestRecord.passTs) || 0;
-            contractIndicators = (contractDetail.bestRecordDetail?.indicators || bestRecord.indicators || contractDetail.indicators || []).map(ind => {
+            let baseIndicators = [];
+            const selectedIds = contractDetail.bestRecordDetail?.indicatorIds || bestRecord.indicatorIds;
+            if (selectedIds && Array.isArray(selectedIds)) {
+                const idSet = new Set(selectedIds);
+                baseIndicators = (contractDetail.indicators || []).filter(ind => idSet.has(ind.id));
+            } else {
+                baseIndicators = contractDetail.bestRecordDetail?.indicators || bestRecord.indicators || contractDetail.indicators || [];
+            }
+
+            contractIndicators = baseIndicators.map(ind => {
                 const name = ind.name || "";
                 const score = ind.score || 1;
                 const lookupKey = `${name}_${score}`;

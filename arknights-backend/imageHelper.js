@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const axios = require('axios');
+const sharp = require('sharp');
 
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 
@@ -12,8 +13,37 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 }
 
 async function checkNsfw(base64Image, filename = '') {
-    const nsfwUrl = process.env.NSFW_API_URL;
+    const apiUser = process.env.SIGHTENGINE_USER;
+    const apiSecret = process.env.SIGHTENGINE_SECRET;
     
+    if (apiUser && apiSecret) {
+        try {
+            const match = base64Image.match(/^data:image\/(jpeg|jpg|png|webp|avif);base64,(.+)$/i);
+            const base64Str = match ? match[2] : base64Image;
+            const buffer = Buffer.from(base64Str, 'base64');
+            
+            const form = new FormData();
+            const blob = new Blob([buffer], { type: 'image/webp' });
+            
+            form.append('media', blob, filename || 'avatar.webp');
+            form.append('models', 'nudity-2.0');
+            form.append('api_user', apiUser);
+            form.append('api_secret', apiSecret);
+            
+            const res = await axios.post('https://api.sightengine.com/1.0/check.json', form, {
+                timeout: 5000
+            });
+            
+            if (res.data && res.data.status === 'success' && res.data.nudity) {
+                const n = res.data.nudity;
+                return (n.sexual_activity >= 0.5 || n.sexual_display >= 0.5 || n.erotica >= 0.5);
+            }
+        } catch (e) {
+            console.warn("[NSFW] Sightengine API check failed, falling back:", e.message);
+        }
+    }
+
+    const nsfwUrl = process.env.NSFW_API_URL;
     if (nsfwUrl) {
         try {
             const res = await axios.post(nsfwUrl, {
@@ -33,13 +63,12 @@ async function checkNsfw(base64Image, filename = '') {
 }
 
 async function saveWebpImage(base64Data) {
-    // Expecting "data:image/webp;base64,..."
-    const match = base64Data.match(/^data:image\/webp;base64,(.+)$/);
+    const match = base64Data.match(/^data:image\/(jpeg|jpg|png|webp|avif);base64,(.+)$/i);
     if (!match) {
-        throw new Error("Invalid image format. Only WebP is allowed.");
+        throw new Error("Invalid image format header. Only JPEG, PNG, WebP, and AVIF are allowed.");
     }
     
-    const base64Str = match[1];
+    const base64Str = match[2];
     const buffer = Buffer.from(base64Str, 'base64');
     
     // Limit check: 1MB = 1,048,576 bytes
@@ -47,11 +76,31 @@ async function saveWebpImage(base64Data) {
         throw new Error("Image exceeds the 1MB limit.");
     }
     
+    let processedBuffer;
+    try {
+        const img = sharp(buffer);
+        const metadata = await img.metadata();
+        
+        const allowedFormats = ['jpeg', 'png', 'webp', 'heif', 'avif'];
+        if (!allowedFormats.includes(metadata.format)) {
+            throw new Error(`Forbidden file format detected: ${metadata.format}`);
+        }
+        
+        if (metadata.width < 128 || metadata.height < 128) {
+            throw new Error("Image is too small. Minimum resolution is 128x128 pixels.");
+        }
+        
+        // sharp strips EXIF by default. rotate() auto-rotates the image based on EXIF orientation.
+        processedBuffer = await img.rotate().toFormat('webp').toBuffer();
+    } catch (err) {
+        throw new Error(`Image processing failed: ${err.message}`);
+    }
+    
     const fileId = crypto.randomUUID();
     const filename = `${fileId}.webp`;
     const filePath = path.join(UPLOADS_DIR, filename);
     
-    await fs.promises.writeFile(filePath, buffer);
+    await fs.promises.writeFile(filePath, processedBuffer);
     return fileId; // The unique ID of the image
 }
 

@@ -5,6 +5,8 @@ const { PrismaClient } = require('@prisma/client');
 const BASE_URL = 'http://localhost:3001/api';
 const prisma = new PrismaClient();
 
+const MOCK_IMAGE_128 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAACXBIWXMAAAPoAAAD6AG1e1JrAAACcklEQVR4nO2cwY0DMRDDWLo7l8vQAOKD/4NE6JJdOwSeMJsB7T9AUAAlwAVQAvwXoAT4GUAJ8EOgEuC3ACXAr4FKgM8BlAAfBCkBPglUAnwUrAT4LkAJ8GWQEuDbQCXA18FKgOcBlAAPhCgBnghSAjwSpgR4JlAJ8FCoEuCpYCXAY+FKgPcClAAvhigB3gxSArwapgR4N1AJ8HKoEuDtYCXA6+Hxerq/D5BxCfyBCPolKMCBIDKKC0C/BAU4EERGcQHol6AAB4LIKC4A/RIU4EAQGcUFoF+CAhwIIqO4APRLUIADQWQUF4B+CQpwIIiM4gLQL0EBDgSRUVwA+iUowIEgMooLQL8EBTgQREZxAeiXoAAHgsgoLgD9EhTgQBAZxQWgX4ICHAgio7gA9EtQgANBZBQXgH4JCnAgiIziAtAvQQEOBJFRXAD6JSjAgSAyigtAvwQFOBBERnEB6JegAAeCyCguAP0SFOBAEBnFBaBfggIcCCKjuAD0S1CAA0FkFBeAfgkKcCCIjOIC0C9BAQ4EkVFcAPolKMCBIDKKC0C/BAU4EERGcQHol6AAB4LIKC4A/RIU4EAQGcUFoF+CAhwIIqO4APRLUIADQWQUF4B+CQpwIIiM4gLQL0EBDgSRUVwA+iUowIEgMooLQL8EBTgQREZxAeiXoAAHgsgoLgD9EhTgQBAZxQWgX4ICHAgio7gA9EtQgANBZBQXgH4JCnAgiIziAtAvQQEOBJFRXAD6JSjAgSAyigtAvwQFOBBERnEB6JegAAeCyCguAP0SFOBAEBnFBaBfggIcCCKjuAD0S1CAA0FkFBeAfgkKcCCIjPIBVJDFkuB7njUAAAAASUVORK5CYII=";
+
 async function runTests() {
     console.log("=== STARTING BACKEND INTEGRATION TESTS ===\n");
     const testUid = "mock_test_operator_1";
@@ -18,10 +20,10 @@ async function runTests() {
         console.log("[Test 1] Registering profile...");
         const regRes = await axios.post(`${BASE_URL}/user/profile`, {
             idToken: testUid,
-            name: "ivawa_tester"
+            name: "ivawa_operator"
         });
         console.log("Response:", regRes.data);
-        if (regRes.data.status === 'success' && regRes.data.data.name === 'ivawa_tester') {
+        if (regRes.data.status === 'success' && regRes.data.data.name === 'ivawa_operator') {
             console.log("✅ Register Profile Success!\n");
         } else {
             throw new Error("Register Profile failed");
@@ -57,7 +59,7 @@ async function runTests() {
             // Register thief profile first so it passes profile checks
             await axios.post(`${BASE_URL}/user/profile`, {
                 idToken: "mock_thief_operator",
-                name: "thief_tester"
+                name: "thief_operator"
             });
 
             await axios.post(`${BASE_URL}/user/sync`, {
@@ -86,7 +88,7 @@ async function runTests() {
         console.log("[Test 4] Uploading NSFW avatar (mocked via name contains 'nsfw')...");
         const nsfwRes = await axios.post(`${BASE_URL}/user/upload-avatar`, {
             idToken: testUid,
-            image: "data:image/webp;base64,UklGRiQAAABXRUJQVlA4TCEAAAAvAAAAAEYI", // tiny valid base64 webp
+            image: MOCK_IMAGE_128,
             filename: "nsfw_pic.png"
         });
         console.log("Response:", nsfwRes.data);
@@ -99,7 +101,7 @@ async function runTests() {
         console.log("[Test 4b] Uploading clean avatar...");
         const cleanRes = await axios.post(`${BASE_URL}/user/upload-avatar`, {
             idToken: testUid,
-            image: "data:image/webp;base64,UklGRiQAAABXRUJQVlA4TCEAAAAvAAAAAEYI",
+            image: MOCK_IMAGE_128,
             filename: "operator.png"
         });
         console.log("Response:", cleanRes.data);
@@ -116,7 +118,7 @@ async function runTests() {
             try {
                 await axios.post(`${BASE_URL}/user/upload-avatar`, {
                     idToken: testUid,
-                    image: "data:image/webp;base64,UklGRiQAAABXRUJQVlA4TCEAAAAvAAAAAEYI",
+                    image: MOCK_IMAGE_128,
                     filename: `operator_${i}.png`
                 });
             } catch (err) {
@@ -173,9 +175,9 @@ async function runTests() {
 
         // Test 8: Get Profile by Name (Case-insensitive)
         console.log("[Test 8] Fetching profile by name...");
-        const nameRes1 = await axios.get(`${BASE_URL}/user/profile-by-name/IvaWa_TeStEr`);
+        const nameRes1 = await axios.get(`${BASE_URL}/user/profile-by-name/IvaWa_OpErAtOr`);
         console.log("Response name:", nameRes1.data.data.name);
-        if (nameRes1.data.status === 'success' && nameRes1.data.data.name === 'ivawa_tester') {
+        if (nameRes1.data.status === 'success' && nameRes1.data.data.name === 'ivawa_operator') {
             console.log("✅ Get profile by name (case-insensitive) success!\n");
         } else {
             throw new Error("Get profile by name failed");
@@ -188,7 +190,7 @@ async function runTests() {
             is_private: 1
         });
         try {
-            await axios.get(`${BASE_URL}/user/profile-by-name/IvaWa_TeStEr`);
+            await axios.get(`${BASE_URL}/user/profile-by-name/IvaWa_OpErAtOr`);
             throw new Error("Fetching private profile by name should have failed");
         } catch (err) {
             if (err.response && err.response.status === 403) {

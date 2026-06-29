@@ -8,6 +8,7 @@
     import Icon from "$lib/components/Icon.svelte";
     import Button from "$lib/components/Button.svelte";
     import Modal from "$lib/components/modals/Modal.svelte";
+    import Checkbox from "$lib/components/Checkbox.svelte";
     import OperatorCard from "$lib/components/cards/OperatorCard.svelte";
     import Image from "$lib/components/Image.svelte";
     import PotentialIcon from "$lib/components/operators/PotentialIcon.svelte";
@@ -24,9 +25,94 @@
     let needsRegistration = false;
     let syncModalOpen = false;
     let settingsModalOpen = false;
+    let showCropModal = false;
+    let cropImageSrc = "";
+    let zoom = 1;
+    let offsetX = 0;
+    let offsetY = 0;
+    let dispWidth = 300;
+    let dispHeight = 300;
+    let loadedImg = null;
+    $: imageStyle = `width: ${dispWidth}px; height: ${dispHeight}px; left: 50%; top: 50%; transform: translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px)) scale(${zoom});`;
+    $: {
+        const w_c = dispWidth * zoom;
+        const h_c = dispHeight * zoom;
+        const maxOffsetX = Math.max(0, w_c / 2 - 75);
+        const maxOffsetY = Math.max(0, h_c / 2 - 75);
+        if (offsetX < -maxOffsetX) {
+            offsetX = -maxOffsetX;
+        }
+        if (offsetX > maxOffsetX) {
+            offsetX = maxOffsetX;
+        }
+        if (offsetY < -maxOffsetY) {
+            offsetY = -maxOffsetY;
+        }
+        if (offsetY > maxOffsetY) {
+            offsetY = maxOffsetY;
+        }
+    }
     let gameTokenInput = "";
+    let showToken = false;
+    let syncActiveTab = "new";
+    let selectedServer = "both";
+    let isSaveTokenEnabled = false;
+    let tokenName = "";
+    let savedSyncTokens = [];
+
+    function loadSavedSyncTokens() {
+        try {
+            const raw = localStorage.getItem("profile_saved_tokens");
+            if (raw) savedSyncTokens = JSON.parse(raw);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function saveSyncToken(name, token, serverId) {
+        try {
+            if (savedSyncTokens.some((t) => t.token === token && t.serverId === serverId)) return;
+            const newToken = { name, token, serverId, date: Date.now() };
+            const newList = [newToken, ...savedSyncTokens];
+            localStorage.setItem("profile_saved_tokens", JSON.stringify(newList));
+            savedSyncTokens = newList;
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function deleteSyncToken(index) {
+        if (!confirm($t("import.delete_confirm") || "Delete this saved token?"))
+            return;
+        const newList = [...savedSyncTokens];
+        newList.splice(index, 1);
+        savedSyncTokens = newList;
+        localStorage.setItem("profile_saved_tokens", JSON.stringify(newList));
+    }
+
+    function selectSyncToken(item) {
+        gameTokenInput = item.token;
+        selectedServer = item.serverId || "both";
+        syncActiveTab = "new";
+    }
     let isEditingName = false;
     let newProfileName = "";
+    let showNameWarning = false;
+    let warningTimeout = null;
+
+    function handleNameInput(e) {
+        const inputVal = e.target.value;
+        const sanitized = inputVal.replace(/[^a-zA-Z0-9_]/g, "");
+        if (inputVal !== sanitized) {
+            showNameWarning = true;
+            if (warningTimeout) clearTimeout(warningTimeout);
+            warningTimeout = setTimeout(() => {
+                showNameWarning = false;
+            }, 3000);
+        }
+        newProfileName = sanitized;
+        e.target.value = sanitized;
+    }
     let syncing = false;
     let avatarInput;
     let isPrivate = false;
@@ -203,6 +289,7 @@
     onMount(async () => {
         if (typeof window !== 'undefined') {
             localAvatar = localStorage.getItem("goyfield_local_avatar") || "";
+            loadSavedSyncTokens();
         }
         
         user.subscribe(async (u) => {
@@ -247,14 +334,23 @@
     }
 
     async function handleRegister() {
-        if (!newProfileName.trim()) {
+        const trimmed = newProfileName.trim();
+        if (!trimmed) {
             addNotification("error", "Username cannot be empty");
+            return;
+        }
+        if (trimmed.length < 3 || trimmed.length > 20) {
+            addNotification("error", $t("profile.name_length_error") || "Username must be between 3 and 20 characters long.");
+            return;
+        }
+        if (!/^[a-zA-Z0-9_]+$/.test(trimmed)) {
+            addNotification("error", $t("profile.name_validation_error") || "Invalid character! Only English letters, numbers, and _ are allowed.");
             return;
         }
         try {
             loading = true;
             const token = await $user.getIdToken();
-            const data = await registerProfile(token, newProfileName.trim(), localAvatar || null);
+            const data = await registerProfile(token, trimmed, localAvatar || null);
             profile = { ...data, details: [] };
             needsRegistration = false;
             addNotification("success", "Profile created successfully!");
@@ -266,14 +362,23 @@
     }
 
     async function handleUpdateName() {
-        if (!newProfileName.trim()) return;
-        if (newProfileName.trim() === profile.name) {
+        const trimmed = newProfileName.trim();
+        if (!trimmed) return;
+        if (trimmed === profile.name) {
             isEditingName = false;
+            return;
+        }
+        if (trimmed.length < 3 || trimmed.length > 20) {
+            addNotification("error", $t("profile.name_length_error") || "Username must be between 3 and 20 characters long.");
+            return;
+        }
+        if (!/^[a-zA-Z0-9_]+$/.test(trimmed)) {
+            addNotification("error", $t("profile.name_validation_error") || "Invalid character! Only English letters, numbers, and _ are allowed.");
             return;
         }
         try {
             const token = await $user.getIdToken();
-            const data = await registerProfile(token, newProfileName.trim(), profile.picture);
+            const data = await registerProfile(token, trimmed, profile.picture);
             profile.name = data.name;
             isEditingName = false;
             addNotification("success", "Username updated!");
@@ -282,72 +387,189 @@
         }
     }
 
-    // Client-side WebP conversion
+    function handleCancelEditName() {
+        newProfileName = profile ? (profile.name || "") : "";
+        isEditingName = false;
+        showNameWarning = false;
+    }
+
+    function getLastSyncText(updatedAt) {
+        if (!updatedAt) return "";
+        const diff = Date.now() - new Date(updatedAt).getTime();
+        const mins = Math.floor(diff / 60000);
+        if (mins < 1) return $t("profile.last_sync", { time: $t("profile.time_just_now") });
+        const hours = Math.floor(mins / 60);
+        if (hours < 1) return $t("profile.last_sync", { time: $t("profile.time_mins", { n: mins }) });
+        const days = Math.floor(hours / 24);
+        if (days < 1) return $t("profile.last_sync", { time: $t("profile.time_hours", { n: hours }) });
+        return $t("profile.last_sync", { time: $t("profile.time_days", { n: days }) });
+    }
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let initialOffsetX = 0;
+    let initialOffsetY = 0;
+
+    function handleMouseDown(e) {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        initialOffsetX = offsetX;
+        initialOffsetY = offsetY;
+        
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseup", handleMouseUp);
+    }
+
+    function handleMouseMove(e) {
+        if (!isDragging) return;
+        offsetX = initialOffsetX + (e.clientX - startX);
+        offsetY = initialOffsetY + (e.clientY - startY);
+    }
+
+    function handleMouseUp() {
+        isDragging = false;
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("mouseup", handleMouseUp);
+    }
+
+    function handleTouchStart(e) {
+        if (e.touches.length !== 1) return;
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+        initialOffsetX = offsetX;
+        initialOffsetY = offsetY;
+        
+        window.addEventListener("touchmove", handleTouchMove, { passive: false });
+        window.addEventListener("touchend", handleTouchEnd);
+    }
+
+    function handleTouchMove(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+        offsetX = initialOffsetX + (e.touches[0].clientX - startX);
+        offsetY = initialOffsetY + (e.touches[0].clientY - startY);
+    }
+
+    function handleTouchEnd() {
+        isDragging = false;
+        window.removeEventListener("touchmove", handleTouchMove);
+        window.removeEventListener("touchend", handleTouchEnd);
+    }
+
+    function handleWheel(e) {
+        e.preventDefault();
+        const zoomStep = 0.05;
+        let nextZoom = zoom - Math.sign(e.deltaY) * zoomStep;
+        const minZoom = 150 / 280;
+        const maxZoom = 4;
+        if (nextZoom < minZoom) {
+            nextZoom = minZoom;
+        }
+        if (nextZoom > maxZoom) {
+            nextZoom = maxZoom;
+        }
+        zoom = nextZoom;
+    }
+
+    // Client-side WebP conversion & Cropping trigger
     function processAndUploadImage(file) {
+        const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/avif"];
+        if (!allowedTypes.includes(file.type)) {
+            addNotification("error", $t("profile.image_format_error"));
+            return;
+        }
+
         const reader = new FileReader();
         reader.onload = function (event) {
-            const img = new Image();
-            img.onload = async function () {
-                const canvas = document.createElement("canvas");
-                const MAX_WIDTH = 150;
-                const MAX_HEIGHT = 150;
-                let width = img.width;
-                let height = img.height;
-
-                // Center crop to square
-                const minSide = Math.min(width, height);
-                const sx = (width - minSide) / 2;
-                const sy = (height - minSide) / 2;
-
-                canvas.width = MAX_WIDTH;
-                canvas.height = MAX_HEIGHT;
-
-                const ctx = canvas.getContext("2d");
-                ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, MAX_WIDTH, MAX_HEIGHT);
-
-                // Convert to WebP format
-                const webpBase64 = canvas.toDataURL("image/webp", 0.85);
-
-                // Double check size
-                const sizeInBytes = Math.round((webpBase64.length * 3) / 4);
-                if (sizeInBytes > 1024 * 1024) {
-                    addNotification("error", "Converted WebP exceeds 1MB limit.");
+            const img = new globalThis.Image();
+            img.onload = function () {
+                if (img.width < 128 || img.height < 128) {
+                    addNotification("error", $t("profile.image_size_error"));
                     return;
                 }
 
-                try {
-                    loading = true;
-                    const token = await $user.getIdToken();
-                    const uploadResult = await uploadAvatar(token, webpBase64, file.name);
+                loadedImg = img;
+                cropImageSrc = event.target.result;
+                zoom = 150 / 280;
+                offsetX = 0;
+                offsetY = 0;
 
-                    if (uploadResult.nsfw) {
-                        // Image flagged NSFW: Save locally only
-                        localAvatar = webpBase64;
-                        localStorage.setItem("goyfield_local_avatar", webpBase64);
-                        if (profile) {
-                            profile.picture = null;
-                            profile.avatar_strike = 1;
-                        }
-                        addNotification("warning", $t("profile.strike_warning"));
-                    } else {
-                        // Saved clean avatar
-                        localAvatar = "";
-                        localStorage.removeItem("goyfield_local_avatar");
-                        if (profile) {
-                            profile.picture = uploadResult.picture;
-                            profile.avatar_strike = 0;
-                        }
-                        addNotification("success", "Avatar updated successfully!");
-                    }
-                } catch (err) {
-                    addNotification("error", err.message);
-                } finally {
-                    loading = false;
+                const ratio = img.width / img.height;
+                if (ratio > 1) {
+                    dispHeight = 280;
+                    dispWidth = 280 * ratio;
+                } else {
+                    dispWidth = 280;
+                    dispHeight = 280 / ratio;
                 }
+
+                showCropModal = true;
             };
             img.src = event.target.result;
         };
         reader.readAsDataURL(file);
+    }
+
+    async function handleSaveCrop() {
+        if (!loadedImg) return;
+
+        const canvas = document.createElement("canvas");
+        canvas.width = 150;
+        canvas.height = 150;
+        const ctx = canvas.getContext("2d");
+
+        const w_c = dispWidth * zoom;
+        const h_c = dispHeight * zoom;
+
+        const x_rel_box = w_c / 2 - 75 - offsetX;
+        const y_rel_box = h_c / 2 - 75 - offsetY;
+
+        const x_orig = x_rel_box * (loadedImg.width / w_c);
+        const y_orig = y_rel_box * (loadedImg.height / h_c);
+        const w_orig = 150 * (loadedImg.width / w_c);
+        const h_orig = 150 * (loadedImg.height / h_c);
+
+        ctx.drawImage(loadedImg, x_orig, y_orig, w_orig, h_orig, 0, 0, 150, 150);
+
+        const webpBase64 = canvas.toDataURL("image/webp", 0.85);
+
+        const sizeInBytes = Math.round((webpBase64.length * 3) / 4);
+        if (sizeInBytes > 1024 * 1024) {
+            addNotification("error", "Converted WebP exceeds 1MB limit.");
+            return;
+        }
+
+        showCropModal = false;
+
+        try {
+            loading = true;
+            const token = await $user.getIdToken();
+            const uploadResult = await uploadAvatar(token, webpBase64, "avatar.webp");
+
+            if (uploadResult.nsfw) {
+                localAvatar = webpBase64;
+                localStorage.setItem("goyfield_local_avatar", webpBase64);
+                if (profile) {
+                    profile.picture = null;
+                    profile.avatar_strike = 1;
+                }
+                addNotification("warning", $t("profile.strike_warning"));
+            } else {
+                localAvatar = "";
+                localStorage.removeItem("goyfield_local_avatar");
+                if (profile) {
+                    profile.picture = uploadResult.picture;
+                    profile.avatar_strike = 0;
+                }
+                addNotification("success", $t("profile.avatar_success") || "Изображение установлено успешно");
+            }
+        } catch (err) {
+            addNotification("error", err.message);
+        } finally {
+            loading = false;
+        }
     }
 
     function handleFileChange(e) {
@@ -365,7 +587,7 @@
         try {
             syncing = true;
             const token = await $user.getIdToken();
-            const accounts = await syncGameAccount(token, gameTokenInput.trim());
+            const accounts = await syncGameAccount(token, gameTokenInput.trim(), null, selectedServer);
             
             profile.details = accounts.map(d => ({
                 ...d,
@@ -374,6 +596,29 @@
 
             if (profile.details.length > 0) {
                 selectedGameUid = profile.details[0].game_uid;
+            }
+
+            const existingIdx = savedSyncTokens.findIndex(t => t.token === gameTokenInput.trim());
+            if (existingIdx !== -1) {
+                let updated = false;
+                if (savedSyncTokens[existingIdx].serverId !== selectedServer) {
+                    savedSyncTokens[existingIdx].serverId = selectedServer;
+                    updated = true;
+                }
+                if (isSaveTokenEnabled && tokenName.trim() && savedSyncTokens[existingIdx].name !== tokenName.trim()) {
+                    savedSyncTokens[existingIdx].name = tokenName.trim();
+                    updated = true;
+                }
+                if (updated) {
+                    localStorage.setItem("profile_saved_tokens", JSON.stringify(savedSyncTokens));
+                    savedSyncTokens = [...savedSyncTokens];
+                }
+                tokenName = "";
+                isSaveTokenEnabled = false;
+            } else if (isSaveTokenEnabled && tokenName.trim()) {
+                saveSyncToken(tokenName.trim(), gameTokenInput.trim(), selectedServer);
+                tokenName = "";
+                isSaveTokenEnabled = false;
             }
 
             syncModalOpen = false;
@@ -476,17 +721,27 @@
                     <input type="file" accept="image/*" class="hidden" bind:this={avatarInput} on:change={handleFileChange} />
                 </div>
 
-                <div class="w-full mb-6">
+                <div class="w-full mb-6 relative pb-6">
                     <label class="block text-xs uppercase tracking-wider dark:text-gray-400 text-gray-600 font-bold mb-2" for="reg-username">
                         {$t("profile.register_name")}
                     </label>
                     <input
                         id="reg-username"
                         type="text"
-                        bind:value={newProfileName}
+                        value={newProfileName}
+                        on:input={handleNameInput}
                         placeholder="e.g. ivawa"
                         class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-4 py-3 outline-none focus:border-[#FFE145] transition-colors font-mono"
                     />
+                    {#if showNameWarning}
+                        <p class="absolute bottom-0 left-0 text-xs text-orange-400 font-sans w-full" transition:fade>
+                            {$t("profile.name_validation_error") || "Invalid character! Only English letters, numbers, and _ are allowed."}
+                        </p>
+                    {:else}
+                        <p class="absolute bottom-0 left-0 text-xs text-gray-400 font-sans w-full">
+                            {$t("profile.name_validation_hint") || "Only English letters, numbers, and underscores (_) are allowed."}
+                        </p>
+                    {/if}
                 </div>
 
                 <button
@@ -501,45 +756,66 @@
         <div class="space-y-6" in:fade>
             <div class="bg-white dark:bg-[#383838] border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
-                    <!-- Clickable Avatar -->
-                    <div class="relative group cursor-pointer shrink-0" on:click={() => avatarInput.click()}>
+                    <button
+                        type="button"
+                        class="relative group cursor-pointer shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-[#FFE145] rounded-md text-left"
+                        on:click={() => avatarInput.click()}
+                    >
                         {#if getAvatarUrl(profile.picture) || localAvatar}
                             <img
                                 src={getAvatarUrl(profile.picture)}
                                 alt="User Avatar"
-                                class="w-20 h-20 rounded-xl border-2 border-white/20 group-hover:border-[#FFE145] transition-colors object-cover"
+                                class="w-28 h-28 rounded-md border border-white/20 group-hover:border-[#FFE145] transition-colors object-cover"
                             />
                         {:else}
-                            <div class="w-20 h-20 rounded-xl bg-white/10 border-2 border-white/20 group-hover:border-[#FFE145] transition-colors flex items-center justify-center text-white/50 text-2xl font-bold">
+                            <div class="w-28 h-28 rounded-md bg-white/10 border-2 border-white/20 group-hover:border-[#FFE145] transition-colors flex items-center justify-center text-white/50 text-3xl font-bold">
                                 {profile.name ? profile.name[0].toUpperCase() : "?"}
                             </div>
                         {/if}
-                        <div class="absolute inset-0 bg-black/60 rounded-xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                            <Icon name="pen" class="w-5 h-5 text-white" />
+                        <div class="absolute inset-0 bg-black/60 rounded-md opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                            <Icon name="pen" class="w-6 h-6 text-white" />
                         </div>
-                        <input type="file" accept="image/*" class="hidden" bind:this={avatarInput} on:change={handleFileChange} />
-                    </div>
+                    </button>
+                    <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" class="hidden" bind:this={avatarInput} on:change={handleFileChange} />
 
-                    <!-- Editable Name -->
-                    <div class="flex flex-col gap-1">
+                    <div class="flex flex-col gap-1 relative">
                         {#if isEditingName}
-                            <div class="flex items-center gap-2">
+                            <div class="flex items-center gap-1">
                                 <input
                                     type="text"
-                                    bind:value={newProfileName}
+                                    value={newProfileName}
+                                    on:input={handleNameInput}
                                     class="bg-white/10 border border-white/20 text-white rounded px-2 py-1 outline-none font-mono text-xl"
-                                    on:keydown={(e) => e.key === "Enter" && handleUpdateName()}
+                                    on:keydown={(e) => { if (e.key === "Enter") handleUpdateName(); else if (e.key === "Escape") handleCancelEditName(); }}
                                 />
-                                <button on:click={handleUpdateName} class="p-1.5 bg-[#FFE145] rounded text-gray-900">
-                                    <Icon name="check" class="w-4 h-4" />
-                                </button>
+                                <Tooltip text={$t("settings.account.cancel") || "Cancel"}>
+                                    <button
+                                        on:click={handleCancelEditName}
+                                        class="w-8 h-8 rounded text-gray-500 bg-[#323232] hover:bg-[#343434] flex items-center justify-center transition-colors"
+                                    >
+                                        <Icon name="close" class="w-4 h-4" />
+                                    </button>
+                                </Tooltip>
+                                <Tooltip text={$t("settings.account.save") || "Save"}>
+                                    <button
+                                        on:click={handleUpdateName}
+                                        class="w-8 h-8 ml-1 rounded bg-[#FFE145] hover:bg-[#ebd03e] text-gray-900 flex items-center justify-center transition-colors"
+                                    >
+                                        <Icon name="save" class="w-4 h-4" />
+                                    </button>
+                                </Tooltip>
                             </div>
+                            {#if showNameWarning}
+                                <p class="absolute top-full left-0 text-[10px] text-orange-400 mt-0.5 font-sans whitespace-nowrap z-10" transition:fade>
+                                    {$t("profile.name_validation_error") || "Invalid character! Only English letters, numbers, and _ are allowed."}
+                                </p>
+                            {/if}
                         {:else}
                             <div class="flex items-center gap-2">
-                                <h1 class="text-2xl font-bold dark:text-white text-gray-900 font-sdk">
+                                <h1 class="text-3xl font-bold dark:text-white text-gray-900 font-sdk">
                                     {profile.name}
                                 </h1>
-                                <button on:click={() => isEditingName = true} class="text-gray-400 hover:text-white transition-colors">
+                                <button on:click={() => { newProfileName = profile.name || ""; isEditingName = true; }} class="text-gray-400 hover:text-white transition-colors">
                                     <Icon name="pen" class="w-4 h-4" />
                                 </button>
                             </div>
@@ -553,7 +829,6 @@
                     </div>
                 </div>
 
-                <!-- Game account cards inside header -->
                 <div class="flex flex-wrap items-center gap-4">
                     {#if profile.details && profile.details.length > 0}
                         {#each profile.details as d}
@@ -603,20 +878,30 @@
                         {/each}
                     {/if}
 
-                    <div class="flex items-center gap-2">
-                        <Button variant="round" color="white" onClick={() => syncModalOpen = true}>
-                            <div class="flex items-center gap-2 px-2 py-1 font-sdk">
-                                <Icon name="refresh" class="w-4 h-4" />
-                                <span>{$t("profile.update_btn")}</span>
+                    <div class="flex flex-col items-end shrink-0">
+                        <div class="flex items-center gap-2">
+                            <div class="relative flex flex-col items-center shrink-0">
+                                <Button variant="round" color="white" onClick={() => syncModalOpen = true}>
+                                    <div class="flex items-center gap-2 px-2 py-1 font-sdk">
+                                        <Icon name="refresh" class="w-4 h-4" />
+                                        <span>{$t("profile.update_btn")}</span>
+                                    </div>
+                                </Button>
+                                {#if profile.updated_at}
+                                    <span class="absolute top-full left-1/2 -translate-x-1/2 mt-1 text-[10px] text-gray-400 font-sans font-medium select-none text-center whitespace-nowrap">
+                                        {getLastSyncText(profile.updated_at)}
+                                    </span>
+                                {/if}
                             </div>
-                        </Button>
-                        <button
-                            on:click={() => settingsModalOpen = true}
-                            class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 hover:border-white/30 bg-white/5 hover:bg-white/10 transition-colors text-white"
-                            aria-label="Settings"
-                        >
-                            <Icon name="settings" class="w-5 h-5" />
-                        </button>
+                            <Button
+                                variant="round"
+                                color="gray"
+                                onClick={() => settingsModalOpen = true}
+                                className="w-10 h-10 !p-0 !h-10 !px-0 flex items-center justify-center"
+                            >
+                                <Icon name="settings" class="w-5 h-5" />
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -693,9 +978,9 @@
                             {#if activeAccount.info?.contract && activeAccount.info.contract.level > 0}
                                 {@const tagStyle = getContractTagStyle(activeAccount.info.contract.level)}
                                 <div class="flex items-center justify-between mb-4">
-                                    <div class="text-sm font-sdk dark:text-gray-400 text-gray-600">
+                                    <div class="text-sm font-medium dark:text-gray-400 text-gray-600">
                                         {$t("profile.clear_time_label")} 
-                                        <span class="dark:text-white text-gray-900 font-bold text-lg ml-1 font-mono">
+                                        <span class="dark:text-white text-gray-900 font-bold text-lg ml-1 font-nums">
                                             {activeAccount.info.contract.clearTime} сек.
                                         </span>
                                     </div>
@@ -878,56 +1163,195 @@
             <h3 class="text-2xl font-bold dark:text-white text-gray-900 mb-6 font-sdk">
                 Синхронизация с игрой
             </h3>
-            
-            <div class="flex flex-col gap-6 text-left mb-6 font-mono text-sm">
-                <div class="flex gap-4">
-                    <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">1</div>
-                    <div class="flex-1">
-                        <p class="text-sm text-white font-sdk font-bold mb-1 select-text">{$t("profile.sync_step1")}</p>
-                        <a href="https://endfield.gryphline.com/" target="_blank" rel="noopener noreferrer" class="text-xs text-[#FFE145] hover:underline font-mono break-all select-text">
-                            https://endfield.gryphline.com/
-                        </a>
-                    </div>
-                </div>
-                <div class="flex gap-4">
-                    <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">2</div>
-                    <div class="flex-1">
-                        <p class="text-sm text-white font-sdk font-bold mb-1 select-text">{$t("profile.sync_step2")}</p>
-                        <a href="https://web-api.gryphline.com/cookie_store/account_token" target="_blank" rel="noopener noreferrer" class="text-xs text-[#FFE145] hover:underline font-mono break-all select-text">
-                            https://web-api.gryphline.com/cookie_store/account_token
-                        </a>
-                    </div>
-                </div>
-                <div class="flex gap-4">
-                    <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">3</div>
-                    <div class="flex-1">
-                        <p class="text-sm text-white font-sdk font-bold mb-2 select-text">{$t("profile.sync_step3")}</p>
-                        <input
-                            type="text"
-                            bind:value={gameTokenInput}
-                            placeholder={'{"code":0,"data":{"content":"QqW2fmIQq...ZctQjc"},"msg":""}'}
-                            class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-4 py-3 outline-none focus:border-[#FFE145] transition-colors font-mono text-sm"
-                            disabled={syncing}
-                        />
-                    </div>
-                </div>
-            </div>
 
-            <div class="flex flex-col gap-3">
+            <div class="flex border-b border-white/10 mb-6 relative">
                 <button
-                    on:click={handleSyncGame}
-                    class="w-full py-3 bg-[#FFE145] hover:bg-[#ebd03e] text-gray-900 font-bold rounded-lg transition-colors font-sdk flex items-center justify-center gap-2 disabled:opacity-50"
-                    disabled={syncing}
+                    class="px-6 py-3 text-sm font-bold transition-all relative border-b-2
+                    {syncActiveTab === 'new'
+                        ? 'text-white border-[#FFE145]'
+                        : 'text-gray-400 hover:text-white border-transparent'}"
+                    on:click={() => (syncActiveTab = "new")}
                 >
-                    {#if syncing}
-                        <Icon name="loading" class="w-5 h-5 animate-spin" />
-                        <span>Updating...</span>
-                    {:else}
-                        <Icon name="refresh" class="w-4 h-4" />
-                        <span>{$t("profile.update_btn")}</span>
+                    {$t("profile.tab_new")}
+                </button>
+                <button
+                    class="px-6 py-3 text-sm font-bold transition-all relative flex items-center gap-2 border-b-2
+                    {syncActiveTab === 'saved'
+                        ? 'text-white border-[#FFE145]'
+                        : 'text-gray-400 hover:text-white border-transparent'}"
+                    on:click={() => (syncActiveTab = "saved")}
+                >
+                    {$t("profile.tab_saved")}
+                    {#if savedSyncTokens.length > 0}
+                        <span class="bg-white/10 text-white text-[10px] px-1.5 py-0.5 rounded-full leading-none">
+                            {savedSyncTokens.length}
+                        </span>
                     {/if}
                 </button>
             </div>
+
+            {#if syncActiveTab === 'new'}
+                <div class="flex gap-2 mb-4 p-1 bg-white/5 border border-white/10 rounded-lg w-fit transition-all">
+                    <button
+                        type="button"
+                        class="px-4 py-1.5 text-xs font-bold rounded-md transition-colors {selectedServer === 'both'
+                            ? 'bg-[#FFE145] text-gray-900 shadow-sm'
+                            : 'text-gray-400 hover:text-white'}"
+                        on:click={() => (selectedServer = "both")}
+                    >
+                        Both
+                    </button>
+                    <button
+                        type="button"
+                        class="px-4 py-1.5 text-xs font-bold rounded-md transition-colors {selectedServer === '3'
+                            ? 'bg-[#FFE145] text-gray-900 shadow-sm'
+                            : 'text-gray-400 hover:text-white'}"
+                        on:click={() => (selectedServer = '3')}
+                    >
+                        Americas / Europe
+                    </button>
+                    <button
+                        type="button"
+                        class="px-4 py-1.5 text-xs font-bold rounded-md transition-colors {selectedServer === '2'
+                            ? 'bg-[#FFE145] text-gray-900 shadow-sm'
+                            : 'text-gray-400 hover:text-white'}"
+                        on:click={() => (selectedServer = '2')}
+                    >
+                        Asia
+                    </button>
+                </div>
+
+                <div class="flex flex-col gap-6 text-left mb-6 font-mono text-sm">
+                    <div class="flex gap-4">
+                        <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">1</div>
+                        <div class="flex-1">
+                            <p class="text-sm text-white font-sdk font-bold mb-1 select-text">{$t("profile.sync_step1")}</p>
+                            <a href="https://endfield.gryphline.com/" target="_blank" rel="noopener noreferrer" class="text-xs text-[#FFE145] hover:underline font-mono break-all select-text">
+                                https://endfield.gryphline.com/
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">2</div>
+                        <div class="flex-1">
+                            <p class="text-sm text-white font-sdk font-bold mb-1 select-text">{$t("profile.sync_step2")}</p>
+                            <a href="https://web-api.gryphline.com/cookie_store/account_token" target="_blank" rel="noopener noreferrer" class="text-xs text-[#FFE145] hover:underline font-mono break-all select-text">
+                                https://web-api.gryphline.com/cookie_store/account_token
+                            </a>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">3</div>
+                        <div class="flex-1">
+                            <p class="text-sm text-white font-sdk font-bold mb-2 select-text">{$t("profile.sync_step3")}</p>
+                            <div class="relative w-full">
+                                <input
+                                    type={showToken ? "text" : "password"}
+                                    bind:value={gameTokenInput}
+                                    placeholder={'{"code":0,"data":{"content":"QqW2fmIQq...ZctQjc"},"msg":""}'}
+                                    class="w-full bg-white/5 border border-white/10 text-white rounded-lg pl-4 pr-12 py-3 outline-none focus:border-[#FFE145] transition-colors font-mono text-sm"
+                                    disabled={syncing}
+                                />
+                                <button
+                                    type="button"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                    on:click={() => showToken = !showToken}
+                                    aria-label="Toggle token visibility"
+                                >
+                                    <Icon name={showToken ? "eyeOpen" : "eyeClosed"} class="w-5 h-5 fill-current" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 mb-6 text-left">
+                    <Checkbox bind:checked={isSaveTokenEnabled} variant="yellow" align="start">
+                        <div>
+                            <span class="text-gray-300 hover:text-white transition-colors cursor-pointer font-medium text-sm">
+                                {$t("import.save_label_token")}
+                            </span>
+                            {#if isSaveTokenEnabled}
+                                <div class="text-gray-400 text-xs mt-1 max-w-md">
+                                    {$t("import.save_desc_token")}
+                                </div>
+                            {/if}
+                        </div>
+                    </Checkbox>
+
+                    {#if isSaveTokenEnabled}
+                        <div class="mt-3" in:fade>
+                            <input
+                                type="text"
+                                bind:value={tokenName}
+                                placeholder={$t("profile.token_name_placeholder")}
+                                class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-4 py-2 outline-none focus:border-[#FFE145] transition-colors font-mono text-sm"
+                                disabled={syncing}
+                            />
+                        </div>
+                    {/if}
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <button
+                        on:click={handleSyncGame}
+                        class="w-full py-3 bg-[#FFE145] hover:bg-[#ebd03e] text-gray-900 font-bold rounded-lg transition-colors font-sdk flex items-center justify-center gap-2 disabled:opacity-50"
+                        disabled={syncing}
+                    >
+                        {#if syncing}
+                            <Icon name="loading" class="w-5 h-5 animate-spin" />
+                            <span>Updating...</span>
+                        {:else}
+                            <Icon name="refresh" class="w-4 h-4" />
+                            <span>{$t("profile.update_btn")}</span>
+                        {/if}
+                    </button>
+                </div>
+            {:else}
+                <div class="max-w-4xl mb-2 text-left">
+                    {#if savedSyncTokens.length === 0}
+                        <div class="flex flex-col items-center justify-center py-8 border-2 border-[#444444] border-dashed rounded-lg text-gray-400">
+                            <Icon name="noData" class="w-8 h-8 mb-2 opacity-30" />
+                            <span class="mt-2 text-sm font-medium">{$t("profile.no_saved_tokens")}</span>
+                        </div>
+                    {:else}
+                        <div class="grid gap-3 pb-3 max-h-[420px] overflow-y-auto pr-1">
+                            {#each savedSyncTokens as item, i}
+                                <div class="group relative flex items-center justify-between p-4 bg-white/5 border border-white/10 hover:border-[#FFE145] hover:shadow-sm transition-all text-left rounded-md overflow-hidden">
+                                    <button
+                                        type="button"
+                                        class="absolute inset-0 w-full h-full z-0 cursor-pointer focus:outline-none"
+                                        on:click={() => selectSyncToken(item)}
+                                        aria-label="Select {item.name}"
+                                    ></button>
+                                    <div class="pl-2 relative z-10 pointer-events-none">
+                                        <div class="font-bold text-white text-base font-sdk">
+                                            {item.name}
+                                        </div>
+                                        <div class="flex gap-2 items-center mt-2">
+                                            <span class="text-[10px] bg-white/10 text-white px-2 py-0.5 rounded-full font-medium">
+                                                {item.serverId === '3' ? 'Americas / Europe' : item.serverId === '2' ? 'Asia' : 'Both'}
+                                            </span>
+                                            <span class="text-[10px] text-[#B7B6B3] font-medium">
+                                                {new Date(item.date).toLocaleDateString()}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center gap-4 z-20 relative pointer-events-none">
+                                        <button
+                                            type="button"
+                                            class="w-8 h-8 flex items-center justify-center text-gray-300 hover:text-white hover:bg-red-500 rounded transition-colors pointer-events-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500"
+                                            on:click|stopPropagation={() => deleteSyncToken(i)}
+                                        >
+                                            <Icon name="close" class="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+                            {/each}
+                        </div>
+                    {/if}
+                </div>
+            {/if}
         </div>
     </Modal>
 
@@ -973,6 +1397,68 @@
             >
                 {$t("profile.settings_logout")}
             </button>
+        </div>
+    </Modal>
+
+    <Modal isOpen={showCropModal} on:close={() => showCropModal = false}>
+        <div class="bg-[#242424] border border-white/10 rounded-2xl p-6 md:p-8 w-full max-w-sm shadow-2xl flex flex-col items-center relative">
+            <button
+                on:click={() => showCropModal = false}
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+            >
+                <Icon name="close" class="w-6 h-6" />
+            </button>
+
+            <h3 class="text-xl font-bold text-white mb-6 font-sdk text-center w-full">
+                {$t("profile.crop_avatar_title") || "Crop Avatar"}
+            </h3>
+
+            <!-- svelte-ignore a11y_no_static_element_interactions -->
+            <div 
+                class="relative w-[280px] h-[280px] overflow-hidden rounded-xl border border-white/10 bg-black cursor-move select-none"
+                on:mousedown={handleMouseDown}
+                on:touchstart={handleTouchStart}
+                on:wheel|preventDefault={handleWheel}
+            >
+                <img 
+                    src={cropImageSrc} 
+                    alt="Crop preview" 
+                    class="absolute pointer-events-none origin-center max-w-none"
+                    style={imageStyle}
+                />
+                
+                <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+                    <div class="w-[150px] h-[150px] border border-[#FFE145]/70 rounded-xl shadow-[0_0_0_9999px_rgba(0,0,0,0.6)]"></div>
+                </div>
+            </div>
+            
+            <div class="w-full flex items-center gap-3 mt-4 px-2">
+                <span class="text-xs text-gray-400 select-none">−</span>
+                <input 
+                    type="range" 
+                    min={150 / 280} 
+                    max="4" 
+                    step="0.01" 
+                    bind:value={zoom}
+                    class="flex-1 accent-[#FFE145] h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                />
+                <span class="text-xs text-gray-400 select-none">+</span>
+            </div>
+            
+            <div class="flex items-center gap-3 w-full mt-6">
+                <button 
+                    on:click={() => showCropModal = false} 
+                    class="flex-1 justify-center py-2 px-6 rounded-full border-2 border-gray-300 dark:border-[#444444] text-gray-700 dark:text-[#E0E0E0] hover:border-gray-500/70 dark:hover:border-[#404040] hover:text-black dark:hover:text-white bg-white dark:bg-[#383838] transition-all duration-200 active:scale-95 text-center font-medium font-sdk text-sm"
+                >
+                    {$t("settings.account.cancel") || "Cancel"}
+                </button>
+                <button 
+                    on:click={handleSaveCrop} 
+                    class="flex-1 justify-center py-2 px-6 rounded-full border-2 border-[#FFE145] bg-[#FFE145] hover:bg-[#ebd03e] hover:border-[#ebd03e] text-gray-900 transition-all duration-200 active:scale-95 text-center font-bold font-sdk text-sm"
+                >
+                    {$t("settings.account.save") || "Save"}
+                </button>
+            </div>
         </div>
     </Modal>
 </div>

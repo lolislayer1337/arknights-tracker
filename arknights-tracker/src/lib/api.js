@@ -59,11 +59,11 @@ export async function registerProfile(idToken, name, picture = null, is_private 
     return json.data;
 }
 
-export async function syncGameAccount(idToken, gameToken, testRecords = null) {
+export async function syncGameAccount(idToken, gameToken, testRecords = null, serverId = null) {
     const res = await fetch(`${API_BASE}/user/sync`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idToken, gameToken, testRecords })
+        body: JSON.stringify({ idToken, gameToken, testRecords, serverId })
     });
     const json = await res.json();
     if (!res.ok) throw new Error(json.error || 'Failed to sync game account');

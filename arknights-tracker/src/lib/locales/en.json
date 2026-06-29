@@ -2141,7 +2141,8 @@
     },
     "emptyState": {
       "title": "Nothing selected",
-      "subtitle": "Click on an item on the left to display its recipe."
+      "subtitle": "Click on an item on the left to display its recipe.",
+      "noData": "No data"
     }
   },
   "resourcePointNames": {
@@ -2224,14 +2225,31 @@
     "more": "More →",
     "strike_warning": "Warning: Your avatar was flagged for inappropriate content. It will only be visible locally.",
     "monthly_upload_limit": "Custom avatars are limited to 10 uploads per month.",
+    "name_validation_hint": "Only English letters, numbers, and underscores (_) are allowed.",
+    "name_validation_error": "Invalid character! Only English letters, numbers, and _ are allowed.",
+    "name_length_error": "Username must be between 3 and 20 characters long.",
+    "last_sync": "Last sync: {time}",
+    "time_just_now": "less than 1 min. ago",
+    "time_mins": "{n} min. ago",
+    "time_hours": "{n}h ago",
+    "time_days": "{n}d ago",
     "sync_step1": "Go to the official site and ensure you are logged in",
     "sync_step2": "Open the link to retrieve your account token",
     "sync_step3": "Paste the full response or token below",
+    "tab_new": "New Token",
+    "tab_saved": "Saved Tokens",
+    "token_name_placeholder": "Account name (e.g., My Account)",
+    "no_saved_tokens": "No saved tokens",
+    "delete_confirm": "Delete this saved token?",
     "settings_title": "Profile Settings",
     "settings_hide_data": "Hide account details on leaderboard",
     "settings_logout": "Log out",
     "confirm_unlink": "Are you sure you want to unlink this game account?",
-    "unlink_success": "Game account successfully unlinked."
+    "unlink_success": "Game account successfully unlinked.",
+    "image_format_error": "Only JPG, PNG, WebP, and AVIF formats are allowed.",
+    "image_size_error": "Image is too small. Minimum resolution is 128x128 pixels.",
+    "crop_avatar_title": "Crop Avatar",
+    "avatar_success": "Avatar updated successfully!"
   },
   "contractTagNames": {
     "activity_contract_tag_201": "Ambient: Overclock",
