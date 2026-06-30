@@ -101,6 +101,7 @@ model UserAccount {
   upload_count      Int                  @default(0)
   last_upload_reset DateTime             @default(now())
   is_private        Int                  @default(0)
+  background        String?
   
   details           UserAccountDetails[]
 
@@ -112,6 +113,7 @@ model UserAccountDetails {
   user_id      Int
   game_uid     String            @unique
   account_info String            // TEXT / JSON payload
+  records_uid  String?
   
   user         UserAccount       @relation(fields: [user_id], references: [id], onDelete: Cascade)
   leaderboards UserLeaderboard[]

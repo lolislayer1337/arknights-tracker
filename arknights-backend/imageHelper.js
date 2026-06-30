@@ -1,4 +1,3 @@
-// imageHelper.js
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -7,7 +6,6 @@ const sharp = require('sharp');
 
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 
-// Ensure uploads directory exists
 if (!fs.existsSync(UPLOADS_DIR)) {
     fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 }
@@ -56,7 +54,6 @@ async function checkNsfw(base64Image, filename = '') {
         }
     }
     
-    // Mock NSFW check: if filename or base64Image metadata contains 'nsfw', flag it!
     const cleanFilename = String(filename).toLowerCase();
     const cleanBase64 = String(base64Image).toLowerCase();
     return cleanFilename.includes('nsfw') || cleanBase64.includes('nsfw');
@@ -71,7 +68,7 @@ async function saveWebpImage(base64Data) {
     const base64Str = match[2];
     const buffer = Buffer.from(base64Str, 'base64');
     
-    // Limit check: 1MB = 1,048,576 bytes
+    // Limit: 1MB = 1,048,576 bytes
     if (buffer.length > 1024 * 1024) {
         throw new Error("Image exceeds the 1MB limit.");
     }
@@ -90,7 +87,6 @@ async function saveWebpImage(base64Data) {
             throw new Error("Image is too small. Minimum resolution is 128x128 pixels.");
         }
         
-        // sharp strips EXIF by default. rotate() auto-rotates the image based on EXIF orientation.
         processedBuffer = await img.rotate().toFormat('webp').toBuffer();
     } catch (err) {
         throw new Error(`Image processing failed: ${err.message}`);
@@ -101,7 +97,7 @@ async function saveWebpImage(base64Data) {
     const filePath = path.join(UPLOADS_DIR, filename);
     
     await fs.promises.writeFile(filePath, processedBuffer);
-    return fileId; // The unique ID of the image
+    return fileId;
 }
 
 module.exports = {

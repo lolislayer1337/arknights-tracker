@@ -2183,6 +2183,7 @@
     "rank": "Rank",
     "operator": "Player",
     "level": "Level",
+    "contract_level": "Contract Level",
     "time": "Clear Time",
     "sec": "{time}s",
     "team": "Team",
@@ -2192,7 +2193,8 @@
     "not_synced_title": "Leaderboard Sync Required",
     "not_synced_desc": "To participate in the leaderboards, you must register a profile and sync your in-game roster.",
     "not_synced_btn": "Link Profile",
-    "unauthorized": "Please log in to participate"
+    "unauthorized": "Please log in to participate",
+    "last_update": "Last Update"
   },
   "profile": {
     "title": "Player Profile",
@@ -2243,13 +2245,22 @@
     "delete_confirm": "Delete this saved token?",
     "settings_title": "Profile Settings",
     "settings_hide_data": "Hide account details on leaderboard",
+    "settings_primary_account": "Link Pulls Account",
+    "settings_primary_account_none": "None",
+    "bind_to_view_luck": "Bind a game account in settings to view your luck statistics.",
+    "sync_first_to_bind": "Link your account with your pulls in the settings to display your luck statistics. The statistics will be visible to all users of the site.",
+    "pulls_rating": "Pulls Rating",
+    "settings_background": "Profile Background",
+    "settings_bg_none": "Default Background",
+    "settings_bg_search": "Search operators...",
     "settings_logout": "Log out",
     "confirm_unlink": "Are you sure you want to unlink this game account?",
     "unlink_success": "Game account successfully unlinked.",
     "image_format_error": "Only JPG, PNG, WebP, and AVIF formats are allowed.",
     "image_size_error": "Image is too small. Minimum resolution is 128x128 pixels.",
     "crop_avatar_title": "Crop Avatar",
-    "avatar_success": "Avatar updated successfully!"
+    "avatar_success": "Avatar updated successfully!",
+    "no_connected_accounts": "No connected game accounts. Sync your account using the Update button above."
   },
   "contractTagNames": {
     "activity_contract_tag_201": "Ambient: Overclock",

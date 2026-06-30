@@ -8,6 +8,7 @@
     import Icon from "$lib/components/Icon.svelte";
     import Button from "$lib/components/Button.svelte";
     import Modal from "$lib/components/modals/Modal.svelte";
+    import ConfirmationModal from "$lib/components/modals/ConfirmationModal.svelte";
     import Checkbox from "$lib/components/Checkbox.svelte";
     import OperatorCard from "$lib/components/cards/OperatorCard.svelte";
     import Image from "$lib/components/Image.svelte";
@@ -19,6 +20,12 @@
     import { getImagePath } from "$lib/utils/imageUtils.js";
     import { currentLocale } from "$lib/stores/locale.js";
     import { formatContractDescription } from "$lib/utils/richText.js";
+    import ContractLevelTag from "$lib/components/profile/ContractLevelTag.svelte";
+    import RatingCard from "$lib/components/records/RatingCard.svelte";
+    import Select from "$lib/components/Select.svelte";
+    import { accountStore } from "$lib/stores/accounts.js";
+
+    const { accounts } = accountStore;
 
     let profile = null;
     let loading = true;
@@ -26,6 +33,7 @@
     let syncModalOpen = false;
     let settingsModalOpen = false;
     let showCropModal = false;
+    let showFullAvatarModal = false;
     let cropImageSrc = "";
     let zoom = 1;
     let offsetX = 0;
@@ -81,13 +89,22 @@
         }
     }
 
-    function deleteSyncToken(index) {
-        if (!confirm($t("import.delete_confirm") || "Delete this saved token?"))
-            return;
+    let showDeleteTokenModal = false;
+    let tokenToDeleteIndex = null;
+
+    function triggerDeleteSyncToken(index) {
+        tokenToDeleteIndex = index;
+        showDeleteTokenModal = true;
+    }
+
+    function confirmDeleteSyncToken() {
+        showDeleteTokenModal = false;
+        if (tokenToDeleteIndex === null || tokenToDeleteIndex === undefined) return;
         const newList = [...savedSyncTokens];
-        newList.splice(index, 1);
+        newList.splice(tokenToDeleteIndex, 1);
         savedSyncTokens = newList;
         localStorage.setItem("profile_saved_tokens", JSON.stringify(newList));
+        tokenToDeleteIndex = null;
     }
 
     function selectSyncToken(item) {
@@ -116,6 +133,70 @@
     let syncing = false;
     let avatarInput;
     let isPrivate = false;
+
+    let bgSearchQuery = "";
+    $: availableBackgrounds = Object.values(characters || {})
+        .filter(char => char.id && char.id !== "endministrator1" && char.id !== "endministrator2")
+        .flatMap(char => [
+            { id: `${char.id}_potential1`, name: char.name, pot: 1 },
+            { id: `${char.id}_potential3`, name: char.name, pot: 3 },
+            { id: `${char.id}_potential5`, name: char.name, pot: 5 }
+        ]);
+
+    $: primaryAccountOptions = [
+        { value: "", label: $t("profile.settings_primary_account_none") },
+        ...($accounts || []).filter(a => a.serverUid).map(a => ({
+            value: a.serverUid,
+            label: a.name,
+            subLabel: getServerLabel(a.serverId || "3")
+        }))
+    ];
+
+    $: filteredBackgrounds = availableBackgrounds.filter(bg => {
+        if (!bgSearchQuery) return true;
+        const query = bgSearchQuery.toLowerCase();
+        const localizedName = ($t(`characters.${bg.id.split('_')[0]}`) || bg.name).toLowerCase();
+        return bg.name.toLowerCase().includes(query) || localizedName.includes(query);
+    });
+
+    async function handleSelectBackground(bgId) {
+        try {
+            const token = await $user.getIdToken();
+            const data = await registerProfile(token, profile.name, profile.picture, profile.is_private, bgId || null, profile.records_uid);
+            profile.background = data.background;
+            addNotification("success", "Profile background updated!");
+        } catch (e) {
+            addNotification("error", e.message);
+        }
+    }
+
+    async function handleSelectRecordsUid(recordsUid) {
+        if (!activeAccount) return;
+        try {
+            const token = await $user.getIdToken();
+            const data = await registerProfile(
+                token,
+                profile.name,
+                profile.picture,
+                profile.is_private,
+                profile.background,
+                recordsUid || null,
+                activeAccount.game_uid
+            );
+            const details = (data.details || []).map(d => {
+                try {
+                    return { ...d, info: typeof d.account_info === 'string' ? JSON.parse(d.account_info) : d.account_info };
+                } catch (e) {
+                    return { ...d, info: {} };
+                }
+            });
+            profile = { ...profile, details };
+            addNotification("success", "Primary game account updated!");
+        } catch (e) {
+            console.error("[handleSelectRecordsUid] Error:", e);
+            addNotification("error", e.message);
+        }
+    }
 
     const charactersById = Object.values(characters || {}).reduce((acc, char) => {
         if (char && char.id) acc[char.id] = char;
@@ -270,7 +351,7 @@
         try {
             const token = await $user.getIdToken();
             const nextPrivateVal = isPrivate ? 0 : 1;
-            const data = await registerProfile(token, profile.name, profile.picture, nextPrivateVal);
+            const data = await registerProfile(token, profile.name, profile.picture, nextPrivateVal, profile.background, profile.records_uid);
             profile.is_private = data.is_private;
             isPrivate = data.is_private === 1;
             addNotification("success", "Privacy settings updated!");
@@ -378,7 +459,7 @@
         }
         try {
             const token = await $user.getIdToken();
-            const data = await registerProfile(token, trimmed, profile.picture);
+            const data = await registerProfile(token, trimmed, profile.picture, profile.is_private, profile.background, profile.records_uid);
             profile.name = data.name;
             isEditingName = false;
             addNotification("success", "Username updated!");
@@ -552,16 +633,22 @@
                 localAvatar = webpBase64;
                 localStorage.setItem("goyfield_local_avatar", webpBase64);
                 if (profile) {
-                    profile.picture = null;
-                    profile.avatar_strike = 1;
+                    profile = {
+                        ...profile,
+                        picture: null,
+                        avatar_strike: 1
+                    };
                 }
                 addNotification("warning", $t("profile.strike_warning"));
             } else {
                 localAvatar = "";
                 localStorage.removeItem("goyfield_local_avatar");
                 if (profile) {
-                    profile.picture = uploadResult.picture;
-                    profile.avatar_strike = 0;
+                    profile = {
+                        ...profile,
+                        picture: uploadResult.picture,
+                        avatar_strike: 0
+                    };
                 }
                 addNotification("success", $t("profile.avatar_success") || "Изображение установлено успешно");
             }
@@ -589,10 +676,13 @@
             const token = await $user.getIdToken();
             const accounts = await syncGameAccount(token, gameTokenInput.trim(), null, selectedServer);
             
-            profile.details = accounts.map(d => ({
-                ...d,
-                info: d.account_info // syncGameAccount returns pre-parsed or nested objects
-            }));
+            profile = {
+                ...profile,
+                details: accounts.map(d => ({
+                    ...d,
+                    info: d.account_info
+                }))
+            };
 
             if (profile.details.length > 0) {
                 selectedGameUid = profile.details[0].game_uid;
@@ -631,20 +721,32 @@
         }
     }
 
-    async function handleDeleteAccount(gameUid) {
-        if (!confirm($t("profile.confirm_unlink"))) {
-            return;
-        }
+    let showDeleteAccountModal = false;
+    let accountToDeleteUid = null;
+
+    function triggerDeleteAccount(gameUid) {
+        accountToDeleteUid = gameUid;
+        showDeleteAccountModal = true;
+    }
+
+    async function confirmDeleteAccount() {
+        showDeleteAccountModal = false;
+        if (!accountToDeleteUid) return;
         try {
             const token = await $user.getIdToken();
-            await deleteGameAccount(token, gameUid);
-            profile.details = profile.details.filter(d => d.game_uid !== gameUid);
-            if (selectedGameUid === gameUid) {
+            await deleteGameAccount(token, accountToDeleteUid);
+            profile = {
+                ...profile,
+                details: profile.details.filter(d => d.game_uid !== accountToDeleteUid)
+            };
+            if (selectedGameUid === accountToDeleteUid) {
                 selectedGameUid = profile.details.length > 0 ? profile.details[0].game_uid : null;
             }
             addNotification("success", $t("profile.unlink_success"));
         } catch (e) {
             addNotification("error", e.message);
+        } finally {
+            accountToDeleteUid = null;
         }
     }
 
@@ -654,25 +756,7 @@
         return serverId === "2" ? "Asia" : "Americas / Europe";
     }
 
-    function getContractTagStyle(level) {
-        const lvl = Number(level) || 0;
-        if (lvl >= 40) {
-            return {
-                border: "#D83742",
-                bg: "radial-gradient(circle, rgba(255,255,255,0.12) 0.5px, transparent 0.5px) 0 0 / 3px 3px, linear-gradient(to left, #171201, #61201A)"
-            };
-        }
-        if (lvl >= 20) {
-            return {
-                border: "#E97126",
-                bg: "radial-gradient(circle, rgba(255,255,255,0.12) 0.5px, transparent 0.5px) 0 0 / 3px 3px, linear-gradient(to left, #131800, #694012)"
-            };
-        }
-        return {
-            border: "#828282",
-            bg: "radial-gradient(circle, rgba(255,255,255,0.12) 0.5px, transparent 0.5px) 0 0 / 3px 3px, linear-gradient(to left, #050505, #313434)"
-        };
-    }
+
 
     function getAvatarUrl(pictureId) {
         if (localAvatar) return localAvatar;
@@ -682,12 +766,21 @@
 </script>
 
 <div class="max-w-[1800px] w-full mx-auto pb-20">
+    {#if profile && profile.background}
+        <div class="fixed inset-0 w-[100vw] h-[100vh] pointer-events-none z-0 flex items-center justify-center overflow-hidden">
+            <div class="w-full h-full object-cover opacity-45 dark:opacity-35 transform scale-105">
+                <Image id={profile.background} variant="operator-art" size="100%" />
+            </div>
+            <div class="absolute inset-0 bg-black/5 dark:bg-black/15 z-10"></div>
+            <div class="absolute bottom-0 left-0 right-0 h-[30vh] bg-gradient-to-t dark:from-[#2a2a2a] from-[#F0F2F4] to-transparent z-10"></div>
+        </div>
+    {/if}
     {#if loading}
         <div class="flex items-center justify-center min-h-[60vh]">
             <Icon name="loading" class="w-12 h-12 text-[#FFE145] animate-spin" />
         </div>
     {:else if !$user}
-        <div class="flex items-center justify-center min-h-[70vh]" in:fade>
+        <div class="flex items-center justify-center min-h-[70vh] relative z-10" in:fade>
             <div class="bg-white/5 border border-white/10 p-8 rounded-2xl max-w-lg text-center backdrop-blur-md shadow-2xl flex flex-col items-center">
                 <h2 class="text-2xl font-bold dark:text-white text-gray-900 mb-4 font-sdk">
                     {$t("profile.sync_title")}
@@ -705,18 +798,38 @@
             </div>
         </div>
     {:else if needsRegistration}
-        <div class="flex items-center justify-center min-h-[70vh]" in:fade>
+        <div class="flex items-center justify-center min-h-[70vh] relative z-10" in:fade>
             <div class="bg-white/5 border border-white/10 p-8 rounded-2xl w-full max-w-md backdrop-blur-md shadow-2xl flex flex-col items-center">
                 <h2 class="text-2xl font-bold dark:text-white text-gray-900 mb-6 font-sdk">
                     {$t("profile.register_title")}
                 </h2>
-                <div class="relative group cursor-pointer mb-6" on:click={() => avatarInput.click()}>
+                <div class="relative group mb-6 w-28 h-28">
                     {#if localAvatar}
-                        <img src={localAvatar} alt="Local Avatar" class="w-28 h-28 rounded-xl border-2 border-[#FFE145] object-cover" />
+                        <button
+                            type="button"
+                            class="w-full h-full rounded-xl border-2 border-[#FFE145] overflow-hidden cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-[#FFE145]"
+                            on:click={() => showFullAvatarModal = true}
+                            aria-label="View avatar"
+                        >
+                            <img src={localAvatar} alt="Local Avatar" class="w-full h-full object-cover" />
+                        </button>
+                        <button
+                            type="button"
+                            class="absolute bottom-1.5 right-1.5 w-7 h-7 bg-[#FFE145] hover:bg-[#ebd03e] text-gray-900 rounded-full flex items-center justify-center shadow-md transition-all scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 z-10 cursor-pointer focus:scale-100 focus:opacity-100 outline-none"
+                            on:click|stopPropagation={() => avatarInput.click()}
+                            aria-label="Change avatar"
+                        >
+                            <Icon name="pen" class="w-3.5 h-3.5" />
+                        </button>
                     {:else}
-                        <div class="w-28 h-28 rounded-xl bg-white/10 border-2 border-white/20 hover:border-[#FFE145] transition-colors flex items-center justify-center text-white/50">
+                        <button
+                            type="button"
+                            class="w-full h-full rounded-xl bg-white/10 border-2 border-white/20 hover:border-[#FFE145] transition-colors flex items-center justify-center text-white/50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FFE145]"
+                            on:click={() => avatarInput.click()}
+                            aria-label="Upload avatar"
+                        >
                             <span class="text-4xl">+</span>
-                        </div>
+                        </button>
                     {/if}
                     <input type="file" accept="image/*" class="hidden" bind:this={avatarInput} on:change={handleFileChange} />
                 </div>
@@ -753,29 +866,45 @@
             </div>
         </div>
     {:else if profile}
-        <div class="space-y-6" in:fade>
-            <div class="bg-white dark:bg-[#383838] border border-white/10 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="space-y-6 relative z-10" in:fade>
+            <div class="bg-white/5 dark:bg-[#383838]/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
-                    <button
-                        type="button"
-                        class="relative group cursor-pointer shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-[#FFE145] rounded-md text-left"
-                        on:click={() => avatarInput.click()}
-                    >
+                    <div class="relative group shrink-0 w-28 h-28">
+                        <button
+                            type="button"
+                            class="w-full h-full rounded-md border border-white/20 focus:outline-none focus:ring-2 focus:ring-[#FFE145] transition-all overflow-hidden {getAvatarUrl(profile.picture) || localAvatar ? 'cursor-zoom-in' : 'cursor-pointer'}"
+                            on:click={() => {
+                                if (getAvatarUrl(profile.picture) || localAvatar) {
+                                    showFullAvatarModal = true;
+                                } else {
+                                    avatarInput.click();
+                                }
+                            }}
+                            aria-label="View avatar"
+                        >
+                            {#if getAvatarUrl(profile.picture) || localAvatar}
+                                <img
+                                    src={getAvatarUrl(profile.picture)}
+                                    alt="User Avatar"
+                                    class="w-full h-full object-cover"
+                                />
+                            {:else}
+                                <div class="w-full h-full bg-white/10 flex items-center justify-center text-white/50 text-3xl font-bold">
+                                    {profile.name ? profile.name[0].toUpperCase() : "?"}
+                                </div>
+                            {/if}
+                        </button>
                         {#if getAvatarUrl(profile.picture) || localAvatar}
-                            <img
-                                src={getAvatarUrl(profile.picture)}
-                                alt="User Avatar"
-                                class="w-28 h-28 rounded-md border border-white/20 group-hover:border-[#FFE145] transition-colors object-cover"
-                            />
-                        {:else}
-                            <div class="w-28 h-28 rounded-md bg-white/10 border-2 border-white/20 group-hover:border-[#FFE145] transition-colors flex items-center justify-center text-white/50 text-3xl font-bold">
-                                {profile.name ? profile.name[0].toUpperCase() : "?"}
-                            </div>
+                            <button
+                                type="button"
+                                class="absolute bottom-1.5 right-1.5 w-7 h-7 bg-[#FFE145] hover:bg-[#ebd03e] text-gray-900 rounded-full flex items-center justify-center shadow-md transition-all scale-0 group-hover:scale-100 opacity-0 group-hover:opacity-100 z-10 cursor-pointer focus:scale-100 focus:opacity-100 outline-none"
+                                on:click|stopPropagation={() => avatarInput.click()}
+                                aria-label="Change avatar"
+                            >
+                                <Icon name="pen" class="w-3.5 h-3.5" />
+                            </button>
                         {/if}
-                        <div class="absolute inset-0 bg-black/60 rounded-md opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
-                            <Icon name="pen" class="w-6 h-6 text-white" />
-                        </div>
-                    </button>
+                    </div>
                     <input type="file" accept="image/jpeg,image/png,image/webp,image/avif" class="hidden" bind:this={avatarInput} on:change={handleFileChange} />
 
                     <div class="flex flex-col gap-1 relative">
@@ -832,17 +961,16 @@
                 <div class="flex flex-wrap items-center gap-4">
                     {#if profile.details && profile.details.length > 0}
                         {#each profile.details as d}
-                            {@const tagStyle = getContractTagStyle(d.info?.contract?.level)}
                             <div
                                 on:click={() => selectedGameUid = d.game_uid}
                                 on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') selectedGameUid = d.game_uid; }}
                                 role="button"
                                 tabindex="0"
-                                class="bg-white/5 border text-left p-3 rounded-xl flex items-center gap-4 w-[285px] hover:bg-white/10 transition-all relative group cursor-pointer select-none outline-none focus-visible:ring-1 focus-visible:ring-[#FFE145]
-                                {selectedGameUid === d.game_uid ? 'border-2 border-[#FFE145]' : 'border-2 border-white/5 dark:border-white/10'}"
+                                class="bg-white/40 dark:bg-black/20 backdrop-blur-md border text-left p-3 rounded-xl flex items-center gap-4 w-[285px] hover:bg-white/60 dark:hover:bg-black/35 transition-all relative group cursor-pointer select-none outline-none focus-visible:ring-1 focus-visible:ring-[#FFE145]
+                                {selectedGameUid === d.game_uid ? 'border-2 border-[#FFE145]' : 'border-2 border-white/10 dark:border-white/5'}"
                             >
                                 <button
-                                    on:click|stopPropagation={() => handleDeleteAccount(d.game_uid)}
+                                    on:click|stopPropagation={() => triggerDeleteAccount(d.game_uid)}
                                     class="absolute -top-1.5 -right-1.5 bg-red-900/95 border border-red-500/50 hover:bg-red-600 hover:border-red-400 p-1.5 rounded-lg text-white transition-all cursor-pointer z-20 opacity-0 group-hover:opacity-100 shadow-md active:scale-95 flex items-center justify-center"
                                     title="Unlink Account"
                                 >
@@ -859,11 +987,7 @@
                                 <div class="flex-1 min-w-0 flex flex-col gap-0.5">
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-md font-bold dark:text-white text-gray-900 font-sdk truncate">{d.info?.base?.name || "Profile"}</span>
-                                        <div class="flex items-center gap-1 border px-2 py-0.5 rounded-[3px] text-[19px] font-black text-white leading-none shrink-0 h-[24px] min-w-[62px] justify-center" 
-                                             style="border-color: {tagStyle.border}; background: {tagStyle.bg};">
-                                            <span>{d.info?.contract?.level || 0}</span>
-                                            <Icon name="contract2" class="w-5 h-5 text-white shrink-0" />
-                                        </div>
+                                        <ContractLevelTag level={d.info?.contract?.level || 0} />
                                     </div>
                                     <div class="text-[10px] text-gray-400 font-mono truncate">UID: {d.game_uid}</div>
                                     <div class="bg-gray-200 text-gray-600 dark:bg-[#383838] dark:text-[#B0B0B0] px-1.5 py-0.5 rounded text-[9px] font-medium font-sans w-fit truncate">
@@ -871,7 +995,7 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col items-center justify-center shrink-0 min-w-[36px] border-l border-white/10 pl-3">
-                                    <span class="bg-gray-800 text-white dark:bg-white dark:text-black font-black text-[9px] px-1 rounded-[2px] tracking-tighter uppercase leading-none mb-0.5 select-none">Lv.</span>
+                                    <span class="bg-gray-800 text-white dark:bg-white dark:text-black font-black text-[9px] px-1 tracking-tighter uppercase leading-none mb-0.5 select-none">Lv.</span>
                                     <span class="text-2xl font-black dark:text-white text-gray-900 font-mono leading-none">{d.info?.base?.level || 1}</span>
                                 </div>
                             </div>
@@ -888,7 +1012,7 @@
                                     </div>
                                 </Button>
                                 {#if profile.updated_at}
-                                    <span class="absolute top-full left-1/2 -translate-x-1/2 mt-1 text-[10px] text-gray-400 font-sans font-medium select-none text-center whitespace-nowrap">
+                                    <span class="absolute top-full left-1/2 -translate-x-1/2 mt-1 text-[10px] text-gray-400 font-sans font-medium text-center whitespace-nowrap">
                                         {getLastSyncText(profile.updated_at)}
                                     </span>
                                 {/if}
@@ -910,62 +1034,71 @@
                 <div class="grid grid-cols-1 xl:grid-cols-[320px_435px_1fr] gap-6" in:fade>
                     
                     <div class="space-y-6">
-                        <div class="bg-white dark:bg-[#383838] dark:border-[#444444] rounded-xl p-5 shadow-sm border border-gray-100 min-w-0 flex flex-col">
+                        <div class="bg-white/5 dark:bg-[#383838]/5 dark:border-[#444444] rounded-xl p-5 shadow-xl border border-gray-100/50 min-w-0 flex flex-col backdrop-blur-sm">
                             <h2 class="text-xl font-bold text-[#21272C] dark:text-[#FDFDFD] mb-2 font-sdk border-b border-gray-100 dark:border-[#444444] pb-3">
                                 {$t("profile.overview")}
                             </h2>
                             <div class="space-y-1 px-1">
                                 <div class="flex justify-between items-center py-1.5 dark:border-[#444444]">
-                                    <span class="text-gray-600 dark:text-[#E4E4E4]">{$t("profile.operators_count")}</span>
+                                    <span class="text-gray-700 dark:text-[#E4E4E4] font-medium">{$t("profile.operators_count")}</span>
                                     <span class="font-bold text-[#21272C] dark:text-[#FDFDFD] font-nums">{activeAccount.info?.stats?.charCount || 0} / {Object.keys(charactersById).length}</span>
                                 </div>
                                 <div class="flex justify-between items-center py-1.5 dark:border-[#444444]">
-                                    <span class="text-gray-600 dark:text-[#E4E4E4]">{$t("profile.exploration_level")}</span>
+                                    <span class="text-gray-700 dark:text-[#E4E4E4] font-medium">{$t("profile.exploration_level")}</span>
                                     <span class="font-bold text-[#21272C] dark:text-[#FDFDFD] font-nums">{activeAccount.info?.stats?.explorationLevel || 0}</span>
                                 </div>
                                 <div class="flex justify-between items-center py-1.5 dark:border-[#444444]">
-                                    <span class="text-gray-600 dark:text-[#E4E4E4]">{$t("profile.weapons")}</span>
+                                    <span class="text-gray-700 dark:text-[#E4E4E4] font-medium">{$t("profile.weapons")}</span>
                                     <span class="font-bold text-[#21272C] dark:text-[#FDFDFD] font-nums">{activeAccount.info?.stats?.weaponCount || 0}</span>
                                 </div>
                                 <div class="flex justify-between items-center py-1.5 dark:border-[#444444]">
-                                    <span class="text-gray-600 dark:text-[#E4E4E4]">{$t("profile.files")}</span>
+                                    <span class="text-gray-700 dark:text-[#E4E4E4] font-medium">{$t("profile.files")}</span>
                                     <span class="font-bold text-[#21272C] dark:text-[#FDFDFD] font-nums">{activeAccount.info?.stats?.fileCount || 0}</span>
                                 </div>
                                 <div class="flex justify-between items-center py-1.5 dark:border-[#444444]">
-                                    <span class="text-gray-600 dark:text-[#E4E4E4]">{$t("profile.awake_day")}</span>
+                                    <span class="text-gray-700 dark:text-[#E4E4E4] font-medium">{$t("profile.awake_day")}</span>
                                     <span class="font-bold text-[#21272C] dark:text-[#FDFDFD] font-nums">{activeAccount.info?.stats?.awakeDay || "-"}</span>
                                 </div>
                                 <div class="flex justify-between items-center py-1.5 dark:border-[#444444]">
-                                    <span class="text-gray-600 dark:text-[#E4E4E4]">{$t("profile.sanity")}</span>
+                                    <span class="text-gray-700 dark:text-[#E4E4E4] font-medium">{$t("profile.sanity")}</span>
                                     <span class="font-bold text-[#21272C] dark:text-[#FDFDFD] font-nums">{activeAccount.info?.stats?.sanity || 0} / {activeAccount.info?.stats?.maxSanity || 358}</span>
                                 </div>
                                 <div class="flex justify-between items-center py-1.5 dark:border-[#444444]">
-                                    <span class="text-gray-600 dark:text-[#E4E4E4]">{$t("profile.protopass")}</span>
+                                    <span class="text-gray-700 dark:text-[#E4E4E4] font-medium">{$t("profile.protopass")}</span>
                                     <span class="font-bold text-[#21272C] dark:text-[#FDFDFD] font-nums">{activeAccount.info?.stats?.protoPass || 0} / {activeAccount.info?.stats?.protoPassMax || 60}</span>
                                 </div>
                                 <div class="flex justify-between items-center py-1.5 dark:border-[#444444]">
-                                    <span class="text-gray-600 dark:text-[#E4E4E4]">{$t("profile.weekly_routine")}</span>
+                                    <span class="text-gray-700 dark:text-[#E4E4E4] font-medium">{$t("profile.weekly_routine")}</span>
                                     <span class="font-bold text-[#21272C] dark:text-[#FDFDFD] font-nums">{activeAccount.info?.stats?.weeklyRoutine || 0} / {activeAccount.info?.stats?.weeklyRoutineMax || 10}</span>
                                 </div>
                                 <div class="flex justify-between items-center py-1.5 dark:border-[#444444]">
-                                    <span class="text-gray-600 dark:text-[#E4E4E4]">{$t("profile.activity_points")}</span>
+                                    <span class="text-gray-700 dark:text-[#E4E4E4] font-medium">{$t("profile.activity_points")}</span>
                                     <span class="font-bold text-[#21272C] dark:text-[#FDFDFD] font-nums">{activeAccount.info?.stats?.activityPoints || 0} / {activeAccount.info?.stats?.activityPointsMax || 100}</span>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="bg-white dark:bg-[#383838] dark:border-[#444444] rounded-xl p-5 border border-gray-100 min-w-0 flex flex-col">
-                            <h2 class="text-xl font-bold text-[#21272C] dark:text-[#FDFDFD] mb-4 font-sdk border-b border-gray-100 dark:border-[#444444] pb-3">
-                                {$t("profile.stats")}
-                            </h2>
-                            <div class="h-40 flex items-center justify-center border border-gray-100 dark:border-[#444444] rounded-lg bg-gray-50 dark:bg-[#2e2e2e] font-mono text-xs text-gray-500 dark:text-gray-400">
-                                Global Rank Percentile: Top 5.2%
-                            </div>
+                        <div class="min-w-0 flex flex-col">
+                            {#if activeAccount?.records_uid}
+                                <RatingCard customGameUid={activeAccount.records_uid} isProfile={true} />
+                            {:else}
+                                <div class="bg-white/5 dark:bg-[#383838]/5 dark:border-[#444444] rounded-xl p-5 border border-gray-100/50 min-w-0 flex flex-col backdrop-blur-sm shadow-xl">
+                                    <h2 class="text-xl font-bold text-[#21272C] dark:text-[#FDFDFD] mb-4 font-sdk border-b border-gray-100 dark:border-[#444444] pb-3">
+                                        {$t("profile.stats")}
+                                    </h2>
+                                    <div class="flex flex-col items-center h-40 justify-center text-center border border-gray-100/50 dark:border-[#444444]/50 rounded-lg bg-gray-50/20 dark:bg-[#2e2e2e]/20 font-mono text-xs text-gray-500 dark:text-gray-400 backdrop-blur-sm px-4">
+                                        <Icon name="noData" class="w-8 h-8 mb-2 opacity-30" />
+                                        <p>
+                                            {$t("profile.bind_to_view_luck")}
+                                        </p>
+                                    </div>
+                                </div>
+                            {/if}
                         </div>
                     </div>
 
                     <div>
-                        <div class="bg-white dark:bg-[#383838] border border-white/10 rounded-2xl p-6 flex flex-col">
+                        <div class="bg-white/5 dark:bg-[#383838]/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm shadow-xl flex flex-col">
                             <div class="flex items-center justify-between border-b border-gray-100 dark:border-[#444444] pb-2 mb-4">
                                 <div class="flex items-center gap-2">
                                     <Icon name="contract" class="w-7 h-7 text-[#21272C] dark:text-[#FDFDFD]" />
@@ -976,7 +1109,6 @@
                             </div>
 
                             {#if activeAccount.info?.contract && activeAccount.info.contract.level > 0}
-                                {@const tagStyle = getContractTagStyle(activeAccount.info.contract.level)}
                                 <div class="flex items-center justify-between mb-4">
                                     <div class="text-sm font-medium dark:text-gray-400 text-gray-600">
                                         {$t("profile.clear_time_label")} 
@@ -984,36 +1116,38 @@
                                             {activeAccount.info.contract.clearTime} сек.
                                         </span>
                                     </div>
-                                    <div class="flex items-center gap-1 border px-2 py-0.5 rounded-[3px] text-[19px] font-black text-white leading-none shrink-0 h-[24px] min-w-[62px] justify-center" 
-                                         style="border-color: {tagStyle.border}; background: {tagStyle.bg};">
-                                        <span>{activeAccount.info.contract.level || 0}</span>
-                                        <Icon name="contract2" class="w-5 h-5 text-white shrink-0" />
-                                    </div>
+                                    <ContractLevelTag level={activeAccount.info.contract.level || 0} />
                                 </div>
 
                                 <div class="flex flex-row justify-center gap-4 flex-wrap">
                                     {#each activeAccount.info.contract.chars as char}
                                         {@const opData = getOperatorData(char)}
                                         <div class="flex flex-col border border-white/10 rounded-[4px] min-w-0 w-[84px] max-w-[84px] shrink-0 shadow-md relative">
-                                            <div class="relative w-full h-[190px] bg-white/3 overflow-hidden shrink-0">
-                                                <Image id={opData.id} variant="operator-preview" className="w-full h-full object-cover" />
+                                            <a href="/operators/{opData.id}" class="relative w-full h-[190px] bg-white/3 overflow-hidden shrink-0 block group cursor-pointer">
+                                                <div class="w-full h-full transition-transform duration-300 group-hover:scale-105">
+                                                    <Image id={opData.id} variant="operator-preview" className="w-full h-full object-cover" />
+                                                </div>
                                                 <div class="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-[#111111] to-transparent z-20 pointer-events-none"></div>
                                                 
-                                                <div class="absolute top-1 right-1 z-30">
-                                                    <PotentialIcon pot={char.potential || 1} size={32} />
+                                                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                                                <!-- svelte-ignore a11y-no-static-element-interactions -->
+                                                <div class="absolute top-1 right-1 z-30" on:click|stopPropagation|preventDefault>
+                                                    <Tooltip text="P{Math.max(1, (char.potential || 1)) - 1}">
+                                                        <PotentialIcon pot={Math.max(0, (char.potential || 1) - 1)} size={32} />
+                                                    </Tooltip>
                                                 </div>
 
                                                 <div class="absolute bottom-2 left-2 z-30 flex flex-col items-start leading-none select-none">
                                                     <span class="text-[8px] font-black text-white/70 uppercase tracking-wider" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">LV</span>
                                                     <span class="text-[24px] font-black text-white leading-none tracking-tighter" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.9);">{char.level}</span>
                                                 </div>
-                                            </div>
+                                            </a>
 
                                             {#if char.weapon}
                                                 {@const weaponData = getWeaponData(char.weapon)}
                                                 {@const weaponName = $t(`weaponsList.${weaponData?.id}`) !== `weaponsList.${weaponData?.id}` ? $t(`weaponsList.${weaponData?.id}`) : (weaponData?.name || char.weapon.id)}
-                                                <Tooltip text={weaponName}>
-                                                    <div class="relative w-[96px] h-[55px] flex items-center justify-between p-1 overflow-hidden shrink-0 z-20 ml-[-12px]"
+                                                <Tooltip text={`${weaponName} R${char.weapon.refineLevel !== undefined ? char.weapon.refineLevel + 1 : 1}`}>
+                                                    <a href="/weapons/{weaponData.id}?level={char.weapon.level}&refine={char.weapon.refineLevel !== undefined ? char.weapon.refineLevel : 0}&skills={char.weapon.weaponTerms ? char.weapon.weaponTerms.join(',') : ''}" class="relative w-[96px] h-[55px] flex items-center justify-between p-1 overflow-hidden shrink-0 z-20 ml-[-12px] transition-transform duration-200 hover:scale-105 cursor-pointer block"
                                                          style="border: 1px solid transparent; background: linear-gradient(to right, #363634, #111111) padding-box, linear-gradient(to right, #464644, #1b1b1a) border-box;">
                                                         
                                                         <img 
@@ -1024,7 +1158,7 @@
                                                         />
                                                         
                                                         <div class="flex flex-col justify-between h-full z-10 items-start">
-                                                            <PotentialIcon pot={char.weapon.refineLevel !== undefined ? char.weapon.refineLevel + 1 : 1} size={20} />
+                                                            <PotentialIcon pot={char.weapon.refineLevel !== undefined ? char.weapon.refineLevel : 0} size={20} />
                                                             <div class="flex flex-col items-start leading-none">
                                                                 <span class="text-[7px] text-white/50 font-black">LV</span>
                                                                 <span class="text-[16px] text-white font-nums font-black leading-none" style="text-shadow: 1px 1px 0 #111;">
@@ -1042,7 +1176,7 @@
                                                                 </div>
                                                             {/each}
                                                         </div>
-                                                    </div>
+                                                    </a>
                                                 </Tooltip>
                                             {/if}
 
@@ -1053,7 +1187,7 @@
                                                         {@const tier = Math.max(0, (equip.enhanceStatus || 1) - 1)}
                                                         {@const eqData = equipment[equip.id]}
                                                         <Tooltip text={equipmentNames[equip.id]?.name || equip.id}>
-                                                            <div class="relative flex items-center justify-end w-[38px] h-[28px] py-0.5 pl-0.5 min-w-0"
+                                                            <a href="/equipment/{equip.id}" class="relative flex items-center justify-end w-[38px] h-[28px] py-0.5 pl-0.5 min-w-0 transition-transform duration-200 hover:scale-110 hover:z-20 cursor-pointer block"
                                                                  style="border: 1px solid transparent; background: linear-gradient(to right, #101010, #1A4558) padding-box, linear-gradient(to right, #3D3F3A, #194457) border-box;">
                                                                 
                                                                 <div class="absolute top-0.5 left-0.5 w-[14px] h-[8px] flex items-center justify-center shrink-0">
@@ -1080,7 +1214,7 @@
                                                                 />
                                                                 
                                                                 <div class="left-0.5 w-[14px] h-[1.5px] bg-[#E3A000] absolute bottom-0.5 rounded"></div>
-                                                            </div>
+                                                            </a>
                                                         </Tooltip>
                                                     {:else}
                                                         <div class="bg-[#101010]/60 border border-white/5 w-[38px] h-[28px] min-w-0"></div>
@@ -1097,14 +1231,14 @@
                                         {@const tagDesc = formatContractDescription(ind.id, $t(`contractTagDesc.${ind.id}`) || ind.desc)}
                                         {@const cleanDesc = tagDesc ? tagDesc.replace(/<[^>]*>/g, "") : ""}
                                         <Tooltip text={tagName + (cleanDesc ? ": " + cleanDesc : "")}>
-                                            <div class="w-12 h-12 bg-black/40 border border-white/10 rounded-lg p-1.5 flex items-center justify-center cursor-pointer hover:border-white/30 transition-all">
+                                            <div class="w-12 h-12 bg-black/90 border border-white/10 rounded-lg p-1.5 flex items-center justify-center cursor-pointer hover:border-white/30 transition-all">
                                                 <img src={getImagePath(ind.id, "contract-tag-icon")} alt={tagName} class="w-full h-full object-contain" on:error={(e) => e.target.src = ind.icon} />
                                             </div>
                                         </Tooltip>
                                     {/each}
                                 </div>
                             {:else}
-                                <div class="text-center py-10 text-gray-400 italic flex flex-col items-center bg-gray-50 dark:bg-[#2C2C2C] rounded-2xl border border-dashed border-gray-200 dark:border-[#333] w-full ">
+                                <div class="text-center py-10 text-gray-400 italic flex flex-col items-center bg-gray-50/20 dark:bg-[#2C2C2C]/20 rounded-2xl border border-gray-100/50 dark:border-[#444444]/50 w-full backdrop-blur-sm">
                                     <Icon name="noData" class="w-8 h-8 mb-2 opacity-30" />
                                     <p class="text-sm">
                                         {$t("emptyState.noData") || "No records found"}
@@ -1115,7 +1249,7 @@
                     </div>
 
                     <div class="w-full">
-                        <div class="bg-white dark:bg-[#383838] dark:border-[#444444] rounded-xl p-5 border border-gray-100 h-full flex flex-col w-full mx-auto">
+                        <div class="bg-white/5 dark:bg-[#383838]/5 dark:border-[#444444] rounded-xl p-5 border border-gray-100/50 h-full flex flex-col w-full mx-auto backdrop-blur-sm shadow-xl">
                             <div class="flex items-center justify-between border-b border-gray-100 dark:border-[#444444] pb-3 mb-6">
                                 <div class="flex gap-2">
                                     <Icon name="operators" class="w-6 h-6 text-[#21272C] dark:text-[#FDFDFD]" />
@@ -1134,7 +1268,7 @@
                                     <OperatorCard
                                         operator={opData}
                                         level={char.level}
-                                        potential={(char.potential || 1) - 1}
+                                        potential={Math.max(0, (char.potential || 1) - 1)}
                                         owned={true}
                                     />
                                 {/each}
@@ -1144,18 +1278,18 @@
 
                 </div>
             {:else}
-                <div class="bg-white/5 border border-white/10 rounded-2xl p-12 text-center backdrop-blur-md text-gray-500 font-mono text-sm leading-relaxed" in:fade>
-                    No connected game accounts. Sync your account using the Update button above.
+                <div class="bg-white/5 dark:bg-[#383838]/5 border border-white/5 rounded-2xl p-12 text-center backdrop-blur-sm text-gray-500 font-mono text-sm shadow-xl leading-relaxed" in:fade>
+                    {$t("profile.no_connected_accounts")}
                 </div>
             {/if}
         </div>
     {/if}
 
     <Modal isOpen={syncModalOpen} on:close={() => syncModalOpen = false}>
-        <div class="bg-[#242424] border border-white/10 rounded-2xl p-6 md:p-8 w-full max-w-lg shadow-2xl relative">
+        <div class="bg-white dark:bg-[#383838] border border-gray-200 dark:border-[#444444] rounded-2xl p-6 md:p-8 w-full max-w-lg shadow-2xl relative">
             <button
                 on:click={() => syncModalOpen = false}
-                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                class="absolute top-4 right-4 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
             >
                 <Icon name="close" class="w-6 h-6" />
             </button>
@@ -1164,12 +1298,12 @@
                 Синхронизация с игрой
             </h3>
 
-            <div class="flex border-b border-white/10 mb-6 relative">
+            <div class="flex border-b border-gray-200 dark:border-[#444444] mb-6 relative">
                 <button
                     class="px-6 py-3 text-sm font-bold transition-all relative border-b-2
                     {syncActiveTab === 'new'
-                        ? 'text-white border-[#FFE145]'
-                        : 'text-gray-400 hover:text-white border-transparent'}"
+                        ? 'text-[#21272C] dark:text-[#FDFDFD] border-[#FFE145]'
+                        : 'text-gray-400 hover:text-gray-600 hover:dark:bg-[#424242] dark:text-[#B7B6B3] border-transparent hover:bg-gray-50'}"
                     on:click={() => (syncActiveTab = "new")}
                 >
                     {$t("profile.tab_new")}
@@ -1177,13 +1311,13 @@
                 <button
                     class="px-6 py-3 text-sm font-bold transition-all relative flex items-center gap-2 border-b-2
                     {syncActiveTab === 'saved'
-                        ? 'text-white border-[#FFE145]'
-                        : 'text-gray-400 hover:text-white border-transparent'}"
+                        ? 'text-[#21272C] dark:text-[#FDFDFD] border-[#FFE145]'
+                        : 'text-gray-400 hover:text-gray-600 hover:dark:bg-[#424242] dark:text-[#B7B6B3] border-transparent hover:bg-gray-50'}"
                     on:click={() => (syncActiveTab = "saved")}
                 >
                     {$t("profile.tab_saved")}
                     {#if savedSyncTokens.length > 0}
-                        <span class="bg-white/10 text-white text-[10px] px-1.5 py-0.5 rounded-full leading-none">
+                        <span class="bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-white text-[10px] px-1.5 py-0.5 rounded-full leading-none">
                             {savedSyncTokens.length}
                         </span>
                     {/if}
@@ -1191,12 +1325,12 @@
             </div>
 
             {#if syncActiveTab === 'new'}
-                <div class="flex gap-2 mb-4 p-1 bg-white/5 border border-white/10 rounded-lg w-fit transition-all">
+                <div class="flex gap-2 mb-4 p-1 bg-gray-100 dark:bg-[#2C2C2C] rounded-lg w-fit transition-all">
                     <button
                         type="button"
                         class="px-4 py-1.5 text-xs font-bold rounded-md transition-colors {selectedServer === 'both'
-                            ? 'bg-[#FFE145] text-gray-900 shadow-sm'
-                            : 'text-gray-400 hover:text-white'}"
+                            ? 'bg-white dark:bg-[#444] text-[#21272C] dark:text-white shadow-sm'
+                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'}"
                         on:click={() => (selectedServer = "both")}
                     >
                         Both
@@ -1204,8 +1338,8 @@
                     <button
                         type="button"
                         class="px-4 py-1.5 text-xs font-bold rounded-md transition-colors {selectedServer === '3'
-                            ? 'bg-[#FFE145] text-gray-900 shadow-sm'
-                            : 'text-gray-400 hover:text-white'}"
+                            ? 'bg-white dark:bg-[#444] text-[#21272C] dark:text-white shadow-sm'
+                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'}"
                         on:click={() => (selectedServer = '3')}
                     >
                         Americas / Europe
@@ -1213,8 +1347,8 @@
                     <button
                         type="button"
                         class="px-4 py-1.5 text-xs font-bold rounded-md transition-colors {selectedServer === '2'
-                            ? 'bg-[#FFE145] text-gray-900 shadow-sm'
-                            : 'text-gray-400 hover:text-white'}"
+                            ? 'bg-white dark:bg-[#444] text-[#21272C] dark:text-white shadow-sm'
+                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'}"
                         on:click={() => (selectedServer = '2')}
                     >
                         Asia
@@ -1225,8 +1359,8 @@
                     <div class="flex gap-4">
                         <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">1</div>
                         <div class="flex-1">
-                            <p class="text-sm text-white font-sdk font-bold mb-1 select-text">{$t("profile.sync_step1")}</p>
-                            <a href="https://endfield.gryphline.com/" target="_blank" rel="noopener noreferrer" class="text-xs text-[#FFE145] hover:underline font-mono break-all select-text">
+                            <p class="text-sm text-gray-800 dark:text-white font-sdk font-bold mb-1 select-text">{$t("profile.sync_step1")}</p>
+                            <a href="https://endfield.gryphline.com/" target="_blank" rel="noopener noreferrer" class="text-xs text-amber-600 dark:text-[#FFE145] hover:underline font-mono break-all select-text">
                                 https://endfield.gryphline.com/
                             </a>
                         </div>
@@ -1234,8 +1368,8 @@
                     <div class="flex gap-4">
                         <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">2</div>
                         <div class="flex-1">
-                            <p class="text-sm text-white font-sdk font-bold mb-1 select-text">{$t("profile.sync_step2")}</p>
-                            <a href="https://web-api.gryphline.com/cookie_store/account_token" target="_blank" rel="noopener noreferrer" class="text-xs text-[#FFE145] hover:underline font-mono break-all select-text">
+                            <p class="text-sm text-gray-800 dark:text-white font-sdk font-bold mb-1 select-text">{$t("profile.sync_step2")}</p>
+                            <a href="https://web-api.gryphline.com/cookie_store/account_token" target="_blank" rel="noopener noreferrer" class="text-xs text-amber-600 dark:text-[#FFE145] hover:underline font-mono break-all select-text">
                                 https://web-api.gryphline.com/cookie_store/account_token
                             </a>
                         </div>
@@ -1243,18 +1377,18 @@
                     <div class="flex gap-4">
                         <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">3</div>
                         <div class="flex-1">
-                            <p class="text-sm text-white font-sdk font-bold mb-2 select-text">{$t("profile.sync_step3")}</p>
+                            <p class="text-sm text-gray-800 dark:text-white font-sdk font-bold mb-2 select-text">{$t("profile.sync_step3")}</p>
                             <div class="relative w-full">
                                 <input
                                     type={showToken ? "text" : "password"}
                                     bind:value={gameTokenInput}
                                     placeholder={'{"code":0,"data":{"content":"QqW2fmIQq...ZctQjc"},"msg":""}'}
-                                    class="w-full bg-white/5 border border-white/10 text-white rounded-lg pl-4 pr-12 py-3 outline-none focus:border-[#FFE145] transition-colors font-mono text-sm"
+                                    class="w-full p-2.5 bg-gray-50 dark:bg-[#343434] dark:border-[#444444] dark:text-[#E0E0E0] border border-gray-200 focus:bg-white focus:border-[#FFE145] focus:dark:border-[#FFE145] rounded-md text-sm outline-none text-[#21272C] transition-all font-mono pl-4 pr-12"
                                     disabled={syncing}
                                 />
                                 <button
                                     type="button"
-                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
                                     on:click={() => showToken = !showToken}
                                     aria-label="Toggle token visibility"
                                 >
@@ -1268,11 +1402,11 @@
                 <div class="mt-4 mb-6 text-left">
                     <Checkbox bind:checked={isSaveTokenEnabled} variant="yellow" align="start">
                         <div>
-                            <span class="text-gray-300 hover:text-white transition-colors cursor-pointer font-medium text-sm">
+                            <span class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer font-medium text-sm">
                                 {$t("import.save_label_token")}
                             </span>
                             {#if isSaveTokenEnabled}
-                                <div class="text-gray-400 text-xs mt-1 max-w-md">
+                                <div class="text-gray-500 dark:text-gray-400 text-xs mt-1 max-w-md">
                                     {$t("import.save_desc_token")}
                                 </div>
                             {/if}
@@ -1285,7 +1419,7 @@
                                 type="text"
                                 bind:value={tokenName}
                                 placeholder={$t("profile.token_name_placeholder")}
-                                class="w-full bg-white/5 border border-white/10 text-white rounded-lg px-4 py-2 outline-none focus:border-[#FFE145] transition-colors font-mono text-sm"
+                                class="w-full p-2.5 bg-gray-50 dark:bg-[#343434] dark:border-[#444444] dark:text-[#E0E0E0] border border-gray-200 focus:bg-white focus:border-[#FFE145] focus:dark:border-[#FFE145] rounded-md text-sm outline-none text-[#21272C] transition-all font-mono"
                                 disabled={syncing}
                             />
                         </div>
@@ -1310,14 +1444,14 @@
             {:else}
                 <div class="max-w-4xl mb-2 text-left">
                     {#if savedSyncTokens.length === 0}
-                        <div class="flex flex-col items-center justify-center py-8 border-2 border-[#444444] border-dashed rounded-lg text-gray-400">
+                        <div class="flex flex-col items-center justify-center py-8 border-2 border-gray-200 dark:border-[#444444] border-dashed rounded-lg text-gray-400 dark:text-gray-500">
                             <Icon name="noData" class="w-8 h-8 mb-2 opacity-30" />
                             <span class="mt-2 text-sm font-medium">{$t("profile.no_saved_tokens")}</span>
                         </div>
                     {:else}
                         <div class="grid gap-3 pb-3 max-h-[420px] overflow-y-auto pr-1">
                             {#each savedSyncTokens as item, i}
-                                <div class="group relative flex items-center justify-between p-4 bg-white/5 border border-white/10 hover:border-[#FFE145] hover:shadow-sm transition-all text-left rounded-md overflow-hidden">
+                                <div class="group relative flex items-center justify-between p-4 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-[#444444] hover:shadow-sm transition-all text-left rounded-md overflow-hidden">
                                     <button
                                         type="button"
                                         class="absolute inset-0 w-full h-full z-0 cursor-pointer focus:outline-none"
@@ -1325,14 +1459,14 @@
                                         aria-label="Select {item.name}"
                                     ></button>
                                     <div class="pl-2 relative z-10 pointer-events-none">
-                                        <div class="font-bold text-white text-base font-sdk">
+                                        <div class="font-bold text-gray-900 dark:text-white text-base font-sdk">
                                             {item.name}
                                         </div>
                                         <div class="flex gap-2 items-center mt-2">
-                                            <span class="text-[10px] bg-white/10 text-white px-2 py-0.5 rounded-full font-medium">
+                                            <span class="text-[10px] bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-white px-2 py-0.5 rounded-full font-medium">
                                                 {item.serverId === '3' ? 'Americas / Europe' : item.serverId === '2' ? 'Asia' : 'Both'}
                                             </span>
-                                            <span class="text-[10px] text-[#B7B6B3] font-medium">
+                                            <span class="text-[10px] text-gray-500 dark:text-[#B7B6B3] font-medium">
                                                 {new Date(item.date).toLocaleDateString()}
                                             </span>
                                         </div>
@@ -1340,8 +1474,8 @@
                                     <div class="flex items-center gap-4 z-20 relative pointer-events-none">
                                         <button
                                             type="button"
-                                            class="w-8 h-8 flex items-center justify-center text-gray-300 hover:text-white hover:bg-red-500 rounded transition-colors pointer-events-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500"
-                                            on:click|stopPropagation={() => deleteSyncToken(i)}
+                                            class="w-8 h-8 flex items-center justify-center text-gray-400 dark:text-gray-300 hover:text-white hover:bg-red-500 rounded transition-colors pointer-events-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500"
+                                            on:click|stopPropagation={() => triggerDeleteSyncToken(i)}
                                         >
                                             <Icon name="close" class="w-4 h-4" />
                                         </button>
@@ -1356,10 +1490,10 @@
     </Modal>
 
     <Modal isOpen={settingsModalOpen} on:close={() => settingsModalOpen = false}>
-        <div class="bg-[#242424] border border-white/10 rounded-2xl p-6 md:p-8 w-full max-w-sm shadow-2xl relative">
+        <div class="bg-white dark:bg-[#383838] border border-gray-200 dark:border-[#444444] rounded-2xl p-6 md:p-8 w-full max-w-2xl shadow-2xl relative">
             <button
                 on:click={() => settingsModalOpen = false}
-                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                class="absolute top-4 right-4 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
             >
                 <Icon name="close" class="w-6 h-6" />
             </button>
@@ -1368,8 +1502,8 @@
                 {$t("profile.settings_title")}
             </h3>
 
-            <div class="flex items-center justify-between mb-8">
-                <span class="text-sm text-gray-300 font-sdk pr-4 select-text">
+            <div class="flex items-center justify-between mb-6">
+                <span class="text-sm text-gray-700 dark:text-gray-300 font-sdk pr-4 select-text">
                     {$t("profile.settings_hide_data")}
                 </span>
                 <!-- toggle switch -->
@@ -1378,12 +1512,73 @@
                 <div
                     on:click={handleTogglePrivate}
                     class="w-12 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 shrink-0
-                    {isPrivate ? 'bg-[#FFE145]' : 'bg-gray-600'}"
+                    {isPrivate ? 'bg-[#FFE145]' : 'bg-gray-300 dark:bg-gray-600'}"
                 >
                     <div
-                        class="bg-[#1a1a1a] w-4 h-4 rounded-full shadow-md transform transition-transform duration-300
+                        class="bg-white dark:bg-[#1a1a1a] w-4 h-4 rounded-full shadow-md transform transition-transform duration-300
                         {isPrivate ? 'translate-x-6' : 'translate-x-0'}"
                     ></div>
+                </div>
+            </div>
+
+            <div class="mb-6 relative z-50">
+                <span class="block text-sm font-bold text-gray-700 dark:text-gray-300 font-sdk mb-2">
+                    {$t("profile.settings_primary_account")}
+                </span>
+                {#if activeAccount}
+                    <div class="shadow-sm">
+                        <Select
+                            options={primaryAccountOptions}
+                            value={activeAccount.records_uid || ""}
+                            on:change={(e) => handleSelectRecordsUid(e.detail)}
+                            placeholder={$t("profile.settings_primary_account_none")}
+                            variant="black"
+                        />
+                    </div>
+                {:else}
+                    <div class="text-xs text-gray-500 dark:text-gray-400 bg-gray-50/20 dark:bg-[#2e2e2e]/20 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-center">
+                        {$t("profile.sync_first_to_bind")}
+                    </div>
+                {/if}
+            </div>
+
+            <div class="mb-6">
+                <span class="block text-sm font-bold text-gray-700 dark:text-gray-300 font-sdk mb-2">
+                    {$t("profile.settings_background")}
+                </span>
+                <input
+                    type="text"
+                    bind:value={bgSearchQuery}
+                    placeholder={$t("profile.settings_bg_search")}
+                    class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-[#FFE145] mb-2"
+                />
+                <div class="max-h-[420px] overflow-y-auto grid grid-cols-4 gap-2 p-1 border border-gray-200 dark:border-white/10 rounded-lg bg-gray-50 dark:bg-white/5">
+                    <button
+                        on:click={() => handleSelectBackground(null)}
+                        class="flex flex-col items-center justify-center p-2 rounded-lg border-2 text-[10px] font-bold text-gray-500 dark:text-gray-400 bg-white/5 dark:bg-white/3 transition-all select-none outline-none
+                        {!profile.background ? 'border-[#FFE145] bg-[#FFE145]/15' : 'border-transparent hover:border-gray-300 dark:hover:border-white/20'}"
+                    >
+                        <span class="text-lg mb-0.5">🚫</span>
+                        <span class="text-center leading-tight">{$t("profile.settings_bg_none")}</span>
+                    </button>
+
+                    {#each filteredBackgrounds as bg (bg.id)}
+                        <button
+                            on:click={() => handleSelectBackground(bg.id)}
+                            class="group relative flex flex-col rounded-lg border-2 overflow-hidden transition-all bg-white/5 dark:bg-white/3 outline-none
+                            {profile.background === bg.id ? 'border-[#FFE145] bg-[#FFE145]/5' : 'border-transparent hover:border-gray-300 dark:hover:border-white/20'}"
+                        >
+                            <div class="w-full aspect-video bg-neutral-800 relative overflow-hidden">
+                                <Image id={bg.id} variant="operator-art" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                <div class="absolute top-0.5 left-0.5 bg-black/60 text-white text-[8px] font-bold px-1 py-0.2 rounded leading-none">
+                                    P{bg.pot}
+                                </div>
+                            </div>
+                            <div class="p-1 text-[9px] font-bold text-gray-700 dark:text-gray-300 text-center truncate w-full">
+                                {$t(`characters.${bg.id.split('_')[0]}`) || bg.name}
+                            </div>
+                        </button>
+                    {/each}
                 </div>
             </div>
 
@@ -1401,21 +1596,21 @@
     </Modal>
 
     <Modal isOpen={showCropModal} on:close={() => showCropModal = false}>
-        <div class="bg-[#242424] border border-white/10 rounded-2xl p-6 md:p-8 w-full max-w-sm shadow-2xl flex flex-col items-center relative">
+        <div class="bg-white dark:bg-[#383838] border border-gray-200 dark:border-[#444444] rounded-2xl p-6 md:p-8 w-full max-w-sm shadow-2xl flex flex-col items-center relative">
             <button
                 on:click={() => showCropModal = false}
-                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                class="absolute top-4 right-4 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
             >
                 <Icon name="close" class="w-6 h-6" />
             </button>
 
-            <h3 class="text-xl font-bold text-white mb-6 font-sdk text-center w-full">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 font-sdk text-center w-full">
                 {$t("profile.crop_avatar_title") || "Crop Avatar"}
             </h3>
 
             <!-- svelte-ignore a11y_no_static_element_interactions -->
             <div 
-                class="relative w-[280px] h-[280px] overflow-hidden rounded-xl border border-white/10 bg-black cursor-move select-none"
+                class="relative w-[280px] h-[280px] overflow-hidden rounded-xl border border-gray-200 dark:border-white/10 bg-black cursor-move select-none"
                 on:mousedown={handleMouseDown}
                 on:touchstart={handleTouchStart}
                 on:wheel|preventDefault={handleWheel}
@@ -1433,16 +1628,16 @@
             </div>
             
             <div class="w-full flex items-center gap-3 mt-4 px-2">
-                <span class="text-xs text-gray-400 select-none">−</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 select-none">−</span>
                 <input 
                     type="range" 
                     min={150 / 280} 
                     max="4" 
                     step="0.01" 
                     bind:value={zoom}
-                    class="flex-1 accent-[#FFE145] h-1 bg-white/10 rounded-lg appearance-none cursor-pointer"
+                    class="flex-1 accent-[#FFE145] h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer"
                 />
-                <span class="text-xs text-gray-400 select-none">+</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400 select-none">+</span>
             </div>
             
             <div class="flex items-center gap-3 w-full mt-6">
@@ -1461,4 +1656,39 @@
             </div>
         </div>
     </Modal>
+
+    <Modal isOpen={showFullAvatarModal} on:close={() => showFullAvatarModal = false}>
+        <div class="relative max-w-[90vw] max-h-[90vh] flex flex-col items-center select-none">
+            <button
+                on:click={() => showFullAvatarModal = false}
+                class="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors bg-black/40 p-2 rounded-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#FFE145]"
+                aria-label="Close"
+            >
+                <Icon name="close" class="w-6 h-6" />
+            </button>
+            <img
+                src={localAvatar || getAvatarUrl(profile?.picture)}
+                alt="Avatar Fullsize"
+                class="max-w-full max-h-[80vh] rounded-2xl border border-white/20 shadow-2xl object-contain select-text"
+            />
+        </div>
+    </Modal>
+
+    <ConfirmationModal
+        isOpen={showDeleteAccountModal}
+        title={$t("profile.confirm_unlink") || "Unlink Account?"}
+        confirmText={$t("settings.account.deleteAccount") || "Unlink"}
+        isDestructive={true}
+        on:confirm={confirmDeleteAccount}
+        on:close={() => (showDeleteAccountModal = false)}
+    />
+
+    <ConfirmationModal
+        isOpen={showDeleteTokenModal}
+        title={$t("import.delete_confirm") || "Delete this saved token?"}
+        confirmText={$t("settings.account.deleteAccount") || "Delete"}
+        isDestructive={true}
+        on:confirm={confirmDeleteSyncToken}
+        on:close={() => (showDeleteTokenModal = false)}
+    />
 </div>

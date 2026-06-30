@@ -299,7 +299,7 @@
                 <div
                     class="absolute z-20 right-1 top-1 pointer-events-auto blur-[0.2px] shadow-black"
                 >
-                    <Tooltip text={`P${currentPot}`} class="">
+                    <Tooltip text={`R${currentPot}`} class="">
                         <svg
                             viewBox="0 0 66 65"
                             fill="none"

@@ -1,7 +1,7 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const { verifyFirebaseIdToken } = require('../authHelper');
-const { checkNsfw, saveWebpImage } = require('../imageHelper');
+const { checkNsfw, saveWebpImage, UPLOADS_DIR } = require('../imageHelper');
 const axios = require('axios');
 const crypto = require('crypto');
 const leaderboardRouter = require('./leaderboard');
@@ -79,7 +79,8 @@ function generateSign(path, query, timestamp, token) {
 }
 
 router.post('/profile', async (req, res) => {
-    const { idToken, name, picture, is_private } = req.body;
+    console.log("[POST /profile] received req.body:", req.body);
+    const { idToken, name, picture, is_private, background, game_uid, records_uid } = req.body;
     try {
         const payload = await verifyFirebaseIdToken(idToken);
         const firebaseUid = payload.sub;
@@ -103,6 +104,15 @@ router.post('/profile', async (req, res) => {
         }
         if (is_private !== undefined) updateData.is_private = Number(is_private);
         if (picture !== undefined) updateData.picture = picture;
+        if (background !== undefined) {
+            if (background === null || background === "") {
+                updateData.background = null;
+            } else if (/^[a-zA-Z0-9_]+_potential[135]$/.test(background)) {
+                updateData.background = background;
+            } else {
+                return res.status(400).json({ error: "Invalid background format." });
+            }
+        }
 
         const userAccount = await prisma.userAccount.upsert({
             where: { firebase_uid: firebaseUid },
@@ -111,15 +121,38 @@ router.post('/profile', async (req, res) => {
                 firebase_uid: firebaseUid,
                 name: trimmedName || payload.name || "Operator",
                 picture: picture || null,
-                is_private: is_private !== undefined ? Number(is_private) : 0
+                is_private: is_private !== undefined ? Number(is_private) : 0,
+                background: (background && /^[a-zA-Z0-9_]+_potential[135]$/.test(background)) ? background : null
             }
         });
+
+        if (game_uid && records_uid !== undefined) {
+            const dbGameAcc = await prisma.userAccountDetails.findUnique({
+                where: { game_uid: String(game_uid) }
+            });
+            if (dbGameAcc) {
+                if (dbGameAcc.user_id !== userAccount.id) {
+                    return res.status(403).json({ error: "Unauthorized: Game account belongs to another user." });
+                }
+                await prisma.userAccountDetails.update({
+                    where: { game_uid: String(game_uid) },
+                    data: {
+                        records_uid: (records_uid && records_uid !== "") ? String(records_uid).trim() : null
+                    }
+                });
+            }
+        }
 
         if (is_private !== undefined) {
             leaderboardRouter.clearCache();
         }
 
-        res.json({ status: 'success', data: userAccount });
+        const fullUserAccount = await prisma.userAccount.findUnique({
+            where: { id: userAccount.id },
+            include: { details: true }
+        });
+
+        res.json({ status: 'success', data: fullUserAccount });
     } catch (e) {
         console.error("[Profile API Error]:", e.message);
         res.status(400).json({ error: e.message });
@@ -499,6 +532,18 @@ router.post('/upload-avatar', async (req, res) => {
         }
 
         const fileId = await saveWebpImage(image);
+
+        if (userAccount.picture && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(userAccount.picture)) {
+            const oldPath = path.join(UPLOADS_DIR, `${userAccount.picture}.webp`);
+            if (fs.existsSync(oldPath)) {
+                try {
+                    fs.unlinkSync(oldPath);
+                    console.log(`[Upload API] Deleted old avatar file: ${oldPath}`);
+                } catch (err) {
+                    console.error(`[Upload API Error] Failed to delete old avatar file ${oldPath}:`, err.message);
+                }
+            }
+        }
 
         const updated = await prisma.userAccount.update({
             where: { id: userAccount.id },

@@ -14,6 +14,7 @@
     import { getImagePath } from "$lib/utils/imageUtils.js";
     import { currentLocale } from "$lib/stores/locale.js";
     import { formatContractDescription } from "$lib/utils/richText.js";
+    import ContractLevelTag from "$lib/components/profile/ContractLevelTag.svelte";
 
     $: username = $page.params.username;
 
@@ -202,25 +203,7 @@
         return serverId === "2" ? "Asia" : "Americas / Europe";
     }
 
-    function getContractTagStyle(level) {
-        const lvl = Number(level) || 0;
-        if (lvl >= 40) {
-            return {
-                border: "#D83742",
-                bg: "radial-gradient(circle, rgba(255,255,255,0.12) 0.5px, transparent 0.5px) 0 0 / 3px 3px, linear-gradient(to left, #171201, #61201A)"
-            };
-        }
-        if (lvl >= 20) {
-            return {
-                border: "#E97126",
-                bg: "radial-gradient(circle, rgba(255,255,255,0.12) 0.5px, transparent 0.5px) 0 0 / 3px 3px, linear-gradient(to left, #131800, #694012)"
-            };
-        }
-        return {
-            border: "#828282",
-            bg: "radial-gradient(circle, rgba(255,255,255,0.12) 0.5px, transparent 0.5px) 0 0 / 3px 3px, linear-gradient(to left, #050505, #313434)"
-        };
-    }
+
 
     function getAvatarUrl(pictureId) {
         if (pictureId) return `http://localhost:3001/uploads/${pictureId}.webp`;
@@ -233,12 +216,21 @@
 </svelte:head>
 
 <div class="container mx-auto px-4 py-8 select-text">
+    {#if profile && profile.background}
+        <div class="fixed inset-0 w-[100vw] h-[100vh] pointer-events-none z-0 flex items-center justify-center overflow-hidden">
+            <div class="w-full h-full object-cover opacity-45 dark:opacity-35 transform scale-105">
+                <Image id={profile.background} variant="operator-art" size="100%" />
+            </div>
+            <div class="absolute inset-0 bg-black/5 dark:bg-black/15 z-10"></div>
+            <div class="absolute bottom-0 left-0 right-0 h-[30vh] bg-gradient-to-t dark:from-[#2a2a2a] from-[#F0F2F4] to-transparent z-10"></div>
+        </div>
+    {/if}
     {#if loading}
-        <div class="flex items-center justify-center min-h-[50vh]">
+        <div class="flex items-center justify-center min-h-[50vh] relative z-10">
             <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#FFE145]"></div>
         </div>
     {:else if errorMsg}
-        <div class="flex flex-col items-center justify-center min-h-[50vh] text-center" in:fade>
+        <div class="flex flex-col items-center justify-center min-h-[50vh] text-center relative z-10" in:fade>
             <div class="bg-white/5 border border-white/10 p-8 rounded-2xl max-w-md backdrop-blur-md shadow-2xl">
                 <Icon name="warning" class="w-16 h-16 text-red-500 mb-4 mx-auto" />
                 <h3 class="text-xl font-bold dark:text-white text-gray-900 mb-2 font-sdk">
@@ -256,9 +248,9 @@
         </div>
     {:else if profile}
         <!-- Read-Only Profile view -->
-        <div class="space-y-6" in:fade>
+        <div class="space-y-6 relative z-10" in:fade>
             <!-- Top Header user card -->
-            <div class="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div class="bg-white/80 dark:bg-[#383838]/75 border border-gray-200 dark:border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div class="flex items-center gap-4">
                     <!-- Read-Only Avatar -->
                     <div class="shrink-0">
@@ -287,14 +279,13 @@
                 <div class="flex flex-wrap items-center gap-4">
                     {#if profile.details && profile.details.length > 0}
                         {#each profile.details as d}
-                            {@const tagStyle = getContractTagStyle(d.info?.contract?.level)}
                             <div
                                 on:click={() => selectedGameUid = d.game_uid}
                                 on:keydown={(e) => { if (e.key === 'Enter' || e.key === ' ') selectedGameUid = d.game_uid; }}
                                 role="button"
                                 tabindex="0"
-                                class="bg-white/5 border text-left p-3 rounded-xl flex items-center gap-4 w-[285px] hover:bg-white/10 transition-all cursor-pointer select-none outline-none focus-visible:ring-1 focus-visible:ring-[#FFE145]
-                                {selectedGameUid === d.game_uid ? 'border-2 border-[#FFE145]' : 'border-2 border-white/5 dark:border-white/10'}"
+                                class="bg-white/40 dark:bg-black/20 backdrop-blur-md border text-left p-3 rounded-xl flex items-center gap-4 w-[285px] hover:bg-white/60 dark:hover:bg-black/35 transition-all cursor-pointer select-none outline-none focus-visible:ring-1 focus-visible:ring-[#FFE145]
+                                {selectedGameUid === d.game_uid ? 'border-2 border-[#FFE145]' : 'border-2 border-white/10 dark:border-white/5'}"
                             >
                                 <img
                                     src={d.info?.base?.avatarUrl || (d.info?.chars?.[0]?.charData?.avatarSqUrl) || "/images/operators/icons/endministrator1.png"}
@@ -306,11 +297,7 @@
                                 <div class="flex-1 min-w-0 flex flex-col gap-0.5">
                                     <div class="flex items-center gap-1.5">
                                         <span class="text-md font-bold dark:text-white text-gray-900 font-sdk truncate">{d.info?.base?.name || "Profile"}</span>
-                                        <div class="flex items-center gap-1 border px-2 py-0.5 rounded-[3px] text-[19px] font-black text-white leading-none shrink-0 h-[24px] min-w-[62px] justify-center" 
-                                             style="border-color: {tagStyle.border}; background: {tagStyle.bg};">
-                                            <span>{d.info?.contract?.level || 0}</span>
-                                            <Icon name="contract2" class="w-5 h-5 text-white shrink-0" />
-                                        </div>
+                                        <ContractLevelTag level={d.info?.contract?.level || 0} />
                                     </div>
                                     <div class="text-[10px] text-gray-400 font-mono truncate">UID: {d.game_uid}</div>
                                     <div class="bg-gray-200 text-gray-600 dark:bg-[#383838] dark:text-[#B0B0B0] px-1.5 py-0.5 rounded text-[9px] font-medium font-sans w-fit truncate">
@@ -334,52 +321,52 @@
                     <!-- COLUMN 1: Overview and Gacha statistics -->
                     <div class="space-y-6">
                         <!-- Overview Card -->
-                        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl">
+                        <div class="bg-white/80 dark:bg-[#383838]/75 border border-gray-200 dark:border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl">
                             <h2 class="text-xl font-bold dark:text-white text-gray-900 mb-6 font-sdk border-b border-white/10 pb-3">
                                 {$t("profile.overview")}
                             </h2>
                             <div class="space-y-4 font-mono text-sm">
-                                <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                    <span class="text-gray-400">{$t("profile.operators_count")}</span>
-                                    <span class="text-white font-bold">{activeAccount.info?.stats?.charCount || 0} / {Object.keys(charactersById).length}</span>
+                                <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-700 dark:text-gray-200 font-medium">{$t("profile.operators_count")}</span>
+                                    <span class="dark:text-white text-gray-900 font-bold">{activeAccount.info?.stats?.charCount || 0} / {Object.keys(charactersById).length}</span>
                                 </div>
-                                <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                    <span class="text-gray-400">{$t("profile.exploration_level")}</span>
-                                    <span class="text-white font-bold">{activeAccount.info?.stats?.explorationLevel || 0}</span>
+                                <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-700 dark:text-gray-200 font-medium">{$t("profile.exploration_level")}</span>
+                                    <span class="dark:text-white text-gray-900 font-bold">{activeAccount.info?.stats?.explorationLevel || 0}</span>
                                 </div>
-                                <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                    <span class="text-gray-400">{$t("profile.weapons")}</span>
-                                    <span class="text-white font-bold">{activeAccount.info?.stats?.weaponCount || 0}</span>
+                                <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-700 dark:text-gray-200 font-medium">{$t("profile.weapons")}</span>
+                                    <span class="dark:text-white text-gray-900 font-bold">{activeAccount.info?.stats?.weaponCount || 0}</span>
                                 </div>
-                                <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                    <span class="text-gray-400">{$t("profile.files")}</span>
-                                    <span class="text-white font-bold">{activeAccount.info?.stats?.fileCount || 0}</span>
+                                <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-700 dark:text-gray-200 font-medium">{$t("profile.files")}</span>
+                                    <span class="dark:text-white text-gray-900 font-bold">{activeAccount.info?.stats?.fileCount || 0}</span>
                                 </div>
-                                <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                    <span class="text-gray-400">{$t("profile.awake_day")}</span>
-                                    <span class="text-white font-bold">{activeAccount.info?.stats?.awakeDay || "-"}</span>
+                                <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-700 dark:text-gray-200 font-medium">{$t("profile.awake_day")}</span>
+                                    <span class="dark:text-white text-gray-900 font-bold">{activeAccount.info?.stats?.awakeDay || "-"}</span>
                                 </div>
-                                <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                    <span class="text-gray-400">{$t("profile.sanity")}</span>
-                                    <span class="text-white font-bold">{activeAccount.info?.stats?.sanity || 0} / {activeAccount.info?.stats?.maxSanity || 358}</span>
+                                <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-700 dark:text-gray-200 font-medium">{$t("profile.sanity")}</span>
+                                    <span class="dark:text-white text-gray-900 font-bold">{activeAccount.info?.stats?.sanity || 0} / {activeAccount.info?.stats?.maxSanity || 358}</span>
                                 </div>
-                                <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                    <span class="text-gray-400">{$t("profile.protopass")}</span>
-                                    <span class="text-white font-bold">{activeAccount.info?.stats?.protoPass || 0} / {activeAccount.info?.stats?.protoPassMax || 60}</span>
+                                <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-700 dark:text-gray-200 font-medium">{$t("profile.protopass")}</span>
+                                    <span class="dark:text-white text-gray-900 font-bold">{activeAccount.info?.stats?.protoPass || 0} / {activeAccount.info?.stats?.protoPassMax || 60}</span>
                                 </div>
-                                <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                    <span class="text-gray-400">{$t("profile.weekly_routine")}</span>
-                                    <span class="text-white font-bold">{activeAccount.info?.stats?.weeklyRoutine || 0} / {activeAccount.info?.stats?.weeklyRoutineMax || 10}</span>
+                                <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-700 dark:text-gray-200 font-medium">{$t("profile.weekly_routine")}</span>
+                                    <span class="dark:text-white text-gray-900 font-bold">{activeAccount.info?.stats?.weeklyRoutine || 0} / {activeAccount.info?.stats?.weeklyRoutineMax || 10}</span>
                                 </div>
-                                <div class="flex justify-between items-center py-1.5 border-b border-white/5">
-                                    <span class="text-gray-400">{$t("profile.activity_points")}</span>
-                                    <span class="text-white font-bold">{activeAccount.info?.stats?.activityPoints || 0} / {activeAccount.info?.stats?.activityPointsMax || 100}</span>
+                                <div class="flex justify-between items-center py-1.5 border-b border-gray-100 dark:border-white/5">
+                                    <span class="text-gray-700 dark:text-gray-200 font-medium">{$t("profile.activity_points")}</span>
+                                    <span class="dark:text-white text-gray-900 font-bold">{activeAccount.info?.stats?.activityPoints || 0} / {activeAccount.info?.stats?.activityPointsMax || 100}</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Statistics Mock Card -->
-                        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl">
+                        <div class="bg-white/80 dark:bg-[#383838]/75 border border-gray-200 dark:border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl">
                             <h2 class="text-xl font-bold dark:text-white text-gray-900 mb-4 font-sdk border-b border-white/10 pb-3">
                                 {$t("profile.stats")}
                             </h2>
@@ -391,7 +378,7 @@
 
                     <!-- COLUMN 2: Crisis Contract details -->
                     <div>
-                        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl h-full flex flex-col">
+                        <div class="bg-white/80 dark:bg-[#383838]/75 border border-gray-200 dark:border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl h-full flex flex-col">
                             <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-4">
                                 <div class="flex items-center gap-2">
                                     <Icon name="contract" class="w-6 h-6 text-[#FFE145]" />
@@ -402,7 +389,6 @@
                             </div>
 
                             {#if activeAccount.info?.contract && activeAccount.info.contract.level > 0}
-                                {@const tagStyle = getContractTagStyle(activeAccount.info.contract.level)}
                                 <div class="flex items-center justify-between mb-4">
                                     <div class="text-sm font-sdk dark:text-gray-400 text-gray-600">
                                         {$t("profile.clear_time_label")} 
@@ -410,30 +396,38 @@
                                             {activeAccount.info.contract.clearTime} сек.
                                         </span>
                                     </div>
-                                    <div class="flex items-center gap-1 border px-2 py-0.5 rounded-[3px] text-[19px] font-black text-white leading-none shrink-0 h-[24px] min-w-[62px] justify-center" 
-                                         style="border-color: {tagStyle.border}; background: {tagStyle.bg};">
-                                        <span>{activeAccount.info.contract.level || 0}</span>
-                                        <Icon name="contract2" class="w-5 h-5 text-white shrink-0" />
-                                    </div>
+                                    <ContractLevelTag level={activeAccount.info.contract.level || 0} />
                                 </div>
 
                                 <div class="flex flex-row justify-center gap-2 flex-wrap">
                                     {#each activeAccount.info.contract.chars as char}
                                         {@const opData = getOperatorData(char)}
                                         <div class="flex flex-col bg-[#111111] border border-white/10 rounded-b-[4px] min-w-0 w-[84px] max-w-[84px] shrink-0 shadow-md relative">
-                                            <div class="relative w-full h-[150px] bg-white/5 overflow-hidden shrink-0">
-                                                <Image id={opData.id} variant="operator-preview" className="w-full h-full object-cover" />
+                                            <a href="/operators/{opData.id}" class="relative w-full h-[150px] bg-white/5 overflow-hidden shrink-0 block group cursor-pointer">
+                                                <div class="w-full h-full transition-transform duration-300 group-hover:scale-105">
+                                                    <Image id={opData.id} variant="operator-preview" className="w-full h-full object-cover" />
+                                                </div>
+                                                <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#111111] to-transparent z-20 pointer-events-none"></div>
+                                                
+                                                <!-- svelte-ignore a11y-click-events-have-key-events -->
+                                                <!-- svelte-ignore a11y-no-static-element-interactions -->
+                                                <div class="absolute top-1 right-1 z-30" on:click|stopPropagation|preventDefault>
+                                                    <Tooltip text="P{(char.potential || 1) - 1}">
+                                                        <PotentialIcon pot={(char.potential || 1) - 1} size={32} />
+                                                    </Tooltip>
+                                                </div>
+
                                                 <div class="absolute bottom-2 left-2 z-30 flex flex-col items-start leading-none select-none">
                                                     <span class="text-[8px] font-black text-white/70 uppercase tracking-wider" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.8);">LV</span>
                                                     <span class="text-[24px] font-black text-white leading-none tracking-tighter" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.9);">{char.level}</span>
                                                 </div>
-                                            </div>
+                                            </a>
 
                                             {#if char.weapon}
                                                 {@const weaponData = getWeaponData(char.weapon)}
                                                 {@const weaponName = $t(`weaponsList.${weaponData?.id}`) !== `weaponsList.${weaponData?.id}` ? $t(`weaponsList.${weaponData?.id}`) : (weaponData?.name || char.weapon.id)}
-                                                <Tooltip text={weaponName}>
-                                                    <div class="relative w-[96px] h-[68px] flex items-center justify-between p-1 overflow-hidden shrink-0 z-20 ml-[-12px]"
+                                                <Tooltip text={`${weaponName} R${char.weapon.refineLevel !== undefined ? char.weapon.refineLevel + 1 : 1}`}>
+                                                    <a href="/weapons/{weaponData.id}?level={char.weapon.level}&refine={char.weapon.refineLevel !== undefined ? char.weapon.refineLevel : 0}&skills={char.weapon.weaponTerms ? char.weapon.weaponTerms.join(',') : ''}" class="relative w-[96px] h-[68px] flex items-center justify-between p-1 overflow-hidden shrink-0 z-20 ml-[-12px] transition-transform duration-200 hover:scale-105 cursor-pointer block"
                                                          style="border: 1px solid transparent; background: linear-gradient(to right, #363634, #111111) padding-box, linear-gradient(to right, #464644, #1b1b1a) border-box;">
                                                         
                                                         <img 
@@ -444,7 +438,7 @@
                                                         />
                                                         
                                                         <div class="flex flex-col justify-between h-full z-10 items-start">
-                                                            <PotentialIcon pot={char.weapon.refineLevel !== undefined ? char.weapon.refineLevel + 1 : 1} size={20} />
+                                                            <PotentialIcon pot={char.weapon.refineLevel !== undefined ? char.weapon.refineLevel : 0} size={20} />
                                                             <div class="flex flex-col items-start leading-none">
                                                                 <span class="text-[7px] text-white/50 font-black">LV</span>
                                                                 <span class="text-[16px] text-white font-nums font-black leading-none" style="text-shadow: 1px 1px 0 #111;">
@@ -464,7 +458,7 @@
                                                                 </div>
                                                             {/each}
                                                         </div>
-                                                    </div>
+                                                    </a>
                                                 </Tooltip>
                                             {/if}
 
@@ -475,7 +469,7 @@
                                                         {@const tier = Math.max(0, (equip.enhanceStatus || 1) - 1)}
                                                         {@const eqData = equipment[equip.id]}
                                                         <Tooltip text={equipmentNames[equip.id]?.name || equip.id}>
-                                                            <div class="relative flex items-center justify-between w-[38px] h-[28px] p-0.5 min-w-0"
+                                                            <a href="/equipment/{equip.id}" class="relative flex items-center justify-between w-[38px] h-[28px] p-0.5 min-w-0 transition-transform duration-200 hover:scale-110 hover:z-20 cursor-pointer block"
                                                                  style="border: 1px solid transparent; background: linear-gradient(to right, #101010, #1A4558) padding-box, linear-gradient(to right, #3D3F3A, #194457) border-box;">
                                                                 
                                                                 <div class="relative w-[14px] h-[8px] flex items-center justify-center shrink-0 ml-0.5">
@@ -502,7 +496,7 @@
                                                                 />
                                                                 
                                                                 <div class="left-0.5 w-[14px] h-[1.5px] bg-[#E3A000] absolute bottom-0.5"></div>
-                                                            </div>
+                                                            </a>
                                                         </Tooltip>
                                                     {:else}
                                                         <div class="bg-[#101010]/60 border border-white/5 w-[38px] h-[28px] min-w-0"></div>
@@ -519,7 +513,7 @@
                                         {@const tagDesc = formatContractDescription(ind.id, $t(`contractTagDesc.${ind.id}`) || ind.desc)}
                                         {@const cleanDesc = tagDesc ? tagDesc.replace(/<[^>]*>/g, "") : ""}
                                         <Tooltip text={tagName + (cleanDesc ? ": " + cleanDesc : "")}>
-                                            <div class="w-12 h-12 bg-black/40 border border-white/10 rounded-lg p-1.5 flex items-center justify-center cursor-pointer hover:border-white/30 transition-all">
+                                            <div class="w-12 h-12 bg-black/90 border border-white/10 rounded-lg p-1.5 flex items-center justify-center cursor-pointer hover:border-white/30 transition-all">
                                                 <img src={getImagePath(ind.id, "contract-tag-icon")} alt={tagName} class="w-full h-full object-contain" on:error={(e) => e.target.src = ind.icon} />
                                             </div>
                                         </Tooltip>
@@ -538,7 +532,7 @@
 
                     <!-- COLUMN 3: Operator Grid -->
                     <div>
-                        <div class="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl h-full flex flex-col">
+                        <div class="bg-white/80 dark:bg-[#383838]/75 border border-gray-200 dark:border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-xl h-full flex flex-col">
                             <div class="flex items-center justify-between border-b border-white/10 pb-3 mb-6">
                                 <h2 class="text-xl font-bold dark:text-white text-gray-900 font-sdk">
                                     {$t("profile.operators_title")}

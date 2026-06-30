@@ -8,6 +8,7 @@
     import Icon from "$lib/components/Icon.svelte";
     import Button from "$lib/components/Button.svelte";
     import { characters } from "$lib/data/characters.js";
+    import ContractLevelTag from "$lib/components/profile/ContractLevelTag.svelte";
 
     const charactersById = Object.values(characters || {}).reduce((acc, char) => {
         if (char && char.id) acc[char.id] = char;
@@ -58,6 +59,18 @@
             return `${m}m ${s}s`;
         }
         return `${s}s`;
+    }
+
+    function formatRelativeTime(updatedAt) {
+        if (!updatedAt) return "";
+        const diff = Date.now() - new Date(updatedAt).getTime();
+        const mins = Math.floor(diff / 60000);
+        if (mins < 1) return $t("profile.time_just_now");
+        const hours = Math.floor(mins / 60);
+        if (hours < 1) return $t("profile.time_mins", { n: mins });
+        const days = Math.floor(hours / 24);
+        if (days < 1) return $t("profile.time_hours", { n: hours });
+        return $t("profile.time_days", { n: days });
     }
 
     function getServerName(serverId) {
@@ -145,7 +158,7 @@
     }
 </script>
 
-<div class="max-w-[1600px] w-full mx-auto pb-20">
+<div class="max-w-[1600px] w-full pb-20">
     
     <!-- Title and headers -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
@@ -153,9 +166,6 @@
             <h1 class="font-sdk dark:text-[#FDFDFD] text-5xl font-black text-[#21272C] mb-2">
                 {$t("leaderboard.title")}
             </h1>
-            <p class="text-sm dark:text-gray-400 text-gray-500 font-mono">
-                Arknights: Endfield clear time speedruns.
-            </p>
         </div>
 
         <!-- Cooldown / information banner -->
@@ -194,7 +204,7 @@
         </div>
 
         <!-- Filter Dropdown -->
-        <div class="flex items-center gap-3 font-mono text-sm w-full md:w-auto">
+        <div class="flex items-center gap-3 text-sm w-full md:w-auto">
             <span class="text-gray-400 shrink-0">{$t("leaderboard.server")}:</span>
             <select
                 bind:value={serverFilter}
@@ -213,20 +223,23 @@
             <Icon name="loading" class="w-10 h-10 text-[#FFE145] animate-spin" />
         </div>
     {:else if filteredEntries.length === 0}
-        <div class="bg-white/5 border border-white/10 rounded-2xl p-12 text-center text-gray-500 font-mono text-sm">
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-12 text-center text-gray-500 text-sm">
             {$t("leaderboard.no_entries")}
         </div>
     {:else}
         <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden shadow-xl" in:fade>
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse font-mono text-sm">
+                <table class="w-full text-left border-collapse text-sm">
                     <thead>
-                        <tr class="border-b border-white/10 bg-white/5 text-gray-400 text-xs uppercase tracking-wider">
+                        <tr class="border-b border-white/10 bg-white/5 text-gray-400 text-xs tracking-wider">
                             <th class="py-4 px-6 w-20">{$t("leaderboard.rank")}</th>
                             <th class="py-4 px-6">{$t("leaderboard.operator")}</th>
                             <th class="py-4 px-6 w-24">{$t("leaderboard.level")}</th>
-                            <th class="py-4 px-6 w-40">{$t("leaderboard.server")}</th>
+                            {#if selectedEvent === 'contract'}
+                                <th class="py-4 px-6 w-32">{$t("leaderboard.contract_level")}</th>
+                            {/if}
                             <th class="py-4 px-6 w-36">{$t("leaderboard.time")}</th>
+                            <th class="py-4 px-6 w-48">{$t("leaderboard.last_update")}</th>
                             <th class="py-4 px-6">{$t("leaderboard.team")}</th>
                         </tr>
                     </thead>
@@ -273,7 +286,12 @@
                                                 </div>
                                             </a>
                                         {/if}
-                                        <a href="/u/{entry.user.name}" class="font-bold text-white hover:text-[#FFE145] transition-colors">{entry.user.name}</a>
+                                        <div class="flex items-center gap-2">
+                                            <a href="/u/{entry.user.name}" class="font-bold text-white hover:text-[#FFE145] transition-colors">{entry.user.name}</a>
+                                            <span class="bg-gray-200 text-gray-600 dark:bg-[#383838] dark:text-[#B0B0B0] px-1.5 py-0.5 rounded text-[9px] font-medium font-sans select-none shrink-0">
+                                                {getServerName(entry.serverId)}
+                                            </span>
+                                        </div>
                                     </div>
                                 </td>
 
@@ -282,14 +300,20 @@
                                     {entry.level}
                                 </td>
 
-                                <!-- Server -->
-                                <td class="py-4 px-6 text-gray-400">
-                                    {getServerName(entry.serverId)}
-                                </td>
+                                {#if selectedEvent === 'contract'}
+                                    <td class="py-4 px-6">
+                                        <ContractLevelTag level={entry.contractLevel || 0} />
+                                    </td>
+                                {/if}
 
                                 <!-- Time -->
                                 <td class="py-4 px-6 font-bold text-[#FFE145]">
                                     {formatTime(entry.clear_time)}
+                                </td>
+
+                                <!-- Last Update -->
+                                <td class="py-4 px-6 text-gray-400">
+                                    {formatRelativeTime(entry.updatedAt)}
                                 </td>
 
                                 <!-- Chars roster -->
@@ -348,14 +372,14 @@
                         <h4 class="text-xl font-bold dark:text-white text-gray-900 font-sdk">
                             <a href="/u/{selectedEntry.user.name}" class="hover:text-[#FFE145] transition-colors">{selectedEntry.user.name}</a>
                         </h4>
-                        <div class="text-xs text-gray-400 font-mono mt-1">
+                        <div class="text-xs text-gray-400 mt-1">
                             Level {selectedEntry.level} &bull; {getServerName(selectedEntry.serverId)}
                         </div>
                     </div>
                 </div>
 
                 <!-- Event clear details -->
-                <div class="bg-black/20 rounded-xl p-4 mb-6 font-mono text-sm border border-white/5">
+                <div class="bg-black/20 rounded-xl p-4 mb-6 text-sm border border-white/5">
                     <div class="flex justify-between items-center mb-2">
                         <span class="text-gray-400">Event:</span>
                         <span class="text-white font-bold font-sdk">
@@ -371,7 +395,7 @@
                 </div>
 
                 <!-- Team layout details -->
-                <h5 class="text-xs uppercase tracking-wider text-gray-400 font-black mb-3 font-mono">
+                <h5 class="text-xs uppercase tracking-wider text-gray-400 font-black mb-3">
                     {$t("leaderboard.team")}
                 </h5>
                 
@@ -386,8 +410,8 @@
                                                 on:error={(e) => e.target.src = '/images/operators/icons/endministrator1.png'}
                                             />
                                             <div class="min-w-0 flex-1">
-                                                <div class="text-xs font-bold text-white truncate font-mono">{opData.name}</div>
-                                                <div class="text-[10px] text-gray-400 font-mono mt-0.5">Lvl {char.level || 1}</div>
+                                                <div class="text-xs font-bold text-white truncate">{opData.name}</div>
+                                                <div class="text-[10px] text-gray-400 mt-0.5">Lvl {char.level || 1}</div>
                                                 <div class="text-[8px] text-[#FFE145] font-black mt-0.5">
                                                     {#each Array(char.potential || 1) as _}
                                                         ★

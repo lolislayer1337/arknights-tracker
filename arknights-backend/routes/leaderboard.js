@@ -1,4 +1,3 @@
-// routes/leaderboard.js
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 
@@ -36,7 +35,8 @@ router.get('/', async (req, res) => {
                                 name: true,
                                 picture: true,
                                 avatar_strike: true,
-                                is_private: true
+                                is_private: true,
+                                updated_at: true
                             }
                         }
                     }
@@ -67,12 +67,25 @@ router.get('/', async (req, res) => {
                 user: {
                     name: entry.account_detail.user.name || "Operator",
                     picture: entry.account_detail.user.picture,
-                    avatar_strike: entry.account_detail.user.avatar_strike
+                    avatar_strike: entry.account_detail.user.avatar_strike,
+                    updatedAt: entry.account_detail.user.updated_at
                 },
                 level: accountInfo.detail?.base?.level || accountInfo.base?.level || 1,
                 serverId: accountInfo.detail?.base?.serverId || accountInfo.base?.serverId || '3',
-                chars: accountInfo.detail?.chars || accountInfo.chars || []
+                chars: accountInfo.detail?.chars || accountInfo.chars || [],
+                updatedAt: entry.account_detail.user.updated_at,
+                contractLevel: Number(leaderboardInfo?.level || accountInfo.contract?.level || 0)
             };
+        });
+
+        formatted.sort((a, b) => {
+            if (b.contractLevel !== a.contractLevel) {
+                return b.contractLevel - a.contractLevel;
+            }
+            if (a.clear_time !== b.clear_time) {
+                return a.clear_time - b.clear_time;
+            }
+            return a.id - b.id;
         });
 
         leaderboardCache[eventType] = {

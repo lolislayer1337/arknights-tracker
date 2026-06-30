@@ -300,8 +300,55 @@
     let lastEffectivePot = -1;
     let isPotDropdownOpen = false;
 
+    let loadedId = null;
+    let loadedLevelParam = null;
+    let loadedRefineParam = null;
+    let loadedSkillsParam = null;
+
+    $: if (browser && ($page.url.searchParams || $page.params.id)) {
+        const paramId = $page.params.id;
+        const urlParams = $page.url.searchParams;
+        const pLevel = urlParams.get("level");
+        const pRefine = urlParams.get("refine");
+        const pSkills = urlParams.get("skills");
+        if (paramId !== loadedId || pLevel !== loadedLevelParam || pRefine !== loadedRefineParam || pSkills !== loadedSkillsParam) {
+            loadedId = paramId;
+            loadedLevelParam = pLevel;
+            loadedRefineParam = pRefine;
+            loadedSkillsParam = pSkills;
+            if (pLevel !== null) {
+                const parsedLevel = parseInt(pLevel);
+                if (!isNaN(parsedLevel) && parsedLevel >= 1 && parsedLevel <= maxLevel) {
+                    level = parsedLevel;
+                }
+            }
+            if (pRefine !== null) {
+                const parsedRefine = parseInt(pRefine);
+                if (!isNaN(parsedRefine) && parsedRefine >= 0 && parsedRefine <= 5) {
+                    previewPot = parsedRefine;
+                }
+            }
+            if (pSkills !== null) {
+                const parsedSkills = pSkills.split(",").map(s => parseInt(s));
+                const ranks = {};
+                parsedSkills.forEach((val, idx) => {
+                    if (!isNaN(val) && val >= 1 && val <= 9) {
+                        ranks[`skill${idx + 1}`] = val;
+                    }
+                });
+                manualSkillRanks = ranks;
+            }
+            lastLevel = level;
+            lastPreviewPot = previewPot;
+        }
+    }
+
     $: if (effectivePot !== lastEffectivePot) {
-        previewPot = effectivePot;
+        const urlParams = browser ? $page.url.searchParams : null;
+        const hasUrlRefine = urlParams && urlParams.has("refine");
+        if (!hasUrlRefine) {
+            previewPot = effectivePot;
+        }
         lastEffectivePot = effectivePot;
     }
 
@@ -647,7 +694,7 @@
                                             <div
                                                 class="bg-gradient-to-br from-[#F9B90C] to-[#E3A000] text-white text-[13px] font-black px-2 py-0.5 rounded shadow-sm border border-white/20 leading-none"
                                             >
-                                                P{currentPot}
+                                                R{currentPot}
                                             </div>
                                         {/if}
 
@@ -786,7 +833,7 @@
                                 <span
                                     class="font-nums font-bold px-2 text-center text-[#21272C] dark:text-white uppercase tracking-wider"
                                 >
-                                    {draftPot === -1 ? "" : `P${draftPot}`}
+                                    {draftPot === -1 ? "" : `R${draftPot + 1}`}
                                 </span>
 
                                 <button
@@ -919,12 +966,8 @@
                                 >{tOrFallback(
                                     "menu.potentials",
                                     "Потенциал",
-                                )}</span
-                            >
-                            <span
-                                class="font-medium text-[#21272C] dark:text-white"
-                                >{previewPot}</span
-                            >
+                                )}</span>
+                            <span class="font-medium text-[#21272C] dark:text-white">R{previewPot}</span>
                             <Icon
                                 name="arrowDown"
                                 class="pt-0.5 w-3 h-3 text-[#21272C] dark:text-white transition-transform {isPotDropdownOpen
@@ -932,7 +975,7 @@
                                     : ''}"
                             />
                         </button>
-
+ 
                         {#if isPotDropdownOpen}
                             <div
                                 class="absolute top-full right-0 md:left-0 mt-1 w-full min-w-[120px] bg-white dark:bg-[#2C2C2C] border border-gray-200 dark:border-[#444] rounded-md shadow-[0_8px_20px_rgba(0,0,0,0.3)] overflow-hidden z-[60] animate-fadeIn"
@@ -948,7 +991,7 @@
                                             isPotDropdownOpen = false;
                                         }}
                                     >
-                                        {i}
+                                        R{i + 1}
                                     </button>
                                 {/each}
                             </div>

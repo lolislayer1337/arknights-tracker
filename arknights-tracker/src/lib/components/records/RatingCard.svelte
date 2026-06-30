@@ -10,10 +10,13 @@
   import Icon from "../Icon.svelte";
   import Tooltip from "../Tooltip.svelte";
 
+  export let customGameUid = undefined;
+  export let isProfile = false;
+
   const { accounts, selectedId } = accountStore;
   
   $: currentAccount = $accounts.find(a => a.id === $selectedId);
-  $: gameUid = currentAccount?.serverUid; 
+  $: gameUid = customGameUid || currentAccount?.serverUid; 
 
   const totalTab = {
       id: "total",
@@ -103,10 +106,13 @@
   }
 </script>
 
-<div class="bg-white dark:bg-[#383838] dark:border-[#444444] rounded-xl p-6 shadow-sm border border-gray-100 h-full min-w-0">
+<div class="rounded-xl p-6 shadow-xl h-full min-w-0 border
+  {isProfile 
+    ? 'bg-white/5 dark:bg-[#383838]/5 border-white/10 backdrop-blur-sm' 
+    : 'bg-white dark:bg-[#383838] dark:border-[#444444] border-gray-100 dark:border-[#444444]'}">
   <div class="flex justify-between items-center mb-4 relative z-20">
     <h3 class="text-xl font-bold dark:text-[#FDFDFD] font-sdk text-[#21272C]">
-      {$t("page.rating.ratingTitle")}
+      {isProfile ? ($t("profile.pulls_rating") || "Рейтинг круток") : $t("page.rating.ratingTitle")}
     </h3>
 
     <div class="group relative flex items-center py-1 pl-4 text-gray-400/90 dark:text-[#7A7A7A]">

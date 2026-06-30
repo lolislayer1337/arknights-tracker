@@ -43,11 +43,14 @@ export async function getUserProfile(uid) {
     }
 }
 
-export async function registerProfile(idToken, name, picture = null, is_private = undefined) {
+export async function registerProfile(idToken, name, picture = null, is_private = undefined, background = undefined, records_uid = undefined, game_uid = undefined) {
     const bodyObj = { idToken };
     if (name !== undefined) bodyObj.name = name;
     if (picture !== undefined) bodyObj.picture = picture;
     if (is_private !== undefined) bodyObj.is_private = is_private;
+    if (background !== undefined) bodyObj.background = background;
+    if (records_uid !== undefined) bodyObj.records_uid = records_uid;
+    if (game_uid !== undefined) bodyObj.game_uid = game_uid;
 
     const res = await fetch(`${API_BASE}/user/profile`, {
         method: 'POST',
