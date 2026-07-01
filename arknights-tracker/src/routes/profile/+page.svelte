@@ -25,6 +25,9 @@
     import PotentialIcon from "$lib/components/operators/PotentialIcon.svelte";
     import Tooltip from "$lib/components/Tooltip.svelte";
     import ContractLevelTag from "$lib/components/profile/ContractLevelTag.svelte";
+    import CropModal from "$lib/components/profile/CropModal.svelte";
+    import SettingsModal from "$lib/components/profile/SettingsModal.svelte";
+    import SyncModal from "$lib/components/profile/SyncModal.svelte";
     import RatingCard from "$lib/components/records/RatingCard.svelte";
     import Select from "$lib/components/Select.svelte";
 
@@ -61,83 +64,7 @@
     let showCropModal = false;
     let showFullAvatarModal = false;
     let cropImageSrc = "";
-    let zoom = 1;
-    let offsetX = 0;
-    let offsetY = 0;
-    let dispWidth = 300;
-    let dispHeight = 300;
-    let loadedImg = null;
-    $: imageStyle = `width: ${dispWidth}px; height: ${dispHeight}px; left: 50%; top: 50%; transform: translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px)) scale(${zoom});`;
-    $: {
-        const w_c = dispWidth * zoom;
-        const h_c = dispHeight * zoom;
-        const maxOffsetX = Math.max(0, w_c / 2 - 75);
-        const maxOffsetY = Math.max(0, h_c / 2 - 75);
-        if (offsetX < -maxOffsetX) {
-            offsetX = -maxOffsetX;
-        }
-        if (offsetX > maxOffsetX) {
-            offsetX = maxOffsetX;
-        }
-        if (offsetY < -maxOffsetY) {
-            offsetY = -maxOffsetY;
-        }
-        if (offsetY > maxOffsetY) {
-            offsetY = maxOffsetY;
-        }
-    }
-    let gameTokenInput = "";
-    let showToken = false;
-    let syncActiveTab = "new";
-    let selectedServer = "both";
-    let isSaveTokenEnabled = false;
-    let tokenName = "";
-    let savedSyncTokens = [];
-
-    function loadSavedSyncTokens() {
-        try {
-            const raw = localStorage.getItem("profile_saved_tokens");
-            if (raw) savedSyncTokens = JSON.parse(raw);
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    function saveSyncToken(name, token, serverId) {
-        try {
-            if (savedSyncTokens.some((t) => t.token === token && t.serverId === serverId)) return;
-            const newToken = { name, token, serverId, date: Date.now() };
-            const newList = [newToken, ...savedSyncTokens];
-            localStorage.setItem("profile_saved_tokens", JSON.stringify(newList));
-            savedSyncTokens = newList;
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    let showDeleteTokenModal = false;
-    let tokenToDeleteIndex = null;
-
-    function triggerDeleteSyncToken(index) {
-        tokenToDeleteIndex = index;
-        showDeleteTokenModal = true;
-    }
-
-    function confirmDeleteSyncToken() {
-        showDeleteTokenModal = false;
-        if (tokenToDeleteIndex === null || tokenToDeleteIndex === undefined) return;
-        const newList = [...savedSyncTokens];
-        newList.splice(tokenToDeleteIndex, 1);
-        savedSyncTokens = newList;
-        localStorage.setItem("profile_saved_tokens", JSON.stringify(newList));
-        tokenToDeleteIndex = null;
-    }
-
-    function selectSyncToken(item) {
-        gameTokenInput = item.token;
-        selectedServer = item.serverId || "both";
-        syncActiveTab = "new";
-    }
+    let cropModal;
     let isEditingName = false;
     let newProfileName = "";
     let showNameWarning = false;
@@ -156,7 +83,6 @@
         newProfileName = sanitized;
         e.target.value = sanitized;
     }
-    let syncing = false;
     let avatarInput;
     let isPrivate = false;
 
@@ -190,7 +116,7 @@
             const token = await $user.getIdToken();
             const data = await registerProfile(token, profile.name, profile.picture, profile.is_private, bgId || null, profile.records_uid);
             profile.background = data.background;
-            addNotification("success", "Profile background updated!");
+            addNotification("success", "Profile background updated!"); // Добавить перевод
         } catch (e) {
             addNotification("error", e.message);
         }
@@ -217,7 +143,7 @@
                 }
             });
             profile = { ...profile, details };
-            addNotification("success", "Primary game account updated!");
+            addNotification("success", "Primary game account updated!"); // Добавить перевод
         } catch (e) {
             console.error("[handleSelectRecordsUid] Error:", e);
             addNotification("error", e.message);
@@ -475,7 +401,7 @@
             const data = await registerProfile(token, profile.name, profile.picture, nextPrivateVal, profile.background, profile.records_uid);
             profile.is_private = data.is_private;
             isPrivate = data.is_private === 1;
-            addNotification("success", "Privacy settings updated!");
+            addNotification("success", "Privacy settings updated!"); // Добавить перевод
         } catch (e) {
             addNotification("error", e.message);
         }
@@ -719,7 +645,6 @@
     onMount(async () => {
         if (typeof window !== 'undefined') {
             localAvatar = localStorage.getItem("goyfield_local_avatar") || "";
-            loadSavedSyncTokens();
         }
         
         user.subscribe(async (u) => {
@@ -758,18 +683,18 @@
         try {
             await login();
         } catch (e) {
-            addNotification("error", "Login failed");
+            addNotification("error", "Login failed"); // Добавить перевод
         }
     }
 
     async function handleRegister() {
         const trimmed = newProfileName.trim();
         if (!trimmed) {
-            addNotification("error", "Username cannot be empty");
+            addNotification("error", "Username cannot be empty"); // Добавить перевод
             return;
         }
         if (trimmed.length < 3 || trimmed.length > 20) {
-            addNotification("error", $t("profile.name_length_error") || "Username must be between 3 and 20 characters long.");
+            addNotification("error", $t("profile.name_length_error") || "Username must be between 3 and 20 characters long."); 
             return;
         }
         if (!/^[a-zA-Z0-9_]+$/.test(trimmed)) {
@@ -782,7 +707,7 @@
             const data = await registerProfile(token, trimmed, localAvatar || null);
             profile = { ...data, details: [] };
             needsRegistration = false;
-            addNotification("success", "Profile created successfully!");
+            addNotification("success", "Profile created successfully!"); // Добавить перевод
         } catch (e) {
             addNotification("error", e.message);
         } finally {
@@ -810,7 +735,7 @@
             const data = await registerProfile(token, trimmed, profile.picture, profile.is_private, profile.background, profile.records_uid);
             profile.name = data.name;
             isEditingName = false;
-            addNotification("success", "Username updated!");
+            addNotification("success", "Username updated!"); // Добавить перевод
         } catch (e) {
             addNotification("error", e.message);
         }
@@ -832,7 +757,7 @@
             }, 2000);
         }).catch(err => {
             console.error("Failed to copy link: ", err);
-            addNotification("error", "Не удалось скопировать.");
+            addNotification("error", $t("profile.copy_failed") || "Failed to copy");
         });
     }
 
@@ -844,7 +769,7 @@
             }, 2000);
         }).catch(err => {
             console.error("Failed to copy UID: ", err);
-            addNotification("error", "Не удалось скопировать.");
+            addNotification("error", $t("profile.copy_failed") || "Failed to copy");
         });
     }
 
@@ -859,74 +784,7 @@
         if (days < 1) return $t("profile.last_sync", { time: $t("profile.time_hours", { n: hours }) });
         return $t("profile.last_sync", { time: $t("profile.time_days", { n: days }) });
     }
-    let isDragging = false;
-    let startX = 0;
-    let startY = 0;
-    let initialOffsetX = 0;
-    let initialOffsetY = 0;
 
-    function handleMouseDown(e) {
-        isDragging = true;
-        startX = e.clientX;
-        startY = e.clientY;
-        initialOffsetX = offsetX;
-        initialOffsetY = offsetY;
-        
-        window.addEventListener("mousemove", handleMouseMove);
-        window.addEventListener("mouseup", handleMouseUp);
-    }
-
-    function handleMouseMove(e) {
-        if (!isDragging) return;
-        offsetX = initialOffsetX + (e.clientX - startX);
-        offsetY = initialOffsetY + (e.clientY - startY);
-    }
-
-    function handleMouseUp() {
-        isDragging = false;
-        window.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("mouseup", handleMouseUp);
-    }
-
-    function handleTouchStart(e) {
-        if (e.touches.length !== 1) return;
-        isDragging = true;
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        initialOffsetX = offsetX;
-        initialOffsetY = offsetY;
-        
-        window.addEventListener("touchmove", handleTouchMove, { passive: false });
-        window.addEventListener("touchend", handleTouchEnd);
-    }
-
-    function handleTouchMove(e) {
-        if (!isDragging) return;
-        e.preventDefault();
-        offsetX = initialOffsetX + (e.touches[0].clientX - startX);
-        offsetY = initialOffsetY + (e.touches[0].clientY - startY);
-    }
-
-    function handleTouchEnd() {
-        isDragging = false;
-        window.removeEventListener("touchmove", handleTouchMove);
-        window.removeEventListener("touchend", handleTouchEnd);
-    }
-
-    function handleWheel(e) {
-        e.preventDefault();
-        const zoomStep = 0.05;
-        let nextZoom = zoom - Math.sign(e.deltaY) * zoomStep;
-        const minZoom = 150 / 280;
-        const maxZoom = 4;
-        if (nextZoom < minZoom) {
-            nextZoom = minZoom;
-        }
-        if (nextZoom > maxZoom) {
-            nextZoom = maxZoom;
-        }
-        zoom = nextZoom;
-    }
 
     function processAndUploadImage(file) {
         const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/avif"];
@@ -944,21 +802,8 @@
                     return;
                 }
 
-                loadedImg = img;
                 cropImageSrc = event.target.result;
-                zoom = 150 / 280;
-                offsetX = 0;
-                offsetY = 0;
-
-                const ratio = img.width / img.height;
-                if (ratio > 1) {
-                    dispHeight = 280;
-                    dispWidth = 280 * ratio;
-                } else {
-                    dispWidth = 280;
-                    dispHeight = 280 / ratio;
-                }
-
+                cropModal.reset(img);
                 showCropModal = true;
             };
             img.src = event.target.result;
@@ -966,35 +811,8 @@
         reader.readAsDataURL(file);
     }
 
-    async function handleSaveCrop() {
-        if (!loadedImg) return;
-
-        const canvas = document.createElement("canvas");
-        canvas.width = 150;
-        canvas.height = 150;
-        const ctx = canvas.getContext("2d");
-
-        const w_c = dispWidth * zoom;
-        const h_c = dispHeight * zoom;
-
-        const x_rel_box = w_c / 2 - 75 - offsetX;
-        const y_rel_box = h_c / 2 - 75 - offsetY;
-
-        const x_orig = x_rel_box * (loadedImg.width / w_c);
-        const y_orig = y_rel_box * (loadedImg.height / h_c);
-        const w_orig = 150 * (loadedImg.width / w_c);
-        const h_orig = 150 * (loadedImg.height / h_c);
-
-        ctx.drawImage(loadedImg, x_orig, y_orig, w_orig, h_orig, 0, 0, 150, 150);
-
-        const webpBase64 = canvas.toDataURL("image/webp", 0.85);
-
-        const sizeInBytes = Math.round((webpBase64.length * 3) / 4);
-        if (sizeInBytes > 1024 * 1024) {
-            addNotification("error", "Converted WebP exceeds 1MB limit.");
-            return;
-        }
-
+    async function handleCropSave(e) {
+        const webpBase64 = e.detail;
         showCropModal = false;
 
         try {
@@ -1023,7 +841,7 @@
                         avatar_strike: 0
                     };
                 }
-                addNotification("success", $t("profile.avatar_success") || "Изображение установлено успешно");
+                addNotification("success", $t("profile.avatar_success") || "Image set successfully");
             }
         } catch (err) {
             addNotification("error", err.message);
@@ -1039,16 +857,13 @@
         }
     }
 
-    async function handleSyncGame() {
-        if (!gameTokenInput.trim()) {
-            addNotification("error", "Game Token cannot be empty");
-            return;
-        }
+    let syncModal;
+
+    async function handleSync(e) {
+        const { token: gameToken, server, onSuccess, onError } = e.detail;
         try {
-            syncing = true;
-            const token = await $user.getIdToken();
-            const accounts = await syncGameAccount(token, gameTokenInput.trim(), null, selectedServer);
-            
+            const authToken = await $user.getIdToken();
+            const accounts = await syncGameAccount(authToken, gameToken, null, server);
             profile = {
                 ...profile,
                 details: accounts.map(d => ({
@@ -1056,41 +871,15 @@
                     info: d.account_info
                 }))
             };
-
             if (profile.details.length > 0) {
                 selectedGameUid = profile.details[0].game_uid;
             }
-
-            const existingIdx = savedSyncTokens.findIndex(t => t.token === gameTokenInput.trim());
-            if (existingIdx !== -1) {
-                let updated = false;
-                if (savedSyncTokens[existingIdx].serverId !== selectedServer) {
-                    savedSyncTokens[existingIdx].serverId = selectedServer;
-                    updated = true;
-                }
-                if (isSaveTokenEnabled && tokenName.trim() && savedSyncTokens[existingIdx].name !== tokenName.trim()) {
-                    savedSyncTokens[existingIdx].name = tokenName.trim();
-                    updated = true;
-                }
-                if (updated) {
-                    localStorage.setItem("profile_saved_tokens", JSON.stringify(savedSyncTokens));
-                    savedSyncTokens = [...savedSyncTokens];
-                }
-                tokenName = "";
-                isSaveTokenEnabled = false;
-            } else if (isSaveTokenEnabled && tokenName.trim()) {
-                saveSyncToken(tokenName.trim(), gameTokenInput.trim(), selectedServer);
-                tokenName = "";
-                isSaveTokenEnabled = false;
-            }
-
             syncModalOpen = false;
-            gameTokenInput = "";
-            addNotification("success", "Game account synced successfully!");
-        } catch (e) {
-            addNotification("error", e.message);
-        } finally {
-            syncing = false;
+            addNotification("success", "Game account synced successfully!"); // Добавить перевод
+            onSuccess?.(false);
+        } catch (err) {
+            addNotification("error", err.message);
+            onError?.();
         }
     }
 
@@ -1313,12 +1102,12 @@
                                 <h1 class="text-3xl font-bold dark:text-white text-gray-900 font-sdk">
                                     {profile.name}
                                 </h1>
-                                <Tooltip text={$t("profile.edit_nickname") || "Изменить ник"}>
+                                <Tooltip text={$t("profile.edit_nickname") || "Edit nickname"}>
                                     <button on:click={() => { newProfileName = profile.name || ""; isEditingName = true; }} class="text-gray-400 hover:text-white transition-colors flex items-center justify-center w-6 h-6">
                                         <Icon name="pen" class="w-4 h-4" />
                                     </button>
                                 </Tooltip>
-                                <Tooltip text={$t("profile.copy_profile_link") || "Скопировать ссылку на аккаунт"}>
+                                <Tooltip text={$t("profile.copy_profile_link") || "Copy profile link"}>
                                     <button on:click={handleCopyProfileLink} class="text-gray-400 hover:text-white transition-colors flex items-center justify-center w-6 h-6">
                                         {#if linkCopied}
                                             <Icon name="success" class="w-3.5 h-3.5 text-yellow-400" />
@@ -1350,7 +1139,7 @@
                                 {selectedGameUid === d.game_uid ? 'border-2 border-[#FFE145]' : 'border-2 border-white/10 dark:border-white/5'}"
                             >
                                 <Tooltip
-                                    text={$t("profile.unlink_account") || "Отвязать аккаунт"}
+                                    text={$t("profile.unlink_account") || "Unlink account"}
                                     class="absolute -top-1.5 -right-1.5 z-20 opacity-0 group-hover:opacity-100 transition-all"
                                 >
                                     <button
@@ -1375,7 +1164,7 @@
                                     </div>
                                     <div class="text-[10px] text-gray-400 font-mono truncate flex items-center gap-1">
                                         <span>UID: {d.game_uid}</span>
-                                        <Tooltip text={$t("profile.copy_uid") || "Копировать UID"}>
+                                        <Tooltip text={$t("profile.copy_uid") || "Copy UID"}>
                                             <button 
                                                 on:click|stopPropagation={() => handleCopyUid(d.game_uid)} 
                                                 class="text-gray-400 hover:text-white transition-colors cursor-pointer flex items-center justify-center p-0.5"
@@ -1511,7 +1300,7 @@
                                     <div class="text-sm font-medium dark:text-gray-400 text-gray-600">
                                         {$t("profile.clear_time_label")} 
                                         <span class="dark:text-white text-gray-900 font-bold text-lg ml-1 font-nums">
-                                            {activeAccount.info.contract.clearTime} сек.
+                                            {$t("leaderboard.sec", { time: activeAccount.info.contract.clearTime })}
                                         </span>
                                     </div>
                                     <ContractLevelTag level={activeAccount.info.contract.level || 0} />
@@ -1679,7 +1468,7 @@
                                 
                                 {#key selectedOperatorId}
                                     <div class="w-full overflow-x-auto custom-scrollbar pb-1">
-                                        <div in:fade={{ duration: 200 }} class="w-[950px] h-[465px] mx-auto relative bg-black/30 dark:bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-5 md:p-7 shadow-2xl transition-all duration-300 text-left mt-3 overflow-hidden">
+                                        <div in:fade={{ duration: 200 }} class="w-[950px] h-[447px] mx-auto relative bg-black/30 dark:bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-5 shadow-2xl transition-all duration-300 text-left mt-3 overflow-hidden">
                                             
                                             <div class="absolute inset-0 bg-gradient-to-br {elementColor} pointer-events-none z-0 rounded-2xl"></div>
                                             <div class="absolute left-[-25px] top-2 pointer-events-none z-0 select-none opacity-90" style="width: 50%; height: 100%; transform: scale(1.5); transform-origin: left center;">
@@ -1699,10 +1488,6 @@
                                                                                     <Icon name={opData.class} class="w-10 h-10 text-white rounded-md" />
                                                                                 </div>
                                                                             </Tooltip>
-                                                                        {/if}
-
-                                                                        {#if opData.class && opData.element}
-                                                                            <div class="w-[1px] h-8 bg-gray-500/60"></div>
                                                                         {/if}
                                                                     
                                                                         {#if opData.element}
@@ -1742,7 +1527,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="flex justify-between items-end mt-auto z-10">
-                                                            <div class="flex flex-col gap-2">
+                                                            <div class="flex flex-col gap-1.5">
                                                                 {#each ["basicAttack", "battleSkill", "comboSkill", "ultimate"] as skillKey, idx}
                                                                     {@const skillMeta = Array.isArray(targetCharData?.skills)
                                                                         ? targetCharData.skills[idx]
@@ -1880,7 +1665,7 @@
                                                         {@const wpnName = $t(`weaponsList.${wpnStatic?.id}`) !== `weaponsList.${wpnStatic?.id}` ? $t(`weaponsList.${wpnStatic?.id}`) : (wpnStatic?.name || wpn.id)}
                                                         {@const wpnTerms = getWeaponTerms(wpn)}
                                                         
-                                                        <div class="relative pl-8 pr-3 py-3 flex flex-row items-stretch justify-between gap-3 rounded-xl overflow-hidden max-h-[140px]"
+                                                        <div class="relative pl-8 pr-3 py-3 flex flex-row items-stretch justify-between gap-3 rounded-xl max-h-[140px]"
                                                              style="background: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(20,20,20,0.85) 100%) padding-box, linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,0.15)) border-box;">
                                                             
                                                             <div class="flex flex-col justify-end items-start shrink-0">
@@ -1892,25 +1677,25 @@
                                                             </div>
 
                                                             <div class="flex flex-col gap-2 flex-1 min-w-0 ml-1">
-                                                                <div>
-                                                                    <a href="/weapons/{wpnStatic?.id}?level={wpn.level}&refine={wpn.refineLevel}" class="hover:underline block w-full min-w-0">
-                                                                        <h4 class="text-md font-black text-white leading-tight text-right truncate w-full" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.85);">
-                                                                            {wpnName}
-                                                                        </h4>
-                                                                    </a>
-                                                                    <div class="flex items-center mt-1 select-none -space-x-1.5 justify-end mr-[-3px]">
+                                                                <div class="flex flex-col items-end w-full min-w-0">
+                                                                    <a href="/weapons/{wpnStatic?.id}?level={wpn.level}&refine={wpn.refineLevel}" class="flex flex-row-reverse overflow-visible w-full">
+                                                                    <h4 class="text-md font-black text-white leading-tight text-nowrap shrink-0 mr-[-32px]" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.85);">
+                                                                        {wpnName}
+                                                                    </h4>
+                                                                </a>
+                                                                    <div class="flex items-center mt-2 select-none -space-x-1.5 mr-[-35px]">
                                                                         {#each Array(wpnStatic?.rarity || wpn.rarity || 5) as _}
                                                                             <Icon name="strokeStar" class="shrink-0 w-7 h-7 text-white" />
                                                                         {/each}
                                                                     </div>
                                                                 </div>
                                                                 
-                                                                <div class="flex items-center gap-3 pr-2 mt-2 select-none justify-end">
+                                                                <div class="flex items-center gap-1.5 mt-8 select-none ml-[-6px] justify-start z-30">
                                                                     {#each ['atk', 'def', 'maxhp'] as statKey}
                                                                         {@const calculatedStat = statKey === 'atk' ? Math.round(80 + wpn.level * 2.5) : (statKey === 'def' ? Math.round(20 + wpn.level * 0.8) : Math.round(150 + wpn.level * 4))}
-                                                                        <div class="flex items-center gap-1.5 text-xs font-bold text-white/90">
-                                                                            <Icon name={statKey} class="w-4 h-4 text-white/70" />
-                                                                            <span class="font-nums">+{calculatedStat}</span>
+                                                                        <div class="flex items-center gap-1.5 text-[13px] font-black text-white font-nums bg-black/30 px-2 py-1 rounded leading-none border border-white/5 w-fit">
+                                                                            <Icon name={statKey} class="w-3.5 h-3.5 text-white/90" />
+                                                                            <span>+{calculatedStat}</span>
                                                                         </div>
                                                                     {/each}
                                                                 </div>
@@ -1959,7 +1744,7 @@
                                                                                     </div>
                                                                                 </Tooltip>
                                                                             {:else}
-                                                                                <Tooltip text={$t("profile.no_essence") || "Эссенция не установлена"}>
+                                                                                <Tooltip text={$t("profile.no_essence") || "No essence"}>
                                                                                     <div class="relative w-8 h-8 rounded-full border border-dashed border-white/20 bg-black/20 flex items-center justify-center text-white/20 hover:border-white/40 hover:text-white/40 transition-colors cursor-pointer">
                                                                                         <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
@@ -2102,376 +1887,25 @@
         </div>
     {/if}
 
-    <Modal isOpen={syncModalOpen} on:close={() => syncModalOpen = false}>
-        <div class="bg-white dark:bg-[#383838] border border-gray-200 dark:border-[#444444] rounded-2xl p-6 md:p-8 w-full max-w-lg shadow-2xl relative">
-            <button
-                on:click={() => syncModalOpen = false}
-                class="absolute top-4 right-4 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
-            >
-                <Icon name="close" class="w-6 h-6" />
-            </button>
+    <SyncModal bind:this={syncModal} isOpen={syncModalOpen} on:close={() => syncModalOpen = false} on:sync={handleSync} on:error={(e) => addNotification("error", e.detail)} />
 
-            <h3 class="text-2xl font-bold dark:text-white text-gray-900 mb-6 font-sdk">
-                Синхронизация с игрой
-            </h3>
+    <SettingsModal
+        isOpen={settingsModalOpen}
+        {isPrivate}
+        {profile}
+        {activeAccount}
+        {primaryAccountOptions}
+        {filteredBackgrounds}
+        bind:bgSearchQuery
+        on:close={() => settingsModalOpen = false}
+        on:togglePrivate={handleTogglePrivate}
+        on:selectRecordsUid={(e) => handleSelectRecordsUid(e.detail)}
+        on:selectBackground={(e) => handleSelectBackground(e.detail)}
+        on:logout={async () => { await logout(); settingsModalOpen = false; addNotification("success", "Logged out successfully!"); }}
+    />
 
-            <div class="flex border-b border-gray-200 dark:border-[#444444] mb-6 relative">
-                <button
-                    class="px-6 py-3 text-sm font-bold transition-all relative border-b-2
-                    {syncActiveTab === 'new'
-                        ? 'text-[#21272C] dark:text-[#FDFDFD] border-[#FFE145]'
-                        : 'text-gray-400 hover:text-gray-600 hover:dark:bg-[#424242] dark:text-[#B7B6B3] border-transparent hover:bg-gray-50'}"
-                    on:click={() => (syncActiveTab = "new")}
-                >
-                    {$t("profile.tab_new")}
-                </button>
-                <button
-                    class="px-6 py-3 text-sm font-bold transition-all relative flex items-center gap-2 border-b-2
-                    {syncActiveTab === 'saved'
-                        ? 'text-[#21272C] dark:text-[#FDFDFD] border-[#FFE145]'
-                        : 'text-gray-400 hover:text-gray-600 hover:dark:bg-[#424242] dark:text-[#B7B6B3] border-transparent hover:bg-gray-50'}"
-                    on:click={() => (syncActiveTab = "saved")}
-                >
-                    {$t("profile.tab_saved")}
-                    {#if savedSyncTokens.length > 0}
-                        <span class="bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-white text-[10px] px-1.5 py-0.5 rounded-full leading-none">
-                            {savedSyncTokens.length}
-                        </span>
-                    {/if}
-                </button>
-            </div>
+    <CropModal bind:this={cropModal} isOpen={showCropModal} imageSrc={cropImageSrc} on:save={handleCropSave} on:close={() => showCropModal = false} on:error={(e) => addNotification("error", e.detail)} />
 
-            {#if syncActiveTab === 'new'}
-                <div class="flex gap-2 mb-4 p-1 bg-gray-100 dark:bg-[#2C2C2C] rounded-lg w-fit transition-all">
-                    <button
-                        type="button"
-                        class="px-4 py-1.5 text-xs font-bold rounded-md transition-colors {selectedServer === 'both'
-                            ? 'bg-white dark:bg-[#444] text-[#21272C] dark:text-white shadow-sm'
-                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'}"
-                        on:click={() => (selectedServer = "both")}
-                    >
-                        Both
-                    </button>
-                    <button
-                        type="button"
-                        class="px-4 py-1.5 text-xs font-bold rounded-md transition-colors {selectedServer === '3'
-                            ? 'bg-white dark:bg-[#444] text-[#21272C] dark:text-white shadow-sm'
-                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'}"
-                        on:click={() => (selectedServer = '3')}
-                    >
-                        Americas / Europe
-                    </button>
-                    <button
-                        type="button"
-                        class="px-4 py-1.5 text-xs font-bold rounded-md transition-colors {selectedServer === '2'
-                            ? 'bg-white dark:bg-[#444] text-[#21272C] dark:text-white shadow-sm'
-                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'}"
-                        on:click={() => (selectedServer = '2')}
-                    >
-                        Asia
-                    </button>
-                </div>
-
-                <div class="flex flex-col gap-6 text-left mb-6 font-mono text-sm">
-                    <div class="flex gap-4">
-                        <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">1</div>
-                        <div class="flex-1">
-                            <p class="text-sm text-gray-800 dark:text-white font-sdk font-bold mb-1 select-text">{$t("profile.sync_step1")}</p>
-                            <a href="https://endfield.gryphline.com/" target="_blank" rel="noopener noreferrer" class="text-xs text-amber-600 dark:text-[#FFE145] hover:underline font-mono break-all select-text">
-                                https://endfield.gryphline.com/
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">2</div>
-                        <div class="flex-1">
-                            <p class="text-sm text-gray-800 dark:text-white font-sdk font-bold mb-1 select-text">{$t("profile.sync_step2")}</p>
-                            <a href="https://web-api.gryphline.com/cookie_store/account_token" target="_blank" rel="noopener noreferrer" class="text-xs text-amber-600 dark:text-[#FFE145] hover:underline font-mono break-all select-text">
-                                https://web-api.gryphline.com/cookie_store/account_token
-                            </a>
-                        </div>
-                    </div>
-                    <div class="flex gap-4">
-                        <div class="w-6 h-6 rounded-full bg-[#FFE145] text-gray-900 flex items-center justify-center font-bold font-sdk text-xs shrink-0 mt-0.5">3</div>
-                        <div class="flex-1">
-                            <p class="text-sm text-gray-800 dark:text-white font-sdk font-bold mb-2 select-text">{$t("profile.sync_step3")}</p>
-                            <div class="relative w-full">
-                                <input
-                                    type={showToken ? "text" : "password"}
-                                    bind:value={gameTokenInput}
-                                    placeholder={'{"code":0,"data":{"content":"QqW2fmIQq...ZctQjc"},"msg":""}'}
-                                    class="w-full p-2.5 bg-gray-50 dark:bg-[#343434] dark:border-[#444444] dark:text-[#E0E0E0] border border-gray-200 focus:bg-white focus:border-[#FFE145] focus:dark:border-[#FFE145] rounded-md text-sm outline-none text-[#21272C] transition-all font-mono pl-4 pr-12"
-                                    disabled={syncing}
-                                />
-                                <button
-                                    type="button"
-                                    class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
-                                    on:click={() => showToken = !showToken}
-                                    aria-label="Toggle token visibility"
-                                >
-                                    <Icon name={showToken ? "eyeOpen" : "eyeClosed"} class="w-5 h-5 fill-current" />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4 mb-6 text-left">
-                    <Checkbox bind:checked={isSaveTokenEnabled} variant="yellow" align="start">
-                        <div>
-                            <span class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors cursor-pointer font-medium text-sm">
-                                {$t("import.save_label_token")}
-                            </span>
-                            {#if isSaveTokenEnabled}
-                                <div class="text-gray-500 dark:text-gray-400 text-xs mt-1 max-w-md">
-                                    {$t("import.save_desc_token")}
-                                </div>
-                            {/if}
-                        </div>
-                    </Checkbox>
-
-                    {#if isSaveTokenEnabled}
-                        <div class="mt-3" in:fade>
-                            <input
-                                type="text"
-                                bind:value={tokenName}
-                                placeholder={$t("profile.token_name_placeholder")}
-                                class="w-full p-2.5 bg-gray-50 dark:bg-[#343434] dark:border-[#444444] dark:text-[#E0E0E0] border border-gray-200 focus:bg-white focus:border-[#FFE145] focus:dark:border-[#FFE145] rounded-md text-sm outline-none text-[#21272C] transition-all font-mono"
-                                disabled={syncing}
-                            />
-                        </div>
-                    {/if}
-                </div>
-
-                <div class="flex flex-col gap-3">
-                    <button
-                        on:click={handleSyncGame}
-                        class="w-full py-3 bg-[#FFE145] hover:bg-[#ebd03e] text-gray-900 font-bold rounded-lg transition-colors font-sdk flex items-center justify-center gap-2 disabled:opacity-50"
-                        disabled={syncing}
-                    >
-                        {#if syncing}
-                            <Icon name="loading" class="w-5 h-5 animate-spin" />
-                            <span>Updating...</span>
-                        {:else}
-                            <Icon name="refresh" class="w-4 h-4" />
-                            <span>{$t("profile.update_btn")}</span>
-                        {/if}
-                    </button>
-                </div>
-            {:else}
-                <div class="max-w-4xl mb-2 text-left">
-                    {#if savedSyncTokens.length === 0}
-                        <div class="flex flex-col items-center justify-center py-8 border-2 border-gray-200 dark:border-[#444444] border-dashed rounded-lg text-gray-400 dark:text-gray-500">
-                            <Icon name="noData" class="w-8 h-8 mb-2 opacity-30" />
-                            <span class="mt-2 text-sm font-medium">{$t("profile.no_saved_tokens")}</span>
-                        </div>
-                    {:else}
-                        <div class="grid gap-3 pb-3 max-h-[420px] overflow-y-auto pr-1">
-                            {#each savedSyncTokens as item, i}
-                                <div class="group relative flex items-center justify-between p-4 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-[#444444] hover:shadow-sm transition-all text-left rounded-md overflow-hidden">
-                                    <button
-                                        type="button"
-                                        class="absolute inset-0 w-full h-full z-0 cursor-pointer focus:outline-none"
-                                        on:click={() => selectSyncToken(item)}
-                                        aria-label="Select {item.name}"
-                                    ></button>
-                                    <div class="pl-2 relative z-10 pointer-events-none">
-                                        <div class="font-bold text-gray-900 dark:text-white text-base font-sdk">
-                                            {item.name}
-                                        </div>
-                                        <div class="flex gap-2 items-center mt-2">
-                                            <span class="text-[10px] bg-gray-200 dark:bg-white/10 text-gray-600 dark:text-white px-2 py-0.5 rounded-full font-medium">
-                                                {item.serverId === '3' ? 'Americas / Europe' : item.serverId === '2' ? 'Asia' : 'Both'}
-                                            </span>
-                                            <span class="text-[10px] text-gray-500 dark:text-[#B7B6B3] font-medium">
-                                                {new Date(item.date).toLocaleDateString()}
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="flex items-center gap-4 z-20 relative pointer-events-none">
-                                        <button
-                                            type="button"
-                                            class="w-8 h-8 flex items-center justify-center text-gray-400 dark:text-gray-300 hover:text-white hover:bg-red-500 rounded transition-colors pointer-events-auto cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500"
-                                            on:click|stopPropagation={() => triggerDeleteSyncToken(i)}
-                                        >
-                                            <Icon name="close" class="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                </div>
-                            {/each}
-                        </div>
-                    {/if}
-                </div>
-            {/if}
-        </div>
-    </Modal>
-
-    <Modal isOpen={settingsModalOpen} on:close={() => settingsModalOpen = false}>
-        <div class="bg-white dark:bg-[#383838] border border-gray-200 dark:border-[#444444] rounded-2xl p-6 md:p-8 w-full max-w-2xl shadow-2xl relative">
-            <button
-                on:click={() => settingsModalOpen = false}
-                class="absolute top-4 right-4 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
-            >
-                <Icon name="close" class="w-6 h-6" />
-            </button>
-
-            <h3 class="text-xl font-bold dark:text-white text-gray-900 mb-6 font-sdk select-text">
-                {$t("profile.settings_title")}
-            </h3>
-
-            <div class="flex items-center justify-between mb-6">
-                <span class="text-sm text-gray-700 dark:text-gray-300 font-sdk pr-4 select-text">
-                    {$t("profile.settings_hide_data")}
-                </span>
-                <!-- svelte-ignore a11y_click_events_have_key_events -->
-                <!-- svelte-ignore a11y_no_static_element_interactions -->
-                <div
-                    on:click={handleTogglePrivate}
-                    class="w-12 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 shrink-0
-                    {isPrivate ? 'bg-[#FFE145]' : 'bg-gray-300 dark:bg-gray-600'}"
-                >
-                    <div
-                        class="bg-white dark:bg-[#1a1a1a] w-4 h-4 rounded-full shadow-md transform transition-transform duration-300
-                        {isPrivate ? 'translate-x-6' : 'translate-x-0'}"
-                    ></div>
-                </div>
-            </div>
-
-            <div class="mb-6 relative z-50">
-                <span class="block text-sm font-bold text-gray-700 dark:text-gray-300 font-sdk mb-2">
-                    {$t("profile.settings_primary_account")}
-                </span>
-                {#if activeAccount}
-                    <div class="shadow-sm">
-                        <Select
-                            options={primaryAccountOptions}
-                            value={activeAccount.records_uid || ""}
-                            on:change={(e) => handleSelectRecordsUid(e.detail)}
-                            placeholder={$t("profile.settings_primary_account_none")}
-                            variant="black"
-                        />
-                    </div>
-                {:else}
-                    <div class="text-xs text-gray-500 dark:text-gray-400 bg-gray-50/20 dark:bg-[#2e2e2e]/20 border border-gray-200 dark:border-white/10 rounded-lg p-3 text-center">
-                        {$t("profile.sync_first_to_bind")}
-                    </div>
-                {/if}
-            </div>
-
-            <div class="mb-6">
-                <span class="block text-sm font-bold text-gray-700 dark:text-gray-300 font-sdk mb-2">
-                    {$t("profile.settings_background")}
-                </span>
-                <input
-                    type="text"
-                    bind:value={bgSearchQuery}
-                    placeholder={$t("profile.settings_bg_search")}
-                    class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white rounded-lg px-3 py-2 text-sm outline-none focus:border-[#FFE145] mb-2"
-                />
-                <div class="max-h-[420px] overflow-y-auto grid grid-cols-4 gap-2 p-1 border border-gray-200 dark:border-white/10 rounded-lg bg-gray-50 dark:bg-white/5">
-                    <button
-                        on:click={() => handleSelectBackground(null)}
-                        class="flex flex-col items-center justify-center p-2 rounded-lg border-2 text-[10px] font-bold text-gray-500 dark:text-gray-400 bg-white/5 dark:bg-white/3 transition-all select-none outline-none
-                        {!profile.background ? 'border-[#FFE145] bg-[#FFE145]/15' : 'border-transparent hover:border-gray-300 dark:hover:border-white/20'}"
-                    >
-                        <span class="text-lg mb-0.5">🚫</span>
-                        <span class="text-center leading-tight">{$t("profile.settings_bg_none")}</span>
-                    </button>
-
-                    {#each filteredBackgrounds as bg (bg.id)}
-                        <button
-                            on:click={() => handleSelectBackground(bg.id)}
-                            class="group relative flex flex-col rounded-lg border-2 overflow-hidden transition-all bg-white/5 dark:bg-white/3 outline-none
-                            {profile.background === bg.id ? 'border-[#FFE145] bg-[#FFE145]/5' : 'border-transparent hover:border-gray-300 dark:hover:border-white/20'}"
-                        >
-                            <div class="w-full aspect-video bg-neutral-800 relative overflow-hidden">
-                                <Image id={bg.id} variant="operator-art" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                                <div class="absolute top-0.5 left-0.5 bg-black/60 text-white text-[8px] font-bold px-1 py-0.2 rounded leading-none">
-                                    P{bg.pot}
-                                </div>
-                            </div>
-                            <div class="p-1 text-[9px] font-bold text-gray-700 dark:text-gray-300 text-center truncate w-full">
-                                {$t(`characters.${bg.id.split('_')[0]}`) || bg.name}
-                            </div>
-                        </button>
-                    {/each}
-                </div>
-            </div>
-
-            <button
-                on:click={async () => {
-                    await logout();
-                    settingsModalOpen = false;
-                    addNotification("success", "Logged out successfully!");
-                }}
-                class="w-full py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg transition-colors font-sdk"
-            >
-                {$t("profile.settings_logout")}
-            </button>
-        </div>
-    </Modal>
-
-    <Modal isOpen={showCropModal} on:close={() => showCropModal = false}>
-        <div class="bg-white dark:bg-[#383838] border border-gray-200 dark:border-[#444444] rounded-2xl p-6 md:p-8 w-full max-w-sm shadow-2xl flex flex-col items-center relative">
-            <button
-                on:click={() => showCropModal = false}
-                class="absolute top-4 right-4 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-white transition-colors"
-            >
-                <Icon name="close" class="w-6 h-6" />
-            </button>
-
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-6 font-sdk text-center w-full">
-                {$t("profile.crop_avatar_title") || "Crop Avatar"}
-            </h3>
-
-            <!-- svelte-ignore a11y_no_static_element_interactions -->
-            <div 
-                class="relative w-[280px] h-[280px] overflow-hidden rounded-xl border border-gray-200 dark:border-white/10 bg-black cursor-move select-none"
-                on:mousedown={handleMouseDown}
-                on:touchstart={handleTouchStart}
-                on:wheel|preventDefault={handleWheel}
-            >
-                <img 
-                    src={cropImageSrc} 
-                    alt="Crop preview" 
-                    class="absolute pointer-events-none origin-center max-w-none"
-                    style={imageStyle}
-                />
-                
-                <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
-                    <div class="w-[150px] h-[150px] border border-[#FFE145]/70 rounded-xl shadow-[0_0_0_9999px_rgba(0,0,0,0.6)]"></div>
-                </div>
-            </div>
-            
-            <div class="w-full flex items-center gap-3 mt-4 px-2">
-                <span class="text-xs text-gray-500 dark:text-gray-400 select-none">−</span>
-                <input 
-                    type="range" 
-                    min={150 / 280} 
-                    max="4" 
-                    step="0.01" 
-                    bind:value={zoom}
-                    class="flex-1 accent-[#FFE145] h-1 bg-gray-200 dark:bg-white/10 rounded-lg appearance-none cursor-pointer"
-                />
-                <span class="text-xs text-gray-500 dark:text-gray-400 select-none">+</span>
-            </div>
-            
-            <div class="flex items-center gap-3 w-full mt-6">
-                <button 
-                    on:click={() => showCropModal = false} 
-                    class="flex-1 justify-center py-2 px-6 rounded-full border-2 border-gray-300 dark:border-[#444444] text-gray-700 dark:text-[#E0E0E0] hover:border-gray-500/70 dark:hover:border-[#404040] hover:text-black dark:hover:text-white bg-white dark:bg-[#383838] transition-all duration-200 active:scale-95 text-center font-medium font-sdk text-sm"
-                >
-                    {$t("settings.account.cancel") || "Cancel"}
-                </button>
-                <button 
-                    on:click={handleSaveCrop} 
-                    class="flex-1 justify-center py-2 px-6 rounded-full border-2 border-[#FFE145] bg-[#FFE145] hover:bg-[#ebd03e] hover:border-[#ebd03e] text-gray-900 transition-all duration-200 active:scale-95 text-center font-bold font-sdk text-sm"
-                >
-                    {$t("settings.account.save") || "Save"}
-                </button>
-            </div>
-        </div>
-    </Modal>
 
     <Modal isOpen={showFullAvatarModal} on:close={() => showFullAvatarModal = false}>
         <div class="relative max-w-[90vw] max-h-[90vh] flex flex-col items-center select-none">
@@ -2499,12 +1933,5 @@
         on:close={() => (showDeleteAccountModal = false)}
     />
 
-    <ConfirmationModal
-        isOpen={showDeleteTokenModal}
-        title={$t("import.delete_confirm") || "Delete this saved token?"}
-        confirmText={$t("settings.account.deleteAccount") || "Delete"}
-        isDestructive={true}
-        on:confirm={confirmDeleteSyncToken}
-        on:close={() => (showDeleteTokenModal = false)}
-    />
+
 </div>

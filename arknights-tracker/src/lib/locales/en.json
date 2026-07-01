@@ -2266,7 +2266,11 @@
     "link_copied": "Link copied to clipboard!",
     "uid_copied": "UID copied to clipboard!",
     "copy_uid": "Copy UID",
-    "unlink_account": "Unlink account"
+    "unlink_account": "Unlink account",
+    "all": "All",
+    "sync_with_game": "Sync with game",
+    "no_essence": "No essence",
+    "copy_failed": "Failed to copy"
   },
   "contractTagNames": {
     "activity_contract_tag_201": "Ambient: Overclock",

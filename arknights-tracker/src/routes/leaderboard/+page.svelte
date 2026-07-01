@@ -158,9 +158,8 @@
     }
 </script>
 
-<div class="max-w-[1600px] w-full pb-20">
+<div class="max-w-[1600px] mx-auto w-full pb-20">
     
-    <!-- Title and headers -->
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
         <div>
             <h1 class="font-sdk dark:text-[#FDFDFD] text-5xl font-black text-[#21272C] mb-2">
@@ -168,7 +167,6 @@
             </h1>
         </div>
 
-        <!-- Cooldown / information banner -->
         {#if !$user}
             <div class="bg-white/5 border border-white/10 px-4 py-3 rounded-xl max-w-sm flex items-center gap-3">
                 <Icon name="info" class="w-5 h-5 text-[#FFE145] shrink-0" />
@@ -182,10 +180,8 @@
         {/if}
     </div>
 
-    <!-- Controls: Tabs + Filters -->
     <div class="bg-white/5 border border-white/10 rounded-2xl p-4 mb-6 backdrop-blur-md shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         
-        <!-- Tabs -->
         <div class="flex bg-black/30 p-1 rounded-xl border border-white/5 shrink-0">
             <button
                 on:click={() => selectedEvent = "contract"}
@@ -203,7 +199,6 @@
             </button>
         </div>
 
-        <!-- Filter Dropdown -->
         <div class="flex items-center gap-3 text-sm w-full md:w-auto">
             <span class="text-gray-400 shrink-0">{$t("leaderboard.server")}:</span>
             <select
@@ -217,7 +212,6 @@
         </div>
     </div>
 
-    <!-- Leaderboard Table/List -->
     {#if loading}
         <div class="flex items-center justify-center min-h-[40vh]">
             <Icon name="loading" class="w-10 h-10 text-[#FFE145] animate-spin" />
@@ -249,7 +243,6 @@
                                 on:click={() => selectedEntry = entry}
                                 class="hover:bg-white/5 transition-colors cursor-pointer group"
                             >
-                                <!-- Rank with special medal badges -->
                                 <td class="py-4 px-6">
                                     {#if index === 0}
                                         <span class="w-7 h-7 rounded-full bg-[#FFE145] text-gray-900 font-black flex items-center justify-center border-2 border-white/10 shadow-lg text-xs" title="1st Place">
@@ -268,7 +261,6 @@
                                     {/if}
                                 </td>
 
-                                <!-- Player Name + Avatar -->
                                 <td class="py-4 px-6">
                                     <div class="flex items-center gap-3">
                                         {#if entry.user.picture && entry.user.avatar_strike === 0}
@@ -295,7 +287,6 @@
                                     </div>
                                 </td>
 
-                                <!-- Level -->
                                 <td class="py-4 px-6 text-gray-300">
                                     {entry.level}
                                 </td>
@@ -306,17 +297,14 @@
                                     </td>
                                 {/if}
 
-                                <!-- Time -->
                                 <td class="py-4 px-6 font-bold text-[#FFE145]">
                                     {formatTime(entry.clear_time)}
                                 </td>
 
-                                <!-- Last Update -->
                                 <td class="py-4 px-6 text-gray-400">
                                     {formatRelativeTime(entry.updatedAt)}
                                 </td>
 
-                                <!-- Chars roster -->
                                 <td class="py-4 px-6">
                                     <div class="flex items-center gap-1.5">
                                         {#each (entry.chars || []).slice(0, 4) as char}
@@ -339,11 +327,9 @@
         </div>
     {/if}
 
-    <!-- Entry Details Pop-up Modal -->
     {#if selectedEntry}
         <div class="fixed inset-0 bg-black/80 backdrop-blur-sm z-[20000] flex items-center justify-center p-4" transition:fade>
             <div class="bg-[#242424] border border-white/10 rounded-2xl p-6 md:p-8 w-full max-w-lg shadow-2xl relative" transition:fly={{ y: 50 }}>
-                <!-- Close Button -->
                 <button
                     on:click={() => selectedEntry = null}
                     class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
@@ -351,7 +337,6 @@
                     <Icon name="close" class="w-6 h-6" />
                 </button>
 
-                <!-- Profile header in modal -->
                 <div class="flex items-center gap-4 border-b border-white/10 pb-4 mb-6">
                     {#if selectedEntry.user.picture && selectedEntry.user.avatar_strike === 0}
                         <a href="/u/{selectedEntry.user.name}">
@@ -378,7 +363,6 @@
                     </div>
                 </div>
 
-                <!-- Event clear details -->
                 <div class="bg-black/20 rounded-xl p-4 mb-6 text-sm border border-white/5">
                     <div class="flex justify-between items-center mb-2">
                         <span class="text-gray-400">Event:</span>
@@ -394,35 +378,33 @@
                     </div>
                 </div>
 
-                <!-- Team layout details -->
                 <h5 class="text-xs uppercase tracking-wider text-gray-400 font-black mb-3">
                     {$t("leaderboard.team")}
                 </h5>
                 
                 <div class="grid grid-cols-2 gap-4">
                     {#each (selectedEntry.chars || []).slice(0, 4) as char}
-                                        {@const opData = getOperatorData(char)}
-                                        <div class="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-3">
-                                            <img
-                                                src={opData.id.startsWith('http') ? opData.id : `/images/operators/icons/${opData.id}.png`}
-                                                alt={opData.name}
-                                                class="w-12 h-12 rounded bg-white/10 border border-white/20 object-cover"
-                                                on:error={(e) => e.target.src = '/images/operators/icons/endministrator1.png'}
-                                            />
-                                            <div class="min-w-0 flex-1">
-                                                <div class="text-xs font-bold text-white truncate">{opData.name}</div>
-                                                <div class="text-[10px] text-gray-400 mt-0.5">Lvl {char.level || 1}</div>
-                                                <div class="text-[8px] text-[#FFE145] font-black mt-0.5">
-                                                    {#each Array(char.potential || 1) as _}
-                                                        ★
-                                                    {/each}
-                                                </div>
-                                            </div>
-                                        </div>
+                        {@const opData = getOperatorData(char)}
+                        <div class="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-3">
+                            <img
+                                src={opData.id.startsWith('http') ? opData.id : `/images/operators/icons/${opData.id}.png`}
+                                alt={opData.name}
+                                class="w-12 h-12 rounded bg-white/10 border border-white/20 object-cover"
+                                on:error={(e) => e.target.src = '/images/operators/icons/endministrator1.png'}
+                            />
+                            <div class="min-w-0 flex-1">
+                                <div class="text-xs font-bold text-white truncate">{opData.name}</div>
+                                <div class="text-[10px] text-gray-400 mt-0.5">Lvl {char.level || 1}</div>
+                                <div class="text-[8px] text-[#FFE145] font-black mt-0.5">
+                                    {#each Array(char.potential || 1) as _}
+                                        ★
                                     {/each}
+                                </div>
+                            </div>
+                        </div>
+                    {/each}
                 </div>
             </div>
         </div>
     {/if}
-
 </div>

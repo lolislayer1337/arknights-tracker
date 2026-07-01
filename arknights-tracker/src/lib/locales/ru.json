@@ -2268,7 +2268,11 @@
     "link_copied": "Ссылка скопирована в буфер обмена!",
     "uid_copied": "UID скопирован в буфер обмена!",
     "copy_uid": "Копировать UID",
-    "unlink_account": "Отвязать аккаунт"
+    "unlink_account": "Отвязать аккаунт",
+    "all": "Все",
+    "sync_with_game": "Синхронизация с игрой",
+    "no_essence": "Нет эссенции",
+    "copy_failed": "Ошибка при копировании"
   },
   "contractTagNames": {
     "activity_contract_tag_201": "Среда: разгон",

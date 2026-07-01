@@ -262,8 +262,6 @@
                     {#each [
                         { path: "/", label: "sidebar.home", icon: "mainPage" },
                         { path: "/records", label: "sidebar.records", icon: "records" },
-                        { path: "/leaderboard", label: "sidebar.leaderboard", icon: "leaderboard" },
-                        { path: "/profile", label: "pages.profile", icon: "profile" },
                         { path: "/events", label: "sidebar.events", icon: "timeline" },
                         { path: "/history", label: "pages.bannerHistory", icon: "history" },
                         { type: "divider" },
@@ -274,6 +272,9 @@
                         { path: "/enemies", label: "pages.enemies", icon: "hongshan" },
                         { path: "/equipment", label: "pages.equipment", icon: "edc" },
                         { path: "/recipes", label: "pages.recipes", icon: "recepies" },
+                        { type: "divider" },
+                        { path: "/leaderboard", label: "pages.leaderboard", icon: "leaderboard" },
+                        { path: "/profile", label: "pages.profile", icon: "profile" },
                         { type: "divider" },
                         { path: "/settings", label: "sidebar.settings", icon: "settings" }
                     ] as item}
