@@ -1,4 +1,6 @@
-export const miners = {
+import type { MinerData } from "$lib/data/types/buildings/MinerData";
+
+export const miners: Readonly<Record<string, MinerData>> = {
     "miner_1": {
         "id": "miner_1",
         "mineable": {

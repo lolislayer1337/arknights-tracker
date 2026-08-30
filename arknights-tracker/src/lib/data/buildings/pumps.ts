@@ -1,4 +1,6 @@
-export const pumps = {
+import type { PumpData } from "$lib/data/types/buildings/PumpData";
+
+export const pumps: Readonly<Record<string, PumpData>> = {
     "pump_1": {
         "id": "pump_1",
         "pumpTimeMs": 1000,

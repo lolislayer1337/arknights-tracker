@@ -1,4 +1,6 @@
-export const crafters = {
+import type { CrafterData } from "$lib/data/types/buildings/CrafterData";
+
+export const crafters: Readonly<Record<string, CrafterData>> = {
     "component_mc_1": {
         "id": "component_mc_1",
         "modeMap": [

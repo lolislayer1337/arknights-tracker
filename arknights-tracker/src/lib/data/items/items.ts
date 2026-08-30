@@ -1,6 +1,6 @@
 import type { ItemData } from "$lib/data/types/items/ItemData";
 
-export const items: Record<string, ItemData> = {
+export const items: Readonly<Record<string, ItemData>> = {
     "item_port_battle_cannon_1": {
         "id": "item_port_battle_cannon_1",
         "iconId": "item_port_battle_cannon_1",

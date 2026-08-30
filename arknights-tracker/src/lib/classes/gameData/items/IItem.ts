@@ -12,4 +12,5 @@ export interface IItem extends IGameData, ITextable {
     get groupId(): ItemGroup;
     get type(): ItemType;
     get material(): ItemMaterial | null;
+    getEventIds(): string[];
 }

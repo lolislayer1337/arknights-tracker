@@ -1,4 +1,6 @@
-export const buildings = {
+import type { BuildingData } from "$lib/data/types/buildings/BuildingData";
+
+export const buildings: Readonly<Record<string, BuildingData>> = {
     "component_mc_1": {
         "id": "component_mc_1",
         "type": "crafter",

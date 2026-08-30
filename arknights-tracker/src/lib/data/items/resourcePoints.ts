@@ -1,4 +1,6 @@
-export const resourcePoints = {
+import type { ResourcePointData } from "$lib/data/types/items/ResourcePointData";
+
+export const resourcePoints: Record<string, ResourcePointData> = {
     "item_liquidpoint_water": {
         "id": "item_liquidpoint_water",
         "itemId": "item_liquid_water",
