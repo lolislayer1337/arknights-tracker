@@ -4,7 +4,6 @@ import type { IItemStack } from "$lib/classes/gameData/items/IItemStack";
 import type { IPowerRecipe } from "$lib/classes/gameData/recipes/IPowerRecipe";
 import { PowerRecipe } from "$lib/classes/gameData/recipes/PowerRecipe";
 import type { IFuelStorage } from "$lib/classes/storages/items/IFuelStorage";
-import { fuel } from "$lib/data/items/fuel";
 import type { BuildingData } from "$lib/data/types/buildings/BuildingData";
 import type { PowerStationData } from "$lib/data/types/buildings/PowerStationData";
 
@@ -20,7 +19,7 @@ export class PowerStation extends Building implements IPowerStation {
     }
 
     public get enableFuelIds(): readonly string[] {
-        return Object.keys(fuel);
+        return this._fuelStorage.list.map((item) => item.gameId);
     }
 
     public get msPerRound(): number {
@@ -28,7 +27,7 @@ export class PowerStation extends Building implements IPowerStation {
     }
 
     public isFuelEnabled(fuelId: string): boolean {
-        return this.enableFuelIds.includes(fuelId);
+        return this._fuelStorage.byGameId.has(fuelId);
     }
 
     public getRecipe(fuelId: string): IPowerRecipe | null {
@@ -36,7 +35,7 @@ export class PowerStation extends Building implements IPowerStation {
             return null;
         }
 
-        const fuel = this._fuelStorage.getById(fuelId);
+        const fuel = this._fuelStorage.byGameId.get(fuelId);
 
         if (!fuel) {
             return null;
