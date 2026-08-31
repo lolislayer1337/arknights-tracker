@@ -9,7 +9,7 @@
     import Icon from "$lib/components/Icon.svelte";
     import FormulaSidebar from "$lib/components/recipes/FormulaSidebar.svelte";
     import ItemCard from "$lib/components/recipes/ItemCard.svelte";
-    import { craftableItemsList } from "$lib/data/crafts/craftableItemsList.js";
+    import { craftableItemsList } from "$lib/data/crafts/craftableItemsList";
     import { t } from "$lib/i18n";
     import {
         getDefaultItemSortParams,

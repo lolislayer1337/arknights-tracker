@@ -1,4 +1,6 @@
-export const manualCrafts = {
+import type { ManualCraftData } from "$lib/data/types/crafts/ManualCraftData";
+
+export const manualCrafts: Readonly<Record<string, ManualCraftData>> = {
     "handwork_bottled_flower1spc_1": {
         "id": "handwork_bottled_flower1spc_1",
         "ingredients": [

@@ -1,4 +1,6 @@
-export const fullBottles = {
+import type { FullBottleData } from "$lib/data/types/items/FullBottleData";
+
+export const fullBottles: Readonly<Record<string, FullBottleData>> = {
     "item_fbottle_copper_acid": {
         "id": "item_fbottle_copper_acid",
         "emptyBottleId": "item_copper_bottle",
@@ -334,4 +336,4 @@ export const fullBottles = {
         "emptyBottleId": "item_iron_enr_bottle",
         "liquidId": "item_liquid_xiranite_lowpoly"
     }
-}
+};

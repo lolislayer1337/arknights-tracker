@@ -1,4 +1,6 @@
-export const machineCrafts = {
+import type { MachineCraftData } from "$lib/data/types/crafts/MachineCraftData";
+
+export const machineCrafts: Readonly<Record<string, MachineCraftData>> = {
     "component_activity_xiranite_cmpt_1": {
         "id": "component_activity_xiranite_cmpt_1",
         "formulaGroupId": "group_component_normal",

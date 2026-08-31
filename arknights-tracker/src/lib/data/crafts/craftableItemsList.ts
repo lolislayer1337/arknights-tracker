@@ -1,4 +1,4 @@
-export const craftableItemsList = [
+export const craftableItemsList: string[] = [
     "item_activity_xiranite_bottle",
     "item_activity_xiranite_cmpt",
     "item_activity_xiranite_enr_bottle",

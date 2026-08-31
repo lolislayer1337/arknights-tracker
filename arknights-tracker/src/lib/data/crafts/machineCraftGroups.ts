@@ -1,4 +1,6 @@
-export const machineCraftGroups = {
+import type { MachineCraftGroupData } from "$lib/data/types/crafts/MachineCraftGroupData";
+
+export const machineCraftGroups: Readonly<Record<string, MachineCraftGroupData>> = {
     "group_component_normal": {
         "id": "group_component_normal",
         "craftList": [

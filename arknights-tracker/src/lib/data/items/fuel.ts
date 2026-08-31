@@ -1,4 +1,6 @@
-export const fuel = {
+import type { FuelData } from "$lib/data/types/items/FuelData";
+
+export const fuel: Readonly<Record<string, FuelData>> = {
     "item_originium_ore": {
         "id": "item_originium_ore",
         "powerProvide": 50,
@@ -29,4 +31,4 @@ export const fuel = {
         "powerProvide": 3200,
         "progressRound": 40
     }
-}
+};

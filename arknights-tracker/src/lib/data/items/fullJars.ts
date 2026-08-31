@@ -1,4 +1,6 @@
-export const fullJars = {
+import type { FullJarData } from "$lib/data/types/items/FullJarData";
+
+export const fullJars: Readonly<Record<string, FullJarData>> = {
     "item_gasjar_copper_gas_acid": {
         "id": "item_gasjar_copper_gas_acid",
         "emptyJarId": "item_copper_jar",
