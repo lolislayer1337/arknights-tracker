@@ -1,7 +1,4 @@
 import type { IFuel } from "$lib/classes/gameData/items/IFuel";
-import type { IListStorage } from "$lib/classes/storages/IListStorage";
+import type { IGameDataStorage } from "$lib/classes/storages/IGameDataStorage";
 
-export interface IFuelStorage extends IListStorage<IFuel> {
-    get byId(): ReadonlyMap<string, IFuel>;
-    get byGameId(): ReadonlyMap<string, IFuel>;
-}
+export interface IFuelStorage extends IGameDataStorage<IFuel> {}
