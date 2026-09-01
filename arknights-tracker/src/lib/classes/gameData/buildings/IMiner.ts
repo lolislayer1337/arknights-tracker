@@ -1,11 +1,11 @@
 import type { IBuilding } from "$lib/classes/gameData/buildings/IBuilding";
-import type { INaturalRecipe } from "$lib/classes/gameData/recipes/INaturalRecipe";
-import type { MineableData } from "$lib/data/types/buildings/MineableData";
+import type { IMineable } from "$lib/classes/gameData/buildings/IMineable";
+import type { IMinerRecipe } from "$lib/classes/gameData/recipes/IMinerRecipe";
 
 export interface IMiner extends IBuilding {
-    get mineableList(): readonly MineableData[];
+    get mineableList(): readonly IMineable[];
     isMineable(itemId: string): boolean;
-    getMineableData(itemId: string): MineableData | null;
+    getMineableData(itemId: string): IMineable | null;
 
-    getRecipe(mineableItemId: string): INaturalRecipe | null;
+    getRecipe(mineableItemId: string): IMinerRecipe | null;
 }

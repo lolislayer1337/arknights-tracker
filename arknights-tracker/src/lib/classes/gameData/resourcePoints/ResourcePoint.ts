@@ -1,3 +1,4 @@
+import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IResourcePoint } from "$lib/classes/gameData/resourcePoints/IResourcePoint";
 import { ResourcePointType } from "$lib/classes/gameData/resourcePoints/ResourcePointType";
 import type { IImageIcon } from "$lib/classes/icons/IImageIcon";
@@ -6,10 +7,12 @@ import type { ResourcePointData } from "$lib/data/types/items/ResourcePointData"
 
 export class ResourcePoint implements IResourcePoint {
     private readonly _data: ResourcePointData;
+    private readonly _item: IItem;
     private readonly _icon: IImageIcon;
 
-    public constructor(data: ResourcePointData) {
+    public constructor(data: ResourcePointData, item: IItem) {
         this._data = data;
+        this._item = item;
 
         this._icon = {
             iconId: ResourcePoint.getBgIconId(data.type as ResourcePointType),
@@ -41,8 +44,8 @@ export class ResourcePoint implements IResourcePoint {
         return this._data.id;
     }
 
-    public get itemId(): string {
-        return this._data.itemId;
+    public get item(): IItem {
+        return this._item;
     }
 
     public get type(): ResourcePointType {

@@ -1,15 +1,18 @@
 import { type BuildingType } from "$lib/classes/gameData/buildings/BuildingType";
 import type { IBuilding } from "$lib/classes/gameData/buildings/IBuilding";
+import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IImageIcon } from "$lib/classes/icons/IImageIcon";
 import { ImageVariant } from "$lib/classes/icons/ImageVariant";
 import type { BuildingData } from "$lib/data/types/buildings/BuildingData";
 
 export class Building implements IBuilding {
     private readonly _buildingData: BuildingData;
+    private readonly _item: IItem;
     private readonly _icon: IImageIcon;
 
-    public constructor(buildingData: BuildingData) {
+    public constructor(buildingData: BuildingData, buildingItem: IItem) {
         this._buildingData = buildingData;
+        this._item = buildingItem;
 
         this._icon = {
             iconId: buildingData.id,
@@ -33,8 +36,8 @@ export class Building implements IBuilding {
         return this._buildingData.id;
     }
 
-    public get itemId(): string {
-        return this._buildingData.itemId;
+    public get item(): IItem {
+        return this._item;
     }
 
     public get type(): BuildingType {

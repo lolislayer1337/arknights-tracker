@@ -1,31 +1,20 @@
+import type { ICrafter } from "$lib/classes/gameData/buildings/ICrafter";
+import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IItemStack } from "$lib/classes/gameData/items/IItemStack";
 import { BuildingRecipe } from "$lib/classes/gameData/recipes/BuildingRecipe";
 import type { IMachineCraft } from "$lib/classes/gameData/recipes/IMachineCraft";
-import type { MachineCraftData } from "$lib/data/types/crafts/MachineCraftData";
 
-export class MachineCraft extends BuildingRecipe implements IMachineCraft {
+export class MachineCraft extends BuildingRecipe<ICrafter, IItem, IItem> implements IMachineCraft {
     private readonly _formulaGroupId: string;
     private readonly _gameId: string;
     private readonly _id: string;
 
-    public constructor(ingredients: readonly IItemStack[], outcomes: readonly IItemStack[], buildingId: string, processTimeMs: number, formulaGroupId: string, gameId: string, id: string) {
-        super(ingredients, outcomes, buildingId, processTimeMs);
+    public constructor(ingredients: IItemStack[], outcomes: IItemStack[], building: ICrafter, processTimeMs: number, formulaGroupId: string, gameId: string, id: string) {
+        super(ingredients, outcomes, building, processTimeMs);
 
         this._formulaGroupId = formulaGroupId;
         this._gameId = gameId;
         this._id = id;
-    }
-
-    public static createFromData(data: MachineCraftData): MachineCraft {
-        return new MachineCraft(
-            data.ingredients,
-            data.outcomes,
-            data.buildingId,
-            data.craftTimeMs,
-            data.formulaGroupId,
-            data.id,
-            data.id
-        );
     }
 
     public get formulaGroupId(): string {

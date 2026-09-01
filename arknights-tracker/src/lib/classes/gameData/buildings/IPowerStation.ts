@@ -1,10 +1,11 @@
 import type { IBuilding } from "$lib/classes/gameData/buildings/IBuilding";
+import type { IFuel } from "$lib/classes/gameData/items/IFuel";
 import type { IPowerRecipe } from "$lib/classes/gameData/recipes/IPowerRecipe";
 
 export interface IPowerStation extends IBuilding {
     get msPerRound(): number;
-    get enableFuelIds(): readonly string[];
-
+    get enableFuelList(): readonly IFuel[];
+    getEnableFuel(fuelId: string): IFuel | null;
     isFuelEnabled(fuelId: string): boolean;
 
     getRecipe(fuelId: string): IPowerRecipe | null;

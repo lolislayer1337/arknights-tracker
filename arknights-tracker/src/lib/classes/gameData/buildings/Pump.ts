@@ -1,50 +1,66 @@
 import { Building } from "$lib/classes/gameData/buildings/Building";
+import type { IEnableLiquid } from "$lib/classes/gameData/buildings/IEnableLiquid";
 import type { IPump } from "$lib/classes/gameData/buildings/IPump";
+import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IItemStack } from "$lib/classes/gameData/items/IItemStack";
-import type { INaturalRecipe } from "$lib/classes/gameData/recipes/INaturalRecipe";
-import { NaturalRecipe } from "$lib/classes/gameData/recipes/NaturalRecipe";
+import type { IPumpRecipe } from "$lib/classes/gameData/recipes/IPumpRecipe";
+import { PumpRecipe } from "$lib/classes/gameData/recipes/PumpRecipe";
+import type { IResourcePointStorage } from "$lib/classes/storages/resourcePoints/IResourcePointStorage";
 import type { BuildingData } from "$lib/data/types/buildings/BuildingData";
-import type { PumpData } from "$lib/data/types/buildings/PumpData";
+import { getMap } from "$lib/utils/collectionUtils";
 
 export class Pump extends Building implements IPump {
-    private readonly _pumpData: PumpData;
+    private readonly _pumpTimeMs: number;
+    private readonly _enableLiquids: readonly IEnableLiquid[];
+    private readonly _enableLiquidMap: Map<string, IEnableLiquid>;
 
-    public constructor(buildingData: BuildingData, pumpData: PumpData) {
-        super(buildingData);
+    private readonly _resourcePointStorage: IResourcePointStorage;
 
-        this._pumpData = pumpData;
+    public constructor(buildingData: BuildingData, buildingItem: IItem, pumpTimeMs: number, enableLiquids: readonly IEnableLiquid[], resourcePointStorage: IResourcePointStorage) {
+        super(buildingData, buildingItem);
+
+        this._pumpTimeMs = pumpTimeMs;
+        this._enableLiquids = enableLiquids;
+        this._enableLiquidMap = getMap(enableLiquids, item => item.item.gameId);
+        this._resourcePointStorage = resourcePointStorage;
     }
 
-    public get enableLiquidIds(): readonly string[] {
-        return this._pumpData.enableLiquidIds;
+    public get enableLiquids(): readonly IEnableLiquid[] {
+        return this._enableLiquids;
     }
 
     public get pumpTimeMs(): number {
-        return this._pumpData.pumpTimeMs;
+        return this._pumpTimeMs;
     }
 
-    public getRecipe(liquidId: string): INaturalRecipe | null {
-        if (!this.isLiquidEnable(liquidId)) {
+    public getRecipe(liquidId: string): IPumpRecipe | null {
+        const liquid = this.getEnableLiquid(liquidId);
+
+        if (!liquid || !liquid.resourcePoint) {
             return null;
         }
 
         const outcomes: IItemStack[] = [
             {
-                itemId: liquidId,
+                item: liquid.item,
                 count: 1
             }
         ];
 
-        return new NaturalRecipe(
+        return new PumpRecipe(
             [],
             outcomes,
-            this.gameId,
-            this.pumpTimeMs,
-            liquidId
+            this,
+            this._pumpTimeMs,
+            liquid.resourcePoint
         );
     }
 
     public isLiquidEnable(liquidId: string): boolean {
-        return this.enableLiquidIds.includes(liquidId);
+        return this._enableLiquidMap.has(liquidId);
+    }
+
+    public getEnableLiquid(liquidId: string): IEnableLiquid | null {
+        return this._enableLiquidMap.get(liquidId) ?? null;
     }
 }

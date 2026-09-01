@@ -1,6 +1,6 @@
 import type { BuildingModeName } from "$lib/classes/gameData/buildings/BuildingModeName";
-import type { IData } from "$lib/classes/IData";
 
-export interface CrafterModeData extends IData {
+export interface CrafterModeData {
+    readonly formulaGroupId: string;
     readonly modeName: `${BuildingModeName}`;
 }

@@ -1,54 +1,64 @@
 import { Building } from "$lib/classes/gameData/buildings/Building";
+import type { IMineable } from "$lib/classes/gameData/buildings/IMineable";
 import type { IMiner } from "$lib/classes/gameData/buildings/IMiner";
+import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IItemStack } from "$lib/classes/gameData/items/IItemStack";
-import type { INaturalRecipe } from "$lib/classes/gameData/recipes/INaturalRecipe";
-import { NaturalRecipe } from "$lib/classes/gameData/recipes/NaturalRecipe";
+import type { IMinerRecipe } from "$lib/classes/gameData/recipes/IMinerRecipe";
+import { MinerRecipe } from "$lib/classes/gameData/recipes/MinerRecipe";
+import type { IItemStorage } from "$lib/classes/storages/items/IItemStorage";
+import type { IResourcePointStorage } from "$lib/classes/storages/resourcePoints/IResourcePointStorage";
 import type { BuildingData } from "$lib/data/types/buildings/BuildingData";
-import type { MineableData } from "$lib/data/types/buildings/MineableData";
-import type { MinerData } from "$lib/data/types/buildings/MinerData";
+import { getMap } from "$lib/utils/collectionUtils";
 
 export class Miner extends Building implements IMiner {
-    private readonly _minerData: MinerData;
+    private readonly _mineableMap: Map<string, IMineable>;
+    private readonly _mineableList: readonly IMineable[];
 
-    public constructor(buildingData: BuildingData, minerData: MinerData) {
-        super(buildingData);
+    private readonly _resourcePointStorage: IResourcePointStorage;
+    private readonly _itemStorage: IItemStorage;
 
-        this._minerData = minerData;
+    public constructor(buildingData: BuildingData, item: IItem, mineableList: readonly IMineable[], resourcePointStorage: IResourcePointStorage, itemStorage: IItemStorage) {
+        super(buildingData, item);
+
+        this._mineableMap = getMap(mineableList, item => item.miningItem.gameId);
+        this._mineableList = mineableList;
+        this._resourcePointStorage = resourcePointStorage;
+        this._itemStorage = itemStorage;
     }
 
-    public get mineableList(): readonly MineableData[] {
-        return Object.values(this._minerData.mineable);
+    public getMineableData(itemId: string): IMineable | null {
+        return this._mineableMap.get(itemId) ?? null;
     }
 
-    public getMineableData(itemId: string): MineableData | null {
-        return this._minerData.mineable[itemId] ?? null;
+    public get mineableList(): readonly IMineable[] {
+        return this._mineableList;
     }
 
-    public getRecipe(mineableItemId: string): INaturalRecipe | null {
+    public getRecipe(mineableItemId: string): IMinerRecipe | null {
         const mineableData = this.getMineableData(mineableItemId);
 
-        if (!mineableData) {
+        if (!mineableData || !mineableData.resourcePoint) {
             return null;
         }
 
         const ingredients: IItemStack[] = mineableData.consumeItem ? [mineableData.consumeItem] : [];
         const outcomes: IItemStack[] = [
             {
-                itemId: mineableData.miningItemId,
+                item: mineableData.miningItem,
                 count: 1
             }
         ];
 
-        return new NaturalRecipe(
+        return new MinerRecipe(
             ingredients,
             outcomes,
-            this.gameId,
+            this,
             mineableData.miningTimeMs,
-            mineableData.miningItemId
+            mineableData.resourcePoint
         );
     }
 
     public isMineable(itemId: string): boolean {
-        return Object.hasOwn(this._minerData.mineable, itemId);
+        return this._mineableMap.has(itemId);
     }
 }
