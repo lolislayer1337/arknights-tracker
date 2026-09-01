@@ -1,4 +1,4 @@
-import { factoryEvents } from "$lib/data/events/factoryEvents.js";
+import { factoryEvents } from "$lib/data/events/factoryEvents";
 import { resourcePoints } from "$lib/data/items/resourcePoints";
 
 export const itemId2ResourcePointId = getItemId2ResourcePointId(resourcePoints);

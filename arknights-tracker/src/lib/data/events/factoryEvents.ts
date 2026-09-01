@@ -1,4 +1,6 @@
-export const factoryEvents = {
+import type { FactoryEventData } from "$lib/data/types/events/FactoryEventData";
+
+export const factoryEvents: Readonly<Record<string, FactoryEventData>> = {
     "ev4-v1.2": {
         id: "ev4-v1.2",
         eventItemIds: [

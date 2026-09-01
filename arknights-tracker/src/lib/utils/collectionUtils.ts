@@ -8,18 +8,35 @@ export function getMap<K, V>(list: readonly V[], getKeyFn: (item: V) => K): Map<
     return map;
 }
 
-export function getMappedList<K, V>(list: readonly V[], getKeyFn: (item: V) => K): Map<K, V[]> {
+export function getMappedList<K, V>(list: readonly V[], getKeyFn: (item: V) => K | readonly K[]): Map<K, V[]> {
     const map = new Map<K, V[]>();
 
     for (const item of list) {
-        let itemList = map.get(getKeyFn(item));
+        const keys = getKeyFn(item);
 
-        if (!itemList) {
-            itemList = [];
-            map.set(getKeyFn(item), itemList);
+        if (Array.isArray(keys)) {
+            for (const key of keys) {
+                let itemList = map.get(key);
+
+                if (!itemList) {
+                    itemList = [];
+                    map.set(key, itemList);
+                }
+
+                itemList.push(item);
+            }
+        } else {
+            const key = keys as K;
+
+            let itemList = map.get(key);
+
+            if (!itemList) {
+                itemList = [];
+                map.set(key, itemList);
+            }
+
+            itemList.push(item);
         }
-
-        itemList.push(item);
     }
 
     return map;

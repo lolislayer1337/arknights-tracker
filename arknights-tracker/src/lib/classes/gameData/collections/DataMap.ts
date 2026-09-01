@@ -1,5 +1,5 @@
 import type { IReadonlyDataMap } from "$lib/classes/gameData/collections/IReadonlyDataMap";
-import { getMap } from "$lib/utils/collectionUtils";
+import { getMap, getMappedList } from "$lib/utils/collectionUtils";
 
 export class DataMap<K, V> implements IReadonlyDataMap<K, V> {
     private readonly _map: Map<K, V>;
@@ -8,8 +8,12 @@ export class DataMap<K, V> implements IReadonlyDataMap<K, V> {
         this._map = map;
     }
 
-    public static create<K, V>(list: readonly V[], getIdFn: (item: V) => K) {
+    public static create<K, V>(list: readonly V[], getIdFn: (item: V) => K): DataMap<K, V> {
         return new DataMap(getMap(list, getIdFn));
+    }
+
+    public static createListed<K, V>(list: readonly V[], getIdFn: (item: V) => K): DataMap<K, V[]> {
+        return new DataMap(getMappedList(list, getIdFn));
     }
 
     public getOrThrow(key: K): V {

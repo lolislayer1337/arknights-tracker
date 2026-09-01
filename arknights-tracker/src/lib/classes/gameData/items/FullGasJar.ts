@@ -1,22 +1,25 @@
 import type { IFullGasJar } from "$lib/classes/gameData/items/IFullGasJar";
+import type { IItem } from "$lib/classes/gameData/items/IItem";
 import { Item } from "$lib/classes/gameData/items/Item";
-import type { FullJarData } from "$lib/data/types/items/FullJarData";
+import type { IImageIcon } from "$lib/classes/icons/IImageIcon";
 import type { ItemData } from "$lib/data/types/items/ItemData";
 
 export class FullGasJar extends Item implements IFullGasJar {
-    private readonly _fullJarData: FullJarData;
+    private readonly _emptyJar: IItem;
+    private readonly _gas: IItem;
 
-    protected constructor(itemData: ItemData, eventIds: string[], fullJarData: FullJarData) {
-        super(itemData, eventIds);
+    public constructor(itemData: ItemData, eventIds: string[], icon: IImageIcon, emptyJar: IItem, gas: IItem) {
+        super(itemData, eventIds, icon);
 
-        this._fullJarData = fullJarData;
+        this._emptyJar = emptyJar;
+        this._gas = gas;
     }
 
-    public get emptyJarId(): string {
-        return this._fullJarData.emptyJarId;
+    public get emptyJar(): IItem {
+        return this._emptyJar;
     }
 
-    public get gasId(): string {
-        return this._fullJarData.gasId;
+    public get gas(): IItem {
+        return this._gas;
     }
 }
