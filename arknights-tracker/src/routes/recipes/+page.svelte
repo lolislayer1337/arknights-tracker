@@ -1,5 +1,5 @@
 <script>
-    import { FactoryEvent } from "$lib/classes/events/FactoryEvent.js";
+    import { FactoryEvent } from "$lib/classes/events/legacy/FactoryEvent.js";
     import { Item } from "$lib/classes/items/Item.js";
     import { ItemComparator } from "$lib/classes/items/ItemComparator.js";
     import BottomSheet from "$lib/components/BottomSheet.svelte";

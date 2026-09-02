@@ -1,7 +1,7 @@
 import type { GameEventType } from "$lib/classes/events/GameEventType";
 import type { IData } from "$lib/classes/IData";
 
-export interface EventData extends IData {
+export interface EventData<T extends GameEventType> extends IData {
     readonly title: string;
     readonly name?: string;
     readonly startTime: string;
@@ -13,7 +13,8 @@ export interface EventData extends IData {
     readonly officialUrl?: string;
     readonly color: string;
     readonly layer: number;
-    readonly type: `${GameEventType}`;
+    readonly type: `${T}`;
     readonly iconPosition: number;
     readonly version: string;
+    readonly isPermanent?: boolean;
 }

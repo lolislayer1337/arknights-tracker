@@ -1,5 +1,5 @@
-import { GameEvent } from "$lib/classes/events/GameEvent.js";
-import { factoryEvents } from "$lib/data/events/factoryEvents";
+import { GameEvent } from "$lib/classes/events/legacy/GameEvent.js";
+import { factoryEvents } from "$lib/data/events/factoryEvents.ts";
 
 export class FactoryEvent extends GameEvent {
     _factoryEventObj;

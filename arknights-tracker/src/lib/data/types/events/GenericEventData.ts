@@ -6,11 +6,9 @@ import type { SignInEventData } from "$lib/data/types/events/SignInEventData";
 import type { WebEventData } from "$lib/data/types/events/WebEventData";
 
 export type GenericEventData =
-    & (
-        | Readonly<WebEventData>
-        | SignInEventData
-        | InGamePermanentEventData
-        | InGameEventData
-        | ProtoPassEventData
-        | MailEventData
-    );
+    | WebEventData
+    | SignInEventData
+    | InGamePermanentEventData
+    | InGameEventData
+    | ProtoPassEventData
+    | MailEventData;

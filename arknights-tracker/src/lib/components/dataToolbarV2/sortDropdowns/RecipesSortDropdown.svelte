@@ -1,5 +1,5 @@
 <script>
-    import { FactoryEvent } from "$lib/classes/events/FactoryEvent.js";
+    import { FactoryEvent } from "$lib/classes/events/legacy/FactoryEvent.js";
     import DropdownTemplate from "$lib/components/dataToolbarV2/DropdownTemplate.svelte";
     import RarityParamBox from "$lib/components/dataToolbarV2/paramBoxes/RarityParamBox.svelte";
     import TextParamBox from "$lib/components/dataToolbarV2/paramBoxes/TextParamBox.svelte";
