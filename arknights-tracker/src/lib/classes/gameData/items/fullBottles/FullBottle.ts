@@ -1,4 +1,4 @@
-import type { IFullBottle } from "$lib/classes/gameData/items/IFullBottle";
+import type { IFullBottle } from "$lib/classes/gameData/items/fullBottles/IFullBottle";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import { Item } from "$lib/classes/gameData/items/Item";
 import type { ItemGroup } from "$lib/classes/gameData/items/ItemGroup";

@@ -1,7 +1,7 @@
 import { DataMap } from "$lib/classes/gameData/collections/DataMap";
 import type { IReadonlyDataMap } from "$lib/classes/gameData/collections/IReadonlyDataMap";
-import { FullGasJar } from "$lib/classes/gameData/items/FullGasJar";
-import type { IFullGasJar } from "$lib/classes/gameData/items/IFullGasJar";
+import { FullGasJar } from "$lib/classes/gameData/items/fullJars/FullGasJar";
+import type { IFullGasJar } from "$lib/classes/gameData/items/fullJars/IFullGasJar";
 import { GameDataStorage } from "$lib/classes/storages/GameDataStorage";
 import type { IDataStorage } from "$lib/classes/storages/IDataStorage";
 import type { IFullGasJarStorage } from "$lib/classes/storages/items/IFullGasJarStorage";

@@ -2,7 +2,7 @@ import { Building } from "$lib/classes/gameData/buildings/Building";
 import type { BuildingType } from "$lib/classes/gameData/buildings/BuildingType";
 import type { IBuilding } from "$lib/classes/gameData/buildings/IBuilding";
 import type { IPowerStation } from "$lib/classes/gameData/buildings/powerStations/IPowerStation";
-import type { IFuel } from "$lib/classes/gameData/items/IFuel";
+import type { IFuel } from "$lib/classes/gameData/items/fuel/IFuel";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IItemStack } from "$lib/classes/gameData/items/IItemStack";
 import type { IPowerRecipe } from "$lib/classes/gameData/recipes/IPowerRecipe";

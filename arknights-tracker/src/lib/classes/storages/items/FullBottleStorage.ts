@@ -1,7 +1,7 @@
 import { DataMap } from "$lib/classes/gameData/collections/DataMap";
 import type { IReadonlyDataMap } from "$lib/classes/gameData/collections/IReadonlyDataMap";
-import { FullBottle } from "$lib/classes/gameData/items/FullBottle";
-import type { IFullBottle } from "$lib/classes/gameData/items/IFullBottle";
+import { FullBottle } from "$lib/classes/gameData/items/fullBottles/FullBottle";
+import type { IFullBottle } from "$lib/classes/gameData/items/fullBottles/IFullBottle";
 import { GameDataStorage } from "$lib/classes/storages/GameDataStorage";
 import type { IDataStorage } from "$lib/classes/storages/IDataStorage";
 import type { IFullBottleStorage } from "$lib/classes/storages/items/IFullBottleStorage";

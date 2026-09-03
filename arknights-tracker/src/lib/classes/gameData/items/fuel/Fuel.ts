@@ -1,4 +1,4 @@
-import type { IFuel } from "$lib/classes/gameData/items/IFuel";
+import type { IFuel } from "$lib/classes/gameData/items/fuel/IFuel";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import { Item } from "$lib/classes/gameData/items/Item";
 import type { ItemGroup } from "$lib/classes/gameData/items/ItemGroup";

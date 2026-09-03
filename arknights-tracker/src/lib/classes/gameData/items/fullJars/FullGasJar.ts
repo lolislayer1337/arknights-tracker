@@ -1,4 +1,4 @@
-import type { IFullGasJar } from "$lib/classes/gameData/items/IFullGasJar";
+import type { IFullGasJar } from "$lib/classes/gameData/items/fullJars/IFullGasJar";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import { Item } from "$lib/classes/gameData/items/Item";
 import type { ItemGroup } from "$lib/classes/gameData/items/ItemGroup";

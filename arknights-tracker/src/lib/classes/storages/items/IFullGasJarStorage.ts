@@ -1,5 +1,5 @@
 import type { IReadonlyDataMap } from "$lib/classes/gameData/collections/IReadonlyDataMap";
-import type { IFullGasJar } from "$lib/classes/gameData/items/IFullGasJar";
+import type { IFullGasJar } from "$lib/classes/gameData/items/fullJars/IFullGasJar";
 import type { IGameDataStorage } from "$lib/classes/storages/IGameDataStorage";
 
 export interface IFullGasJarStorage extends IGameDataStorage<IFullGasJar> {

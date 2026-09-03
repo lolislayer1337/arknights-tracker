@@ -1,5 +1,5 @@
-import { Fuel } from "$lib/classes/gameData/items/Fuel";
-import type { IFuel } from "$lib/classes/gameData/items/IFuel";
+import { Fuel } from "$lib/classes/gameData/items/fuel/Fuel";
+import type { IFuel } from "$lib/classes/gameData/items/fuel/IFuel";
 import { GameDataStorage } from "$lib/classes/storages/GameDataStorage";
 import type { IDataStorage } from "$lib/classes/storages/IDataStorage";
 import type { IFuelStorage } from "$lib/classes/storages/items/IFuelStorage";

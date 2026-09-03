@@ -1,5 +1,5 @@
 import type { IBuilding } from "$lib/classes/gameData/buildings/IBuilding";
-import type { IFuel } from "$lib/classes/gameData/items/IFuel";
+import type { IFuel } from "$lib/classes/gameData/items/fuel/IFuel";
 import type { IPowerRecipe } from "$lib/classes/gameData/recipes/IPowerRecipe";
 
 export interface IPowerStation extends IBuilding {
