@@ -4,9 +4,9 @@
     import Tooltip from "$lib/components/Tooltip.svelte";
     import { getRarityColor } from "$lib/utils/colorUtils";
 
-    export let rarity: Rarity | undefined;
-    export let tooltipText: string | undefined;
-    export let url: string | undefined;
+    export let rarity: Rarity | undefined = undefined;
+    export let tooltipText: string | undefined = undefined;
+    export let url: string | undefined = undefined;
     export let highlight: boolean = false;
 
     export let size: CardSize = CardSize.DEFAULT;
@@ -29,15 +29,7 @@
         }
     }
 
-    function getTextSize(size: CardSize) {
-        switch (size) {
-            case CardSize.DEFAULT:
-            case CardSize.SMALL:
-                return "text-sm";
-            case CardSize.MICRO:
-                return "text-xs";
-        }
-    }
+
 
     function getRingSize(size: CardSize) {
         switch (size) {
