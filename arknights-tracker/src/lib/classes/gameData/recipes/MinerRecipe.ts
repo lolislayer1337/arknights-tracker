@@ -1,4 +1,4 @@
-import type { IMiner } from "$lib/classes/gameData/buildings/IMiner";
+import type { IMiner } from "$lib/classes/gameData/buildings/miners/IMiner";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IItemStack } from "$lib/classes/gameData/items/IItemStack";
 import type { IMinerRecipe } from "$lib/classes/gameData/recipes/IMinerRecipe";

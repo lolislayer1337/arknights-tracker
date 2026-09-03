@@ -1,4 +1,4 @@
-import type { IPump } from "$lib/classes/gameData/buildings/IPump";
+import type { IPump } from "$lib/classes/gameData/buildings/pumps/IPump";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IItemStack } from "$lib/classes/gameData/items/IItemStack";
 import type { IPumpRecipe } from "$lib/classes/gameData/recipes/IPumpRecipe";

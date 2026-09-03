@@ -1,4 +1,4 @@
-import type { IPowerStation } from "$lib/classes/gameData/buildings/IPowerStation";
+import type { IPowerStation } from "$lib/classes/gameData/buildings/powerStations/IPowerStation";
 import type { IFuel } from "$lib/classes/gameData/items/IFuel";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IBuildingRecipe } from "$lib/classes/gameData/recipes/IBuildingRecipe";

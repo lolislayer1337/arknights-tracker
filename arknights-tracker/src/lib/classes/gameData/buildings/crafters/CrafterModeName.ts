@@ -1,4 +1,4 @@
-export enum BuildingModeName {
+export enum CrafterModeName {
     NORMAL = "normal",
     LIQUID = "liquid",
     GAS = "gas",

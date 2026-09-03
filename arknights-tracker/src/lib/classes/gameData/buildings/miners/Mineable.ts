@@ -1,4 +1,4 @@
-import type { IMineable } from "$lib/classes/gameData/buildings/IMineable";
+import type { IMineable } from "$lib/classes/gameData/buildings/miners/IMineable";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IItemStack } from "$lib/classes/gameData/items/IItemStack";
 import type { IResourcePoint } from "$lib/classes/gameData/resourcePoints/IResourcePoint";

@@ -1,4 +1,4 @@
-import type { IEnableLiquid } from "$lib/classes/gameData/buildings/IEnableLiquid";
+import type { IEnableLiquid } from "$lib/classes/gameData/buildings/pumps/IEnableLiquid";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IResourcePoint } from "$lib/classes/gameData/resourcePoints/IResourcePoint";
 

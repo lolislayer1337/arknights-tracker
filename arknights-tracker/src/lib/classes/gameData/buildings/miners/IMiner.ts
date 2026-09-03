@@ -1,5 +1,5 @@
 import type { IBuilding } from "$lib/classes/gameData/buildings/IBuilding";
-import type { IMineable } from "$lib/classes/gameData/buildings/IMineable";
+import type { IMineable } from "$lib/classes/gameData/buildings/miners/IMineable";
 import type { IMinerRecipe } from "$lib/classes/gameData/recipes/IMinerRecipe";
 
 export interface IMiner extends IBuilding {

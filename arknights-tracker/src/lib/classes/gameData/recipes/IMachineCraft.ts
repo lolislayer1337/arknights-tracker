@@ -1,4 +1,4 @@
-import type { ICrafter } from "$lib/classes/gameData/buildings/ICrafter";
+import type { ICrafter } from "$lib/classes/gameData/buildings/crafters/ICrafter";
 import type { IGameData } from "$lib/classes/gameData/IGameData";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IBuildingRecipe } from "$lib/classes/gameData/recipes/IBuildingRecipe";

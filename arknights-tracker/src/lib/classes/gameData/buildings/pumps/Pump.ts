@@ -1,12 +1,13 @@
 import { Building } from "$lib/classes/gameData/buildings/Building";
-import type { IEnableLiquid } from "$lib/classes/gameData/buildings/IEnableLiquid";
-import type { IPump } from "$lib/classes/gameData/buildings/IPump";
+import type { BuildingType } from "$lib/classes/gameData/buildings/BuildingType";
+import type { IBuilding } from "$lib/classes/gameData/buildings/IBuilding";
+import type { IEnableLiquid } from "$lib/classes/gameData/buildings/pumps/IEnableLiquid";
+import type { IPump } from "$lib/classes/gameData/buildings/pumps/IPump";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import type { IItemStack } from "$lib/classes/gameData/items/IItemStack";
 import type { IPumpRecipe } from "$lib/classes/gameData/recipes/IPumpRecipe";
 import { PumpRecipe } from "$lib/classes/gameData/recipes/PumpRecipe";
-import type { IResourcePointStorage } from "$lib/classes/storages/resourcePoints/IResourcePointStorage";
-import type { BuildingData } from "$lib/data/types/buildings/BuildingData";
+import type { IImageIcon } from "$lib/classes/icons/IImageIcon";
 import { getMap } from "$lib/utils/collectionUtils";
 
 export class Pump extends Building implements IPump {
@@ -14,15 +15,24 @@ export class Pump extends Building implements IPump {
     private readonly _enableLiquids: readonly IEnableLiquid[];
     private readonly _enableLiquidMap: Map<string, IEnableLiquid>;
 
-    private readonly _resourcePointStorage: IResourcePointStorage;
-
-    public constructor(buildingData: BuildingData, buildingItem: IItem, pumpTimeMs: number, enableLiquids: readonly IEnableLiquid[], resourcePointStorage: IResourcePointStorage) {
-        super(buildingData, buildingItem);
+    public constructor(id: string, gameId: string, type: BuildingType, item: IItem, icon: IImageIcon, pumpTimeMs: number, enableLiquids: readonly IEnableLiquid[]) {
+        super(id, gameId, type, item, icon);
 
         this._pumpTimeMs = pumpTimeMs;
         this._enableLiquids = enableLiquids;
         this._enableLiquidMap = getMap(enableLiquids, item => item.item.gameId);
-        this._resourcePointStorage = resourcePointStorage;
+    }
+
+    public static createFromBuilding(building: IBuilding, pumpTimeMs: number, enableLiquids: readonly IEnableLiquid[]): Pump {
+        return new Pump(
+            building.id,
+            building.gameId,
+            building.type,
+            building.item,
+            building.icon,
+            pumpTimeMs,
+            enableLiquids
+        );
     }
 
     public get enableLiquids(): readonly IEnableLiquid[] {
