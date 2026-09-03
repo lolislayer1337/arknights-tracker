@@ -1,4 +1,4 @@
-import type { IReadonlyDataMap } from "$lib/classes/gameData/collections/IReadonlyDataMap";
+import type { IReadonlyDataMap } from "$lib/classes/collections/IReadonlyDataMap";
 import { getMap, getMappedList } from "$lib/utils/collectionUtils";
 
 export class DataMap<K, V> implements IReadonlyDataMap<K, V> {

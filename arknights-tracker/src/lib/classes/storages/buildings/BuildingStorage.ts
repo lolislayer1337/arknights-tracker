@@ -1,7 +1,7 @@
 import { Building } from "$lib/classes/gameData/buildings/Building";
 import type { IBuilding } from "$lib/classes/gameData/buildings/IBuilding";
-import { DataMap } from "$lib/classes/gameData/collections/DataMap";
-import type { IReadonlyDataMap } from "$lib/classes/gameData/collections/IReadonlyDataMap";
+import { DataMap } from "$lib/classes/collections/DataMap";
+import type { IReadonlyDataMap } from "$lib/classes/collections/IReadonlyDataMap";
 import type { IBuildingStorage } from "$lib/classes/storages/buildings/IBuildingStorage";
 import { GameDataStorage } from "$lib/classes/storages/GameDataStorage";
 import type { IDataStorage } from "$lib/classes/storages/IDataStorage";

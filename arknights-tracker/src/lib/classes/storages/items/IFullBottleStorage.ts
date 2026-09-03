@@ -1,4 +1,4 @@
-import type { IReadonlyDataMap } from "$lib/classes/gameData/collections/IReadonlyDataMap";
+import type { IReadonlyDataMap } from "$lib/classes/collections/IReadonlyDataMap";
 import type { IFullBottle } from "$lib/classes/gameData/items/fullBottles/IFullBottle";
 import type { IGameDataStorage } from "$lib/classes/storages/IGameDataStorage";
 

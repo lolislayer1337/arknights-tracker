@@ -1,5 +1,5 @@
-import { DataMap } from "$lib/classes/gameData/collections/DataMap";
-import type { IReadonlyDataMap } from "$lib/classes/gameData/collections/IReadonlyDataMap";
+import { DataMap } from "$lib/classes/collections/DataMap";
+import type { IReadonlyDataMap } from "$lib/classes/collections/IReadonlyDataMap";
 import type { IResourcePoint } from "$lib/classes/gameData/resourcePoints/IResourcePoint";
 import { ResourcePoint } from "$lib/classes/gameData/resourcePoints/ResourcePoint";
 import { GameDataStorage } from "$lib/classes/storages/GameDataStorage";
