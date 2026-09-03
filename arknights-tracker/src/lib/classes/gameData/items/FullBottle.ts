@@ -1,15 +1,19 @@
 import type { IFullBottle } from "$lib/classes/gameData/items/IFullBottle";
 import type { IItem } from "$lib/classes/gameData/items/IItem";
 import { Item } from "$lib/classes/gameData/items/Item";
+import type { ItemGroup } from "$lib/classes/gameData/items/ItemGroup";
+import type { ItemMaterial } from "$lib/classes/gameData/items/ItemMaterial";
+import type { ItemType } from "$lib/classes/gameData/items/ItemType";
 import type { IImageIcon } from "$lib/classes/icons/IImageIcon";
-import type { ItemData } from "$lib/data/types/items/ItemData";
+import type { Rarity } from "$lib/classes/Rarity";
 
 export class FullBottle extends Item implements IFullBottle {
     private readonly _emptyBottle: IItem;
     private readonly _liquid: IItem;
 
-    public constructor(itemData: ItemData, eventIds: string[], icon: IImageIcon, emptyBottle: IItem, liquid: IItem) {
-        super(itemData, eventIds, icon);
+    public constructor(id: string, gameId: string, rarity: Rarity, groupId: ItemGroup, type: ItemType, itemMaterial: ItemMaterial | null, icon: IImageIcon, subIcon: IImageIcon | null, emptyBottle: IItem, liquid: IItem) {
+        super(id, gameId, rarity, groupId, type, itemMaterial, icon, subIcon);
+
         this._emptyBottle = emptyBottle;
         this._liquid = liquid;
     }

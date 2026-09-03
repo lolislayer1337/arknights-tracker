@@ -8,9 +8,9 @@ import type { Rarity } from "$lib/classes/Rarity";
 
 export interface IItem extends IGameData, ITextable {
     get icon(): IImageIcon;
+    get subIcon(): IImageIcon | null;
     get rarity(): Rarity;
     get groupId(): ItemGroup;
     get type(): ItemType;
     get material(): ItemMaterial | null;
-    getEventIds(): string[];
 }
