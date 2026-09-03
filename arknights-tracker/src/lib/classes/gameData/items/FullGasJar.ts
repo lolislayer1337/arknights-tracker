@@ -18,6 +18,21 @@ export class FullGasJar extends Item implements IFullGasJar {
         this._gas = gas;
     }
 
+    public static createFromItem(item: IItem, emptyJar: IItem, gas: IItem): FullGasJar {
+        return new FullGasJar(
+            item.id,
+            item.gameId,
+            item.rarity,
+            item.groupId,
+            item.type,
+            item.material,
+            item.icon,
+            gas.icon,
+            emptyJar,
+            gas
+        );
+    }
+
     public get emptyJar(): IItem {
         return this._emptyJar;
     }

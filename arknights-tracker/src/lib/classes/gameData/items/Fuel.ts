@@ -1,4 +1,5 @@
 import type { IFuel } from "$lib/classes/gameData/items/IFuel";
+import type { IItem } from "$lib/classes/gameData/items/IItem";
 import { Item } from "$lib/classes/gameData/items/Item";
 import type { ItemGroup } from "$lib/classes/gameData/items/ItemGroup";
 import type { ItemMaterial } from "$lib/classes/gameData/items/ItemMaterial";
@@ -15,6 +16,21 @@ export class Fuel extends Item implements IFuel {
 
         this._powerProvide = powerProvide;
         this._progressRound = progressRound;
+    }
+
+    public static createFromItem(item: IItem, powerProvide: number, progressRound: number): Fuel {
+        return new Fuel(
+            item.id,
+            item.gameId,
+            item.rarity,
+            item.groupId,
+            item.type,
+            item.material,
+            item.icon,
+            item.subIcon,
+            powerProvide,
+            progressRound
+        );
     }
 
     public get powerProvide(): number {

@@ -18,6 +18,21 @@ export class FullBottle extends Item implements IFullBottle {
         this._liquid = liquid;
     }
 
+    public static createFromItem(item: IItem, emptyBottle: IItem, liquid: IItem): FullBottle {
+        return new FullBottle(
+            item.id,
+            item.gameId,
+            item.rarity,
+            item.groupId,
+            item.type,
+            item.material,
+            item.icon,
+            liquid.icon,
+            emptyBottle,
+            liquid
+        );
+    }
+
     public get emptyBottle(): IItem {
         return this._emptyBottle;
     }
