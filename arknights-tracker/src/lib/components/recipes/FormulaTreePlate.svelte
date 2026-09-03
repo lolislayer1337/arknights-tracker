@@ -6,7 +6,7 @@
     import ItemStackCardLegacy from "$lib/components/cards/ItemStackCardLegacy.svelte";
     import BuildingTreeNode from "$lib/components/recipes/BuildingTreeNode.svelte";
     import ForceNodeContinuationButton from "$lib/components/recipes/ForceNodeContinuationButton.svelte";
-    import ResourcePointCard from "$lib/components/cards/ResourcePointCard.svelte";
+    import ResourcePointCardLegacy from "$lib/components/cards/ResourcePointCardLegacy.svelte";
 
     export let startItemId;
     export let startFormula = null;
@@ -274,7 +274,7 @@
 
                 {:else if node.type === "resourcePointNode"}
 
-                    <ResourcePointCard
+                    <ResourcePointCardLegacy
                         itemId={node.itemId}
                     />
 

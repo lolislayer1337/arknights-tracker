@@ -1,6 +1,6 @@
 <script>
     import ItemStackCardLegacy from "$lib/components/cards/ItemStackCardLegacy.svelte";
-    import ResourcePointCard from "$lib/components/cards/ResourcePointCard.svelte";
+    import ResourcePointCardLegacy from "$lib/components/cards/ResourcePointCardLegacy.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import FuelEnergyCard from "$lib/components/recipes/FuelEnergyCard.svelte";
     import { getRecipeTreeLinkParameters } from "$lib/utils/linkUtils.js";
@@ -128,7 +128,7 @@
 
         {:else if (mode === "miningFormula")}
 
-            <ResourcePointCard
+            <ResourcePointCardLegacy
                 itemId={resourceItemId}
                 size="micro"
                 showTooltip={true}
@@ -154,7 +154,7 @@
 
         {:else if (mode === "gasMiningFormula")}
 
-            <ResourcePointCard
+            <ResourcePointCardLegacy
                 itemId={resourceItemId}
                 size="micro"
                 showTooltip={true}
@@ -180,7 +180,7 @@
 
         {:else if (mode === "pumpingFormula")}
 
-            <ResourcePointCard
+            <ResourcePointCardLegacy
                 itemId={resourceItemId}
                 size="micro"
                 showTooltip={true}
