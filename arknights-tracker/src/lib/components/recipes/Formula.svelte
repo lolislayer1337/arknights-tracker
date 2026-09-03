@@ -1,5 +1,5 @@
 <script>
-    import ItemStackCard from "$lib/components/cards/ItemStackCard.svelte";
+    import ItemStackCardLegacy from "$lib/components/cards/ItemStackCardLegacy.svelte";
     import ResourcePointCard from "$lib/components/cards/ResourcePointCard.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import FuelEnergyCard from "$lib/components/recipes/FuelEnergyCard.svelte";
@@ -115,7 +115,7 @@
                     </div>
                 {/if}
 
-                <ItemStackCard
+                <ItemStackCardLegacy
                     itemId={itemId}
                     amount={count}
                     size="micro"
@@ -141,7 +141,7 @@
                         </span>
                 </div>
 
-                <ItemStackCard
+                <ItemStackCardLegacy
                     itemId={itemId}
                     amount={count}
                     size="micro"
@@ -167,7 +167,7 @@
                         </span>
                 </div>
 
-                <ItemStackCard
+                <ItemStackCardLegacy
                     itemId={itemId}
                     amount={count}
                     size="micro"
@@ -193,7 +193,7 @@
                         </span>
                 </div>
 
-                <ItemStackCard
+                <ItemStackCardLegacy
                     itemId={itemId}
                     amount={count}
                     size="micro"
@@ -231,7 +231,7 @@
                 </div>
             {/if}
 
-            <ItemStackCard
+            <ItemStackCardLegacy
                 itemId={itemId}
                 amount={count}
                 size="micro"

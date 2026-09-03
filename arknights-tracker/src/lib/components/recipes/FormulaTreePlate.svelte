@@ -3,7 +3,7 @@
     import { Item } from "$lib/classes/items/Item.js";
     import DragPlate from "$lib/components/dragPlate/DragPlate.svelte";
     import Icon from "$lib/components/Icon.svelte";
-    import ItemStackCard from "$lib/components/cards/ItemStackCard.svelte";
+    import ItemStackCardLegacy from "$lib/components/cards/ItemStackCardLegacy.svelte";
     import BuildingTreeNode from "$lib/components/recipes/BuildingTreeNode.svelte";
     import ForceNodeContinuationButton from "$lib/components/recipes/ForceNodeContinuationButton.svelte";
     import ResourcePointCard from "$lib/components/cards/ResourcePointCard.svelte";
@@ -262,7 +262,7 @@
                         on:click|preventDefault|stopPropagation={() => selectNode(node)}
                     >
 
-                        <ItemStackCard
+                        <ItemStackCardLegacy
                             itemId={node.itemId}
                             highlight={isNodeSelected(node)}
                             highlightRingSize="4"
