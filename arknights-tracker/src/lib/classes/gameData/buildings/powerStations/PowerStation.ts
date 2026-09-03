@@ -13,7 +13,6 @@ export class PowerStation extends Building implements IPowerStation {
     private readonly _msPerRound: number;
     private readonly _enableFuelList: readonly IFuel[];
 
-
     public constructor(id: string, gameId: string, type: BuildingType, item: IItem, icon: IImageIcon, msPerRound: number, enableFuelList: readonly IFuel[]) {
         super(id, gameId, type, item, icon);
 

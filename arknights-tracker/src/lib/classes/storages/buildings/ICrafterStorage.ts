@@ -1,4 +1,4 @@
 import type { ICrafter } from "$lib/classes/gameData/buildings/crafters/ICrafter";
-import type { IGameDataStorage } from "$lib/classes/storages/IGameDataStorage";
+import type { IBuildingStorage } from "$lib/classes/storages/buildings/IBuildingStorage";
 
-export interface ICrafterStorage extends IGameDataStorage<ICrafter> {}
+export interface ICrafterStorage extends IBuildingStorage<ICrafter> {}

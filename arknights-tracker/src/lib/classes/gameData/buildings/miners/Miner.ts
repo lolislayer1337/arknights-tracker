@@ -14,7 +14,6 @@ export class Miner extends Building implements IMiner {
     private readonly _mineableMap: Map<string, IMineable>;
     private readonly _mineableList: readonly IMineable[];
 
-
     public constructor(id: string, gameId: string, type: BuildingType, item: IItem, icon: IImageIcon, mineableList: readonly IMineable[]) {
         super(id, gameId, type, item, icon);
 

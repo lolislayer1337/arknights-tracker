@@ -1,4 +1,4 @@
 import type { IMiner } from "$lib/classes/gameData/buildings/miners/IMiner";
-import type { IGameDataStorage } from "$lib/classes/storages/IGameDataStorage";
+import type { IBuildingStorage } from "$lib/classes/storages/buildings/IBuildingStorage";
 
-export interface IMinerStorage extends IGameDataStorage<IMiner> {}
+export interface IMinerStorage extends IBuildingStorage<IMiner> {}
