@@ -1,7 +1,4 @@
-import type { ItemStackData } from "$lib/classes/gameData/items/ItemStackData";
 import type { IData } from "$lib/classes/IData";
+import type { RecipeData } from "$lib/data/types/crafts/RecipeData";
 
-export interface ManualCraftData extends IData {
-    readonly ingredients: readonly ItemStackData[];
-    readonly outcomes: readonly ItemStackData[];
-}
+export interface ManualCraftData extends IData, RecipeData {}
