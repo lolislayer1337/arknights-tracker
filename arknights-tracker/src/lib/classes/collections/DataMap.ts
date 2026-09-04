@@ -12,7 +12,7 @@ export class DataMap<K, V> implements IReadonlyDataMap<K, V> {
         return new DataMap(getMap(list, getIdFn));
     }
 
-    public static createListed<K, V>(list: readonly V[], getIdFn: (item: V) => K): DataMap<K, V[]> {
+    public static createListed<K, V>(list: readonly V[], getIdFn: (item: V) => K | readonly K[]): DataMap<K, V[]> {
         return new DataMap(getMappedList(list, getIdFn));
     }
 

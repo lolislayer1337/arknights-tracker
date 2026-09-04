@@ -1,3 +1,5 @@
+import { DataMap } from "$lib/classes/collections/DataMap";
+import type { IReadonlyDataMap } from "$lib/classes/collections/IReadonlyDataMap";
 import type { IMineable } from "$lib/classes/gameData/buildings/miners/IMineable";
 import type { IMiner } from "$lib/classes/gameData/buildings/miners/IMiner";
 import { Mineable } from "$lib/classes/gameData/buildings/miners/Mineable";
@@ -11,9 +13,23 @@ import type { IResourcePointStorage } from "$lib/classes/storages/resourcePoints
 import type { MinerData } from "$lib/data/types/buildings/MinerData";
 
 export class MinerStorage extends BuildingStorage<IMiner> implements IMinerStorage {
+    private readonly _byMineableId: IReadonlyDataMap<string, IMiner[]>;
+    private readonly _byConsumeItemId: IReadonlyDataMap<string, IMiner[]>;
 
     public constructor(list: IMiner[]) {
         super(list);
+
+        this._byMineableId = DataMap.createListed(
+            list,
+            miner => miner.mineableList
+                .map(item => item.miningItem.gameId)
+        );
+        this._byConsumeItemId = DataMap.createListed(
+            list,
+            miner => miner.mineableList
+                .map(item => item.consumeItem?.item.gameId)
+                .filter(item => item !== undefined)
+        );
     }
 
     public static createMinerStorage(dataStorage: IDataStorage<MinerData>, buildingStorage: IBuildingStorage, itemStorage: IItemStorage, resourcePointStorage: IResourcePointStorage): MinerStorage {
@@ -38,5 +54,13 @@ export class MinerStorage extends BuildingStorage<IMiner> implements IMinerStora
         }
 
         return new MinerStorage(list);
+    }
+
+    public get byConsumeItemId(): IReadonlyDataMap<string, IMiner[]> {
+        return this._byConsumeItemId;
+    }
+
+    public get byMineableId(): IReadonlyDataMap<string, IMiner[]> {
+        return this._byMineableId;
     }
 }

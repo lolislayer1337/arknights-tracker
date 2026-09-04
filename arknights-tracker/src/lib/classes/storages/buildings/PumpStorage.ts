@@ -1,3 +1,5 @@
+import { DataMap } from "$lib/classes/collections/DataMap";
+import type { IReadonlyDataMap } from "$lib/classes/collections/IReadonlyDataMap";
 import { EnableLiquid } from "$lib/classes/gameData/buildings/pumps/EnableLiquid";
 import type { IEnableLiquid } from "$lib/classes/gameData/buildings/pumps/IEnableLiquid";
 import type { IPump } from "$lib/classes/gameData/buildings/pumps/IPump";
@@ -11,9 +13,15 @@ import type { IResourcePointStorage } from "$lib/classes/storages/resourcePoints
 import type { PumpData } from "$lib/data/types/buildings/PumpData";
 
 export class PumpStorage extends BuildingStorage<IPump> implements IPumpStorage {
+    private readonly _byEnableLiquidId: IReadonlyDataMap<string, IPump[]>;
 
     public constructor(list: IPump[]) {
         super(list);
+
+        this._byEnableLiquidId = DataMap.createListed(
+            list,
+            pump => pump.enableLiquids.map(item => item.item.gameId)
+        );
     }
 
     public static createPumpStorage(dataStorage: IDataStorage<PumpData>, buildingStorage: IBuildingStorage, itemStorage: IItemStorage, resourcePointStorage: IResourcePointStorage): PumpStorage {
@@ -31,5 +39,9 @@ export class PumpStorage extends BuildingStorage<IPump> implements IPumpStorage 
         }
 
         return new PumpStorage(list);
+    }
+
+    public get byEnableLiquidId(): IReadonlyDataMap<string, IPump[]> {
+        return this._byEnableLiquidId;
     }
 }
