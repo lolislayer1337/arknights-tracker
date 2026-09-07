@@ -22,13 +22,18 @@ export class MachineCraftFactory
         const ingredients = this.getItemStackList(recipeData.ingredients);
         const outcomes = this.getItemStackList(recipeData.outcomes);
         const crafter = this._crafterStorage.byGameId.getOrThrow(recipeData.buildingId);
+        const formulaGroup = crafter.modes.find(item => item.formulaGroupId === recipeData.formulaGroupId);
+
+        if (!formulaGroup) {
+            throw new Error(`Formula group id ${recipeData.formulaGroupId} for crafter ${crafter.gameId} not found`);
+        }
 
         return new MachineCraft(
             ingredients,
             outcomes,
             crafter,
             recipeData.craftTimeMs,
-            recipeData.formulaGroupId,
+            formulaGroup,
             recipeData.id,
             recipeData.id
         );
