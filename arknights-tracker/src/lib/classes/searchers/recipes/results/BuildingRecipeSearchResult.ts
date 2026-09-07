@@ -8,19 +8,17 @@ import { ResultBuildingGroup } from "$lib/classes/searchers/recipes/results/Resu
 import { getMap, getMappedList } from "$lib/utils/collectionUtils";
 
 export class BuildingRecipeSearchResult<
-    TRecipe extends IBuildingRecipe<TBuilding, TIngredient, TOutcome>,
     TBuilding extends IBuilding,
-    TIngredient extends IItem = IItem,
-    TOutcome extends IItem = IItem
+    TRecipe extends IBuildingRecipe<TBuilding, IItem, IItem>,
 >
-    extends RecipeSearchResult<TRecipe, TIngredient, TOutcome>
-    implements IBuildingRecipeSearchResult<TRecipe, TBuilding, IResultBuildingGroup<TRecipe, TBuilding, TIngredient, TOutcome>, TIngredient, TOutcome> {
+    extends RecipeSearchResult<TRecipe>
+    implements IBuildingRecipeSearchResult<TBuilding, TRecipe, IResultBuildingGroup<TBuilding, TRecipe>> {
 
-    public constructor(list: TRecipe[]) {
+    public constructor(list: readonly TRecipe[]) {
         super(list);
     }
 
-    public groupByBuilding(): ReadonlyMap<string, IResultBuildingGroup<TRecipe, TBuilding, TIngredient, TOutcome>> {
+    public groupByBuilding(): ReadonlyMap<string, IResultBuildingGroup<TBuilding, TRecipe>> {
         const recipeMap = getMappedList(this.list, r => r.building.gameId);
         const groupList = recipeMap.values()
             .map(list => new ResultBuildingGroup(list[0].building, list));

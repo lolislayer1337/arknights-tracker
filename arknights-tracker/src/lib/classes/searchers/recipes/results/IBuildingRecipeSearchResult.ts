@@ -5,11 +5,9 @@ import type { IRecipeSearchResult } from "$lib/classes/searchers/recipes/results
 import type { IResultBuildingGroup } from "$lib/classes/searchers/recipes/results/IResultBuildingGroup";
 
 export interface IBuildingRecipeSearchResult<
-    TRecipe extends IBuildingRecipe<TBuilding, TIngredient, TOutcome>,
     TBuilding extends IBuilding,
-    TGroup extends IResultBuildingGroup<TRecipe, TBuilding, TIngredient, TOutcome>,
-    TIngredient extends IItem = IItem,
-    TOutcome extends IItem = IItem
-> extends IRecipeSearchResult<TRecipe, TIngredient, TOutcome> {
+    TRecipe extends IBuildingRecipe<TBuilding, IItem, IItem> = IBuildingRecipe<TBuilding, IItem, IItem>,
+    TGroup extends IResultBuildingGroup<TBuilding, TRecipe> = IResultBuildingGroup<TBuilding, TRecipe>,
+> extends IRecipeSearchResult<TRecipe> {
     groupByBuilding(): ReadonlyMap<string, TGroup>;
 }

@@ -5,7 +5,7 @@ import type { IResultCrafterModeGroup } from "$lib/classes/searchers/recipes/res
 import { ResultBuildingGroup } from "$lib/classes/searchers/recipes/results/ResultBuildingGroup";
 
 export class ResultCrafterModeGroup
-    extends ResultBuildingGroup<IMachineCraft, ICrafter>
+    extends ResultBuildingGroup<ICrafter, IMachineCraft>
     implements IResultCrafterModeGroup {
 
     private readonly _mode: ICrafterModeGroup;

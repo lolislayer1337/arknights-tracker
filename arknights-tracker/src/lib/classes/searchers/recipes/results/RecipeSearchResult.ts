@@ -3,10 +3,8 @@ import type { IRecipe } from "$lib/classes/gameData/recipes/IRecipe";
 import type { IRecipeSearchResult } from "$lib/classes/searchers/recipes/results/IRecipeSearchResult";
 
 export class RecipeSearchResult<
-    TRecipe extends IRecipe<TIngredient, TOutcome>,
-    TIngredient extends IItem = IItem,
-    TOutcome extends IItem = IItem
-> implements IRecipeSearchResult<TRecipe, TIngredient, TOutcome> {
+    TRecipe extends IRecipe<IItem, IItem> = IRecipe<IItem, IItem>,
+> implements IRecipeSearchResult<TRecipe> {
     private readonly _list: readonly TRecipe[];
 
     public constructor(list: readonly TRecipe[]) {

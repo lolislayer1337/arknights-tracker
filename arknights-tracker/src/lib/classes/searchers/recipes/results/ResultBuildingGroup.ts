@@ -5,13 +5,11 @@ import { AResultBuildingGroup } from "$lib/classes/searchers/recipes/results/ARe
 import type { IResultBuildingGroup } from "$lib/classes/searchers/recipes/results/IResultBuildingGroup";
 
 export class ResultBuildingGroup<
-    TRecipe extends IBuildingRecipe<TBuilding, TIngredient, TOutcome>,
     TBuilding extends IBuilding,
-    TIngredient extends IItem = IItem,
-    TOutcome extends IItem = IItem
+    TRecipe extends IBuildingRecipe<TBuilding, IItem, IItem>,
 >
-    extends AResultBuildingGroup<TRecipe, TBuilding, TIngredient, TOutcome>
-    implements IResultBuildingGroup<TRecipe, TBuilding, TIngredient, TOutcome> {
+    extends AResultBuildingGroup<TBuilding, TRecipe>
+    implements IResultBuildingGroup<TBuilding, TRecipe> {
 
     private readonly _list: readonly TRecipe[];
 

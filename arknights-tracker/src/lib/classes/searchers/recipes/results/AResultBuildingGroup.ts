@@ -4,11 +4,9 @@ import type { IBuildingRecipe } from "$lib/classes/gameData/recipes/IBuildingRec
 import type { IResultBuildingGroup } from "$lib/classes/searchers/recipes/results/IResultBuildingGroup";
 
 export abstract class AResultBuildingGroup<
-    TRecipe extends IBuildingRecipe<TBuilding, TIngredient, TOutcome>,
     TBuilding extends IBuilding,
-    TIngredient extends IItem = IItem,
-    TOutcome extends IItem = IItem
-> implements IResultBuildingGroup<TRecipe, TBuilding, TIngredient, TOutcome> {
+    TRecipe extends IBuildingRecipe<TBuilding, IItem, IItem>,
+> implements IResultBuildingGroup<TBuilding, TRecipe> {
     private readonly _building: TBuilding;
 
     protected constructor(building: TBuilding) {
