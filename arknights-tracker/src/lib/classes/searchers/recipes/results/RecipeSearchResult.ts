@@ -16,4 +16,8 @@ export class RecipeSearchResult<
     public get list(): readonly TRecipe[] {
         return this._list;
     }
+
+    public get isEmpty(): boolean {
+        return this._list.length === 0;
+    }
 }

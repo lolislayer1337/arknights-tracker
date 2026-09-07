@@ -7,4 +7,5 @@ export interface IRecipeSearchResult<
     TOutcome extends IItem = IItem
 > {
     get list(): readonly TRecipe[];
+    get isEmpty(): boolean;
 }
