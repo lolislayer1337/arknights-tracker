@@ -5,8 +5,8 @@
     import { getRarityColor } from "$lib/utils/colorUtils";
 
     export let rarity: Rarity | undefined = undefined;
-    export let tooltipText: string | undefined = undefined;
-    export let url: string | undefined = undefined;
+    export let tooltipText: string | null = null;
+    export let url: string | null = null;
     export let highlight: boolean = false;
 
     export let size: CardSize = CardSize.DEFAULT;
@@ -45,12 +45,12 @@
 
 <Tooltip
     disabled={!tooltipText}
-    text={tooltipText}
+    text={tooltipText ?? undefined}
 >
 
     <svelte:element
         this={url ? "a" : "div"}
-        href={url}
+        href={url ?? undefined}
         role={url ? "link" : "presentation"}
         class="relative flex flex-col select-none group flex-shrink-0 {boxSize} no-underline focus:outline-none rounded-[6px] {highlightRing}"
         class:cursor-pointer={showHoverEffect}

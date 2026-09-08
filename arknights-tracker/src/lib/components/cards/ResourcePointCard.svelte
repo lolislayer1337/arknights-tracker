@@ -6,8 +6,8 @@
     import { t } from "$lib/i18n";
 
     export let resourcePoint: IResourcePoint;
-    export let url: string | undefined = undefined;
-    export let tooltipText: string | undefined = undefined;
+    export let url: string | null = null;
+    export let tooltipText: string | null = null;
 
     export let showTooltip: boolean = false;
     export let size: CardSize = CardSize.DEFAULT;

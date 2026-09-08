@@ -6,10 +6,11 @@
     import ResourcePointCard from "$lib/components/cards/ResourcePointCard.svelte";
 
     export let items: IItemStack[];
-    export let resourcePoint: IResourcePoint | undefined = undefined;
+    export let resourcePoint: IResourcePoint | null = null;
 
-    export let getItemUrl: (itemStack: IItemStack) => string | undefined = () => undefined;
-    export let getResourcePointUrl: (resourcePoint: IResourcePoint) => string | undefined = () => undefined;
+    export let getItemUrlFn: (itemStack: IItemStack) => string | null = () => null;
+    export let getResourcePointUrlFn: (resourcePoint: IResourcePoint) => string | null = () => null;
+    export let highlightItemFn: (itemStack: IItemStack) => boolean = () => false;
 
 </script>
 
@@ -19,7 +20,7 @@
 
         <ResourcePointCard
             resourcePoint={resourcePoint}
-            url={getResourcePointUrl(resourcePoint)}
+            url={getResourcePointUrlFn(resourcePoint)}
             showTooltip={true}
             size={CardSize.MICRO}
         />
@@ -28,7 +29,7 @@
 
     {#each items as itemStack, i}
 
-        {#if i !== 0 || resourcePoint !== undefined}
+        {#if i !== 0 || resourcePoint !== null}
 
             <div class="flex items-center justify-center">
                 <span class="font-sdk text-xl text-[#21272C] dark:text-[#FDFDFD]">
@@ -41,7 +42,8 @@
         <ItemStackCard
             item={itemStack.item}
             amount={itemStack.count}
-            url={getItemUrl(itemStack)}
+            url={getItemUrlFn(itemStack)}
+            highlight={highlightItemFn(itemStack)}
             showTooltip={true}
             size={CardSize.MICRO}
         />

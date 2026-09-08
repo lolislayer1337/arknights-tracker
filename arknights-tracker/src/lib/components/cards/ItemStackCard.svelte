@@ -8,11 +8,11 @@
     import { t } from "$lib/i18n";
 
     export let item: IItem;
-    export let event: IGameEvent | undefined = undefined;
-    export let amount: number | undefined = undefined;
-    export let url: string | undefined = undefined;
+    export let event: IGameEvent | null = null;
+    export let amount: number | null = null;
+    export let url: string | null = null;
     export let highlight: boolean = false;
-    export let tooltipText: string | undefined = undefined;
+    export let tooltipText: string | null = null;
 
     export let showTooltip: boolean = false;
     export let size: CardSize = CardSize.DEFAULT;
@@ -83,7 +83,7 @@
 
     {/key}
 
-    {#if amount !== undefined}
+    {#if amount !== null}
 
         <div class="absolute bottom-[8px] left-0 right-0 z-30 flex justify-center px-0.5">
             <span
