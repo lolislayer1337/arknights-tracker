@@ -31,16 +31,29 @@ export class ItemStorage extends GameDataStorage<IItem> implements IItemStorage 
 
         for (const itemData of itemsWithSubIcons) {
             let subItemId: string;
+            let superItemId: string;
 
             if (itemData.type === "full_bottle") {
-                subItemId = fullBottleDataStorage.byId.getOrThrow(itemData.id).liquidId;
+                const bottle = fullBottleDataStorage.byId.getOrThrow(itemData.id);
+
+                subItemId = bottle.liquidId;
+                superItemId = bottle.emptyBottleId;
             } else {
-                subItemId = fullJarDataStorage.byId.getOrThrow(itemData.id).gasId;
+                const jar = fullJarDataStorage.byId.getOrThrow(itemData.id);
+
+                subItemId = jar.gasId;
+                superItemId = jar.emptyJarId;
             }
 
             const subIcon = itemMap.get(subItemId)!.icon;
+            const superMaterial = itemMap.get(superItemId)!.material;
 
-            itemMap.set(itemData.id, Item.createItemFromData(itemData, subIcon));
+            const newItemData: ItemData = {
+                ...itemData,
+                material: superMaterial
+            };
+
+            itemMap.set(itemData.id, Item.createItemFromData(newItemData, subIcon));
         }
 
         return [...itemMap.values()];

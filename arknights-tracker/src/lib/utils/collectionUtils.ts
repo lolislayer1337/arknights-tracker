@@ -8,6 +8,20 @@ export function getMap<K, V>(list: Iterable<V>, getKeyFn: (item: V) => K): Map<K
     return map;
 }
 
+export function getMapByList<K, V>(list: Iterable<V>, getKeysFn: (item: V) => Iterable<K>): Map<K, V> {
+    const map = new Map<K, V>();
+
+    for (const item of list) {
+        const keys = getKeysFn(item);
+
+        for (const key of keys) {
+            map.set(key, item);
+        }
+    }
+
+    return map;
+}
+
 export function getMappedList<K, V>(list: Iterable<V>, getKeyFn: (item: V) => K | readonly K[]): Map<K, V[]> {
     const map = new Map<K, V[]>();
 

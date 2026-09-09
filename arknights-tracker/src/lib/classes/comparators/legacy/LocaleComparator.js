@@ -1,4 +1,4 @@
-import { IComparator } from "$lib/classes/comparators/IComparator.js";
+import { IComparator } from "$lib/classes/comparators/legacy/IComparator.js";
 
 export class LocaleComparator extends IComparator {
     _getLocaleFunc;
