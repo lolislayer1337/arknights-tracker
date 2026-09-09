@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { FactoryEvent } from "$lib/classes/events/legacy/FactoryEvent.js";
     import DropdownTemplate from "$lib/components/dataToolbarV2/DropdownTemplate.svelte";
     import SelectableParamList from "$lib/components/dataToolbarV2/filterDropdowns/SelectableParamList.svelte";
@@ -6,22 +6,26 @@
     import RarityParamBox from "$lib/components/dataToolbarV2/paramBoxes/RarityParamBox.svelte";
     import TextParamBox from "$lib/components/dataToolbarV2/paramBoxes/TextParamBox.svelte";
     import { t } from "$lib/i18n";
+    import type { RecipeFilterGroup, RecipeFilterValue } from "$lib/stores/filters/recipes/RecipeFilterValueMap";
+    import type { RecipeSelectedFilterMap } from "$lib/stores/filters/recipes/RecipeSelectedFilterMap";
+    import type { RecipeSortParamMap } from "$lib/stores/filters/recipes/RecipeSortParamMap";
 
-    export let filters = {};
+    export let filters: RecipeSortParamMap;
 
-    export let selectedFilters = {};
+    export let selectedFilters: RecipeSelectedFilterMap = {};
 
-    export let onFilterReset = () => {selectedFilters = {}};
+    export let onFilterReset = () => { selectedFilters = {} };
 
-    function toggleFilterGroup(groupName) {
+    function toggleFilterGroup<K extends RecipeFilterGroup>(groupName: K) {
         if (!selectedFilters[groupName]) {
-            selectedFilters[groupName] = new Set();
+            selectedFilters[groupName] = new Set() as RecipeSelectedFilterMap[K];
         }
 
-        let set = selectedFilters[groupName];
+        const set = selectedFilters[groupName]!;
+        const filterParams = filters[groupName] as RecipeFilterValue<K>[];
 
         if (set.size === 0) {
-            for (let filter of filters[groupName]) {
+            for (const filter of filterParams) {
                 set.add(filter);
             }
         } else {

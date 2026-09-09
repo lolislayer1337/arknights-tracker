@@ -1,6 +1,6 @@
-import type { RecipeSortFieldParams } from "$lib/stores/filters/recipes/RecipeSortFieldParams";
+import type { RecipeSortParamMap } from "$lib/stores/filters/recipes/RecipeSortParamMap";
 
 export interface RecipeSortParams {
-    sortFieldOrder: (keyof RecipeSortFieldParams)[];
-    sortFieldParams: RecipeSortFieldParams;
+    sortFieldOrder: (keyof RecipeSortParamMap)[];
+    sortFieldParams: RecipeSortParamMap;
 }
