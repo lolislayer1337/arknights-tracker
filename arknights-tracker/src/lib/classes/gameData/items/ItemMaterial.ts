@@ -9,6 +9,8 @@ export enum ItemMaterial {
     IRON_ENR = "iron_enr",
     COPPER = "copper",
     COPPER_ENR = "copper_enr",
+    COPPER_POLY = "copper_poly",
+    COPPER_XIRANITE = "copper_xiranite",
     CARBON = "carbon",
     CARBON_ENR = "carbon_enr",
     WATER = "water",
