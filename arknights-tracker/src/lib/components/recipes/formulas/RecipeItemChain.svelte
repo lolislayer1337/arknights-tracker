@@ -5,7 +5,7 @@
     import ItemStackCard from "$lib/components/cards/ItemStackCard.svelte";
     import ResourcePointCard from "$lib/components/cards/ResourcePointCard.svelte";
 
-    export let items: IItemStack[];
+    export let items: readonly IItemStack[];
     export let resourcePoint: IResourcePoint | null = null;
 
     export let getItemUrlFn: (itemStack: IItemStack) => string | null = () => null;

@@ -3,7 +3,7 @@
     import ResourcePointCardLegacy from "$lib/components/cards/ResourcePointCardLegacy.svelte";
     import Icon from "$lib/components/Icon.svelte";
     import FuelEnergyCard from "$lib/components/recipes/FuelEnergyCard.svelte";
-    import { getRecipeTreeLinkParameters } from "$lib/utils/linkUtils.js";
+    import { getRecipeTreeLinkParameters } from "$lib/utils/linkUtils";
 
     export let formula;
     export let highlightItemId = "";

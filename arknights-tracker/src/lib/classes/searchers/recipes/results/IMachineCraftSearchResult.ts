@@ -4,7 +4,7 @@ import type { IBuildingRecipeSearchResult } from "$lib/classes/searchers/recipes
 import type { IResultCrafterModeGroup } from "$lib/classes/searchers/recipes/results/IResultCrafterModeGroup";
 
 export interface IMachineCraftSearchResult
-    extends IBuildingRecipeSearchResult<ICrafter, IMachineCraft, IResultCrafterModeGroup> {
+    extends IBuildingRecipeSearchResult<ICrafter, IMachineCraft> {
 
     groupByFormulaGroup(): ReadonlyMap<string, IResultCrafterModeGroup>
 }

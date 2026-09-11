@@ -11,11 +11,11 @@ export class Recipe<TIngredient extends IItem, TOutcome extends IItem> implement
         this._outcomes = outcomes;
     }
 
-    public get ingredients(): IItemStack<TIngredient>[] {
-        return [];
+    public get ingredients(): readonly IItemStack<TIngredient>[] {
+        return this._ingredients;
     }
 
-    public get outcomes(): IItemStack<TOutcome>[] {
-        return [];
+    public get outcomes(): readonly IItemStack<TOutcome>[] {
+        return this._outcomes;
     }
 }

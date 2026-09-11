@@ -21,7 +21,11 @@
 
             </div>
 
-            <slot/>
+            <div class="flex-1 overflow-y-auto w-full pl-6 pr-6 pt-3 pb-6">
+
+                <slot/>
+
+            </div>
 
             {#if buttonTitle && buttonUrl}
 

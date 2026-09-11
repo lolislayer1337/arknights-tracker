@@ -24,7 +24,11 @@ export class BuildingStorage<TBuilding extends IBuilding = IBuilding>
         const list: IBuilding[] = [];
 
         for (const data of dataStorage.list) {
-            const item = itemStorage.byGameId.getOrThrow(data.itemId);
+            const item = itemStorage.byGameId.get(data.itemId);
+
+            if (!item) {
+                continue;
+            }
 
             list.push(Building.createFromData(data, item));
         }

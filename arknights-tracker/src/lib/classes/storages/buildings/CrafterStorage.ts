@@ -18,7 +18,11 @@ export class CrafterStorage extends BuildingStorage<ICrafter> implements ICrafte
 
         for (const data of dataStorage.list) {
             const modes = data.modeMap.map(CrafterModeGroup.createFromData);
-            const building = buildingStorage.byGameId.getOrThrow(data.id);
+            const building = buildingStorage.byGameId.get(data.id);
+
+            if (!building) {
+                continue;
+            }
 
             list.push(Crafter.createFromBuilding(building, modes));
         }

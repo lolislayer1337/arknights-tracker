@@ -11,7 +11,7 @@
 
 <div>
 
-    <div class="flex flex-row min-h-10 pl-2 gap-2 w-full items-center rounded-[6px] bg-[#1f1f1f] dark:bg-[#1f1f1f]">
+    <div class="flex flex-row min-h-10 pl-2 gap-2 mb-3 w-full items-center rounded-[6px] bg-[#1f1f1f] dark:bg-[#1f1f1f]">
 
         {#if svgIcon || imageIcon}
 
@@ -49,6 +49,10 @@
 
     </div>
 
-    <slot/>
+    <div class="flex flex-col gap-3">
+
+        <slot/>
+
+    </div>
 
 </div>

@@ -7,3 +7,15 @@ export enum CrafterModeName {
     LIQUID_TRANS = "liquidtrans",
     SOLID_TRANS = "solidtrans",
 }
+
+export namespace CrafterModeName {
+    export const ORDER: readonly CrafterModeName[] = [
+        CrafterModeName.NORMAL,
+        CrafterModeName.LIQUID,
+        CrafterModeName.GAS,
+        CrafterModeName.GAS_LIQUID,
+        CrafterModeName.SOLID_TRANS,
+        CrafterModeName.LIQUID_TRANS,
+        CrafterModeName.GAS_TRANS
+    ] as const;
+}
