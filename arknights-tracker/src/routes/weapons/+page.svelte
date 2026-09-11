@@ -24,7 +24,7 @@
     } from "$lib/stores/filterStore.js";
     import { manualPotentials } from "$lib/stores/potentials";
     import { pullData } from "$lib/stores/pulls";
-    import { filterCheck, filterCheckLowerCase } from "$lib/utils/filterUtils.js";
+    import { filterCheck, filterCheckLowerCase } from "$lib/utils/filterUtils";
     import { weaponEssences } from "$lib/stores/weaponEssences.js";
 
     let zoomMapUrl = null;

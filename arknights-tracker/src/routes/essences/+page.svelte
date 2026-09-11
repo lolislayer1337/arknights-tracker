@@ -30,7 +30,7 @@
     import { pullData } from "$lib/stores/pulls";
     import { weaponEssences } from "$lib/stores/weaponEssences.js";
     import { getRarityColor } from "$lib/utils/colorUtils.js";
-    import { filterCheck, filterCheckLowerCase } from "$lib/utils/filterUtils.js";
+    import { filterCheck, filterCheckLowerCase } from "$lib/utils/filterUtils";
     import { scale } from "svelte/transition";
 
     $: selectedFilters = $essenceWeaponFilters;

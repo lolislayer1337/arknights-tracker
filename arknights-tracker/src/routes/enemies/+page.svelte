@@ -21,7 +21,7 @@
 
     import WeaponCard from "$lib/components/cards/WeaponCard.svelte";
     import Icon from "$lib/components/Icon.svelte";
-    import { filterCheck } from "$lib/utils/filterUtils.js";
+    import { filterCheck } from "$lib/utils/filterUtils";
 
     $: searchQuery = $enemySearch || "";
     $: isGrouped = $enemyGroupMode || false;

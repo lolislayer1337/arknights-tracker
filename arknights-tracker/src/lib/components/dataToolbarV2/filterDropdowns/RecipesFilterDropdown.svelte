@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { ItemFieldComparatorName } from "$lib/classes/comparators/items/ItemFieldComparatorName";
     import { FactoryEvent } from "$lib/classes/events/legacy/FactoryEvent.js";
     import DropdownTemplate from "$lib/components/dataToolbarV2/DropdownTemplate.svelte";
     import SelectableParamList from "$lib/components/dataToolbarV2/filterDropdowns/SelectableParamList.svelte";
@@ -50,7 +51,7 @@
 
         <GroupTitle
             asButton={true}
-            onClick={() => toggleFilterGroup("rarity")}
+            onClick={() => toggleFilterGroup(ItemFieldComparatorName.RARITY)}
         >
             {$t("sort.rarity")}
         </GroupTitle>
@@ -67,7 +68,7 @@
 
         <GroupTitle
             asButton={true}
-            onClick={() => toggleFilterGroup("events")}
+            onClick={() => toggleFilterGroup(ItemFieldComparatorName.EVENT)}
         >
             {$t("sort.eventsTitle")}
         </GroupTitle>
@@ -85,7 +86,7 @@
 
         <GroupTitle
             asButton={true}
-            onClick={() => toggleFilterGroup("itemGroups")}
+            onClick={() => toggleFilterGroup(ItemFieldComparatorName.ITEM_GROUP)}
         >
             {$t("sort.itemGroup")}
         </GroupTitle>
@@ -103,7 +104,7 @@
 
         <GroupTitle
             asButton={true}
-            onClick={() => toggleFilterGroup("itemTypes")}
+            onClick={() => toggleFilterGroup(ItemFieldComparatorName.ITEM_TYPE)}
         >
             {$t("sort.itemTypesTitle")}
         </GroupTitle>
@@ -121,7 +122,7 @@
 
         <GroupTitle
             asButton={true}
-            onClick={() => toggleFilterGroup("itemMaterials")}
+            onClick={() => toggleFilterGroup(ItemFieldComparatorName.ITEM_MATERIAL)}
         >
             {$t("sort.itemMaterialsTitle")}
         </GroupTitle>

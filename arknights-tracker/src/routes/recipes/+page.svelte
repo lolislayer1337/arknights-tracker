@@ -1,89 +1,108 @@
-<script>
-    import { FactoryEvent } from "$lib/classes/events/legacy/FactoryEvent.js";
-    import { Item } from "$lib/classes/items/Item.js";
-    import { ItemComparator } from "$lib/classes/items/ItemComparator.js";
-    import BottomSheet from "$lib/components/BottomSheet.svelte";
+<script lang="ts">
+    import { goto } from "$app/navigation";
+    import type { IItemComparator } from "$lib/classes/comparators/items/IItemComparator";
+    import { ItemComparator } from "$lib/classes/comparators/items/ItemComparator";
+    import { ItemFieldComparatorName } from "$lib/classes/comparators/items/ItemFieldComparatorName";
+    import { LocaleOrder } from "$lib/classes/comparators/LocaleOrder";
+    import type { IFactoryEvent } from "$lib/classes/events/IFactoryEvent";
+    import type { IItem } from "$lib/classes/gameData/items/IItem";
+    import type { ItemGroup } from "$lib/classes/gameData/items/ItemGroup";
+    import type { ItemMaterial } from "$lib/classes/gameData/items/ItemMaterial";
+    import type { ItemType } from "$lib/classes/gameData/items/ItemType";
+    import type { SortDirection } from "$lib/classes/SortDirection";
+    import ItemStackCard from "$lib/components/cards/ItemStackCard.svelte";
     import DataToolbar from "$lib/components/dataToolbarV2/DataToolbar.svelte";
     import RecipesFilterDropdown from "$lib/components/dataToolbarV2/filterDropdowns/RecipesFilterDropdown.svelte";
     import RecipesSortDropdown from "$lib/components/dataToolbarV2/sortDropdowns/RecipesSortDropdown.svelte";
     import Icon from "$lib/components/Icon.svelte";
-    import FormulaSidebar from "$lib/components/recipes/FormulaSidebar.svelte";
-    import ItemCard from "$lib/components/recipes/ItemCard.svelte";
     import { craftableItemsList } from "$lib/data/crafts/craftableItemsList";
+    import { factoryEventStorage } from "$lib/dataStorages/events/factoryEventStorage";
+    import { fullBottleStorage } from "$lib/dataStorages/items/fullBottleStorage";
+    import { fullJarStorage } from "$lib/dataStorages/items/fullJarStorage";
+    import { itemStorage } from "$lib/dataStorages/items/itemStorage";
     import { t } from "$lib/i18n";
+    import type { RecipeFilterGroup, RecipeFilterValue } from "$lib/stores/filters/recipes/RecipeFilterValueMap";
+    import type { RecipeSelectedFilterMap } from "$lib/stores/filters/recipes/RecipeSelectedFilterMap";
+    import type { RecipeSortParams } from "$lib/stores/filters/recipes/RecipeSortParams";
     import {
         getDefaultItemSortParams,
         itemFilters,
         itemGroupMode,
         itemSearch,
         itemSortParams
-    } from "$lib/stores/filterStore.js";
-    import { filterCheck } from "$lib/utils/filterUtils.js";
+    } from "$lib/stores/filterStore";
+    import { getMapByList } from "$lib/utils/collectionUtils";
+    import { filterCheck } from "$lib/utils/filterUtils";
 
-    $: selectedFilters = $itemFilters;
-    $: searchQuery = $itemSearch;
-    $: isGrouped = $itemGroupMode || false;
-    $: sortParams = $itemSortParams;
+    export let data;
 
-    $: allFilters = {
-        rarity: sortParams.sortFieldParams.rarity,
-        events: sortParams.sortFieldParams.events,
-        itemGroups: sortParams.sortFieldParams.itemGroups,
-        itemTypes: sortParams.sortFieldParams.itemTypes,
-        itemMaterials: sortParams.sortFieldParams.itemMaterials
-    };
+    const craftableItems: readonly IItem[] = craftableItemsList.values()
+        .map(itemId => itemStorage.byGameId.get(itemId))
+        .filter(item => item !== undefined)
+        .toArray();
 
-    const allItems = craftableItemsList.map((itemId) => Item.getItem(itemId));
+    const itemEventMap = getEventByItemIdMap(factoryEventStorage.list);
 
-    const itemComparator = new ItemComparator();
-    itemComparator.localeComparator.getLocaleFunc = (item) => $t(`itemNames.${item.id}`);
+    const comparator: IItemComparator = new ItemComparator(factoryEventStorage, fullBottleStorage, fullJarStorage, item => $t(item.i18nKey));
 
-    let sortDirection = "asc";
+    let sortDirection: SortDirection = "asc";
 
-    $: filteredItems = (() => {
-        itemComparator.setComparatorsOrder(sortParams.sortFieldOrder);
-        itemComparator.rarityComparator.setValueOrder(sortParams.sortFieldParams.rarity);
-        itemComparator.groupComparator.setValueOrder(sortParams.sortFieldParams.itemGroups);
-        itemComparator.typeComparator.setValueOrder(sortParams.sortFieldParams.itemTypes);
-        itemComparator.materialComparator.setValueOrder(sortParams.sortFieldParams.itemMaterials);
-        itemComparator.eventComparator.setValueOrder(sortParams.sortFieldParams.events);
-        itemComparator.localeComparator.isReversed = sortParams.sortFieldParams.localeName !== "a-z";
+    let filteredItems: IItem[];
 
-        let items = [...allItems].filter((item) => {
-            let rarity = filterCheck(selectedFilters.rarity, item.rarity);
-            let group = filterCheck(selectedFilters.itemGroups, item.groupId);
-            let type = filterCheck(selectedFilters.itemTypes, item.type);
-            let material = filterCheck(selectedFilters.itemMaterials, item.material ?? "nonMaterial");
-            let event = filterCheck(selectedFilters.events, item.getEventIds()?.[0] ?? "nonEvent");
-            let query = !searchQuery
-                || item.id.includes(searchQuery)
-                || $t(`itemNames.${item.id}`).includes(searchQuery);
+    $: filteredItems = getFilteredItems(craftableItems, $itemSortParams, sortDirection, $itemFilters, $itemSearch);
 
-            return rarity && group && type && material && event && query;
+    function getFilteredItems(items: readonly IItem[], sortParams: RecipeSortParams, sortDirection: SortDirection, filters: RecipeSelectedFilterMap, searchQuery: string): IItem[] {
+        comparator.setComparatorsOrder(sortParams.sortFieldOrder);
+        comparator.rarityComparator.setValueOrder(sortParams.sortFieldParams.rarity);
+        comparator.eventComparator.setValueOrder(sortParams.sortFieldParams.events);
+        comparator.groupComparator.setValueOrder(sortParams.sortFieldParams.itemGroups as ItemGroup[]);
+        comparator.typeComparator.setValueOrder(sortParams.sortFieldParams.itemTypes as ItemType[]);
+        comparator.materialComparator.setValueOrder(sortParams.sortFieldParams.itemMaterials as ItemMaterial[]);
+        comparator.localeComparator.isReversed = sortParams.sortFieldParams.localeName === LocaleOrder.Z_A;
+
+        const result: IItem[] = items.filter(item => {
+
+            return filterCheck(filters.rarity, item.rarity)
+                && filterCheck(filters.events, itemEventMap.get(item.gameId)?.id ?? "nonEvent")
+                && filterCheck(filters.itemGroups, item.groupId)
+                && filterCheck(filters.itemTypes, item.type)
+                && filterCheck(filters.itemMaterials, item.material)
+                && (!searchQuery
+                    || item.gameId.includes(searchQuery)
+                    || $t(item.i18nKey).includes(searchQuery));
         });
 
-        return itemComparator.getSortedList(items, sortDirection === "desc");
-    })();
+        const reverseMultiplier = sortDirection === "desc" ? -1 : 1;
 
-    function resetSortParams() {
+        result.sort((a, b) => comparator.compare(a, b) * reverseMultiplier);
+
+        return result;
+    }
+
+    function getEventByItemIdMap(events: Iterable<IFactoryEvent>): Map<string, IFactoryEvent> {
+        return getMapByList(events, event => event.eventItemIds);
+    }
+
+    function resetSort() {
         $itemSortParams = getDefaultItemSortParams();
     }
 
-    function checkSortParams(currentSortParams, defaultSortParams) {
+    function checkSortParams(currentSortParams: RecipeSortParams, defaultSortParams: RecipeSortParams) {
         if (!currentSortParams || !currentSortParams.sortFieldOrder || !currentSortParams.sortFieldParams) {
             return false;
         }
 
-        let fieldOrder = checkList(currentSortParams.sortFieldOrder, defaultSortParams.sortFieldOrder);
+        const fieldOrder = checkList(currentSortParams.sortFieldOrder, defaultSortParams.sortFieldOrder);
 
         if (!fieldOrder) {
             return false;
         }
 
-        let { localeName, ...rest } = defaultSortParams.sortFieldParams;
+        const { localeName, ...rest } = defaultSortParams.sortFieldParams;
+        const keys = Object.keys(rest) as RecipeFilterGroup[];
 
-        for (let key of Object.keys(rest)) {
-            let check = checkList(currentSortParams.sortFieldParams[key], defaultSortParams.sortFieldParams[key]);
+        for (const key of keys) {
+            const check = checkList(currentSortParams.sortFieldParams[key] as RecipeFilterValue<typeof key>[], defaultSortParams.sortFieldParams[key] as RecipeFilterValue<typeof key>[]);
 
             if (!check) {
                 return false;
@@ -93,7 +112,7 @@
         return true;
     }
 
-    function checkList(currentList, defaultList) {
+    function checkList<T>(currentList: readonly T[], defaultList: readonly T[]): boolean {
         if (!currentList) {
             return false;
         }
@@ -111,85 +130,128 @@
         return set.size === 0;
     }
 
-    let defaultSortParams = getDefaultItemSortParams();
+    const defaultSortParams = getDefaultItemSortParams();
     $: {
         let isSortParamsCorrect = $itemSortParams ? checkSortParams($itemSortParams, defaultSortParams) : true;
 
         if (!isSortParamsCorrect) {
             console.log("Incorrect item sort params");
-            $itemSortParams = getDefaultItemSortParams();
+            resetSort();
         }
     }
 
     let isFilterActive = false;
-    $: isFilterActive = Object.values(selectedFilters)
+    $: isFilterActive = Object.values($itemFilters)
         .some((set) => set.size > 0);
 
-    let selectedItemId = "";
-    let isBottomSheetOpen = false;
+    let groupField: RecipeFilterGroup;
+    let groupedItems: DisplayedItemGroup[];
 
-    function selectItem(itemId) {
-        if (selectedItemId === itemId) {
-            selectedItemId = "";
-            isBottomSheetOpen = false;
-            return;
-        }
+    $: groupField = getGroupField($itemSortParams);
 
-        selectedItemId = itemId;
-        isBottomSheetOpen = true;
-    }
+    $: groupedItems = $itemGroupMode ? getDisplayedItemGroups(groupField, filteredItems) : [];
 
-    $: isSelectedItem = (itemId) => {
-        return selectedItemId === itemId;
-    };
-
-    $: sortFieldName = (() => {
+    function getGroupField(sortParams: RecipeSortParams): RecipeFilterGroup {
         let sortFieldName = sortParams.sortFieldOrder[0];
-        if (sortFieldName === "localeName") {
+
+        if (sortFieldName === ItemFieldComparatorName.LOCALE_NAME) {
             sortFieldName = sortParams.sortFieldOrder[1];
         }
 
-        return sortFieldName;
-    })();
+        return sortFieldName as RecipeFilterGroup;
+    }
 
-    $: groupFieldName = (() => {
-        switch (sortFieldName) {
-            case "itemGroups": return "groupId";
-            case "itemTypes": return "type";
-            case "itemMaterials": return "material";
-            case "rarity": return "rarity";
-            case "events": return "events";
+    interface GroupedItemList<T> {
+        order: T[];
+        map: Map<T, IItem[]>;
+    }
+
+    interface DisplayedItemGroup {
+        title: string;
+        list: IItem[];
+    }
+
+    function groupItems<T extends RecipeFilterGroup>(items: Iterable<IItem>, getValueFn: (item: IItem) => RecipeFilterValue<T>): GroupedItemList<RecipeFilterValue<T>> {
+        const order: RecipeFilterValue<T>[] = [];
+        const map: Map<RecipeFilterValue<T>, IItem[]> = new Map();
+
+        for (const item of items) {
+            const value = getValueFn(item);
+
+            let list = map.get(value);
+
+            if (!list) {
+                order.push(value);
+                list = [];
+                map.set(value, list);
+            }
+
+            list.push(item);
         }
 
-        return null;
-    })();
+        return {
+            order,
+            map
+        };
+    }
 
-    $: groupedItems = filteredItems.reduce((groups, item) => {
-        let groupId = groupFieldName === "events"
-            ? (item.getEventIds()?.[0] ?? "nonEvent")
-            : item[groupFieldName];
+    function getGroupValue<K extends RecipeFilterGroup>(group: K, item: IItem): RecipeFilterValue<K> {
+        switch (group) {
+            case ItemFieldComparatorName.RARITY: return item.rarity as RecipeFilterValue<K>;
+            case ItemFieldComparatorName.ITEM_MATERIAL: return (item.material ?? "nonMaterial") as RecipeFilterValue<K>;
+            case ItemFieldComparatorName.ITEM_TYPE: return item.type as RecipeFilterValue<K>;
+            case ItemFieldComparatorName.ITEM_GROUP: return item.groupId as RecipeFilterValue<K>;
+            case ItemFieldComparatorName.EVENT: return (itemEventMap.get(item.gameId)?.id ?? "nonEvent") as RecipeFilterValue<K>;
+        }
+    }
 
-        if (groupFieldName === "material" && groupId === null) {
-            groupId = "nonMaterial";
+    function getGroupTitle<K extends RecipeFilterGroup>(group: K, value: RecipeFilterValue<K>): string {
+        switch (group) {
+            case ItemFieldComparatorName.RARITY: return String(value);
+            case ItemFieldComparatorName.ITEM_MATERIAL: return $t(`sort.itemMaterials.${value}`);
+            case ItemFieldComparatorName.ITEM_TYPE: return $t(`sort.itemTypes.${value}`);
+            case ItemFieldComparatorName.ITEM_GROUP: return $t(`sort.itemGroups.${value}`);
+            case ItemFieldComparatorName.EVENT:
+                if (value === "nonEvent") {
+                    return $t("sort.events.nonEvent");
+                }
+
+                const eventKey = factoryEventStorage.byId.get(value as string)?.i18nKey;
+
+                return $t(eventKey ?? `events.${value}`);
+        }
+    }
+
+    function getDisplayedItemGroups(groupField: RecipeFilterGroup, items: Iterable<IItem>): DisplayedItemGroup[] {
+        const displayedItemGroups: DisplayedItemGroup[] = [];
+        const getValueFn = (item: IItem) => getGroupValue(groupField, item);
+
+        const groupedItems = groupItems(items, getValueFn);
+
+        const groupList: DisplayedItemGroup[] = [];
+
+        for (const groupId of groupedItems.order) {
+            const items = groupedItems.map.get(groupId)!;
+            const title = getGroupTitle(groupField, groupId);
+
+            groupList.push({
+                title,
+                list: items
+            });
         }
 
-        groupId = groupId.toString();
+        return groupList;
+    }
 
-        if (!groups.groupLists[groupId]) {
-            groups.order.push(groupId);
-            groups.groupLists[groupId] = [];
-        }
 
-        groups.groupLists[groupId].push(item);
-
-        return groups;
-    }, { order: [], groupLists: {} });
-
-    $: groupedArray = groupedItems.order
-        .map((groupId) => ({ groupId, items: groupedItems.groupLists[groupId] }));
-
-    let displayLimit = 2;
+    let groupDisplayLimit = 2;
     let flatDisplayLimit = 40;
+
+    let displayedGroups: DisplayedItemGroup[] = [];
+    let displayedItems: IItem[] = [];
+
+    $: displayedGroups = $itemGroupMode ? groupedItems.slice(0, groupDisplayLimit) : [];
+    $: displayedItems = !$itemGroupMode ? filteredItems.slice(0, flatDisplayLimit) : [];
 
     $: {
         const _trigger = [
@@ -197,75 +259,105 @@
             $itemFilters,
             $itemSortParams,
             sortDirection,
-            isGrouped
+            $itemGroupMode
         ];
-        displayLimit = 2;
+
+        groupDisplayLimit = 2;
         flatDisplayLimit = 40;
         setTimeout(checkScroll, 50);
     }
 
-    $: displayedGroups = groupedArray.slice(0, displayLimit);
-    $: displayedItems = filteredItems.slice(0, flatDisplayLimit);
-
     function loadMore() {
         let changed = false;
-        if (isGrouped && displayLimit < groupedArray.length) {
-            displayLimit += 2;
+
+        if ($itemGroupMode && groupDisplayLimit < groupedItems.length) {
+            groupDisplayLimit += 2;
             changed = true;
-        } else if (!isGrouped && flatDisplayLimit < filteredItems.length) {
+        } else if (!$itemGroupMode && flatDisplayLimit < filteredItems.length) {
             flatDisplayLimit += 40;
             changed = true;
         }
+
         if (changed) {
             setTimeout(checkScroll, 50);
         }
     }
 
     function checkScroll() {
-        if (typeof window === "undefined" || typeof document === "undefined")
+        if (typeof window === "undefined" || typeof document === "undefined") {
             return;
+        }
+
         const currentScroll = window.innerHeight + window.scrollY;
         const totalHeight = document.body.offsetHeight;
+
         if (totalHeight - currentScroll < 1000) {
             loadMore();
         }
     }
 
-    function getFilterNameLocale(sortFieldName, filterName) {
-        if (sortFieldName === "rarity") {
-            return filterName;
+    function selectItem(item: IItem) {
+        if (data.itemId === item.gameId) {
+            goto("/recipes", {
+                replaceState: true,
+                noScroll: true
+            });
+
+            return;
         }
 
-        if (sortFieldName === "events") {
-            if (filterName === "nonEvent") {
-                return $t("sort.events.nonEvent");
-            }
-
-            return $t(FactoryEvent.getEvent(filterName)?.title);
-        }
-
-        return $t(`sort.${sortFieldName}.${filterName}`);
+        goto(`/recipes?id=${item.gameId}`, {
+            replaceState: true,
+            noScroll: true
+        });
     }
+
+    let isBottomSheetOpen: boolean = false;
+
 </script>
 
 <svelte:head>
-    <title>{$t("pages.recipes")} - Goyfield</title>
-    <meta name="description" content={$t("seo.descriptions.recipes")} />
-    <meta property="og:title" content={`${$t("pages.recipes")} - Goyfield`} />
-    <meta property="og:description" content={$t("seo.descriptions.recipes")} />
+
+    <title>
+        {$t("pages.recipes")} - Goyfield
+    </title>
+
+    <meta
+        name="description"
+        content={$t("seo.descriptions.recipes")}
+    />
+
+    <meta
+        property="og:title"
+        content={`${$t("pages.recipes")} - Goyfield`}
+    />
+
+    <meta
+        property="og:description"
+        content={$t("seo.descriptions.recipes")}
+    />
+
 </svelte:head>
 
-<svelte:window on:scroll={checkScroll} on:resize={checkScroll} />
+<svelte:window
+    on:scroll={checkScroll}
+    on:resize={checkScroll}
+/>
 
 <div class="max-w-[100%] max-h-[100%] min-h-screen h-full flex flex-col xl:flex-row">
+
     <div class="w-full xl:w-[calc(100%-max(470px,30%))] mr-6">
+
         <div class="flex items-baseline flex-wrap gap-2 md:gap-3 mb-8 font-sdk">
+
             <h2 class="text-3xl md:text-5xl tracking-wide text-[#21272C] dark:text-[#FDFDFD]">
                 {$t("pages.recipes")}
             </h2>
+
             <span class="text-gray-400 text-xl md:text-3xl font-normal">
                 / {filteredItems.length}
             </span>
+
         </div>
 
         <div class="w-full xl:w-[70%] mb-4">
@@ -285,13 +377,13 @@
 
                 <RecipesSortDropdown
                     slot="sortDropdown"
-                    onSortReset={resetSortParams}
+                    onSortReset={resetSort}
                     bind:sortParams={$itemSortParams}
                 />
 
                 <RecipesFilterDropdown
                     slot="filterDropdown"
-                    filters={allFilters}
+                    filters={$itemSortParams.sortFieldParams}
                     bind:selectedFilters={$itemFilters}
                 />
 
@@ -301,16 +393,21 @@
 
         <div class="w-full pb-8">
 
-            {#if isGrouped}
+            {#if $itemGroupMode}
 
                 {#each displayedGroups as group}
+
+                    {@const title = group.title}
+
                     <div class="flex flex-col gap-1 animate-fadeIn pb-5">
+
                         <div class="flex items-center gap-2 mb-2">
+
                             <h3 class="text-xl font-bold text-[#21272C] dark:text-[#E4E4E4] font-sdk pl-0.5">
-                                {getFilterNameLocale(sortFieldName, group.groupId)}
+                                {title}
                             </h3>
 
-                            {#if sortFieldName === "rarity"}
+                            {#if groupField === "rarity"}
 
                                 <Icon
                                     name="star"
@@ -318,88 +415,100 @@
                                 />
 
                             {/if}
+
                         </div>
 
                         <div class="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] md:grid-cols-[repeat(auto-fill,110px)] gap-3 justify-start">
-                            {#each group.items as item}
+
+                            {#each group.list as item}
 
                                 <button
                                     tabindex="0"
                                     class="relative w-[110px] h-[110px] rounded-[6px] cursor-pointer text-left aspect-square transition-all duration-300"
-                                    on:click|preventDefault|stopPropagation={() => selectItem(item.id)}
+                                    on:click|preventDefault|stopPropagation={() => selectItem(item)}
                                 >
 
-                                    <ItemCard item={item} />
-
-                                    {#if isSelectedItem(item.id)}
-                                        <div
-                                            class="absolute inset-[-3px] border-[3px] border-[#F9B90C] rounded-[9px] z-30 pointer-events-none"
-                                        ></div>
-                                    {/if}
+                                    <ItemStackCard
+                                        item={item}
+                                        highlight={item.gameId === data.itemId}
+                                        event={itemEventMap.get(item.gameId)}
+                                        showHoverEffect={true}
+                                    />
 
                                 </button>
 
                             {/each}
+
                         </div>
+
                     </div>
+
                 {/each}
 
             {:else}
 
                 <div class="grid grid-cols-[repeat(auto-fill,minmax(110px,1fr))] md:grid-cols-[repeat(auto-fill,110px)] gap-3 justify-start">
+
                     {#each displayedItems as item}
+
                         <button
                             tabindex="0"
                             class="relative w-[110px] h-[110px] rounded-[6px] cursor-pointer text-left aspect-square transition-all duration-300"
-                            on:click|preventDefault|stopPropagation={() => selectItem(item.id)}
+                            on:click|preventDefault|stopPropagation={() => selectItem(item)}
                         >
 
-                            <ItemCard item={item} />
-
-                            {#if isSelectedItem(item.id)}
-                                <div
-                                    class="absolute inset-[-3px] border-[3px] border-[#F9B90C] rounded-[9px] z-30 pointer-events-none"
-                                ></div>
-                            {/if}
+                            <ItemStackCard
+                                item={item}
+                                highlight={item.gameId === data.itemId}
+                                event={itemEventMap.get(item.gameId)}
+                                showHoverEffect={true}
+                            />
 
                         </button>
+
                     {/each}
+
                 </div>
 
             {/if}
 
-            {#if (isGrouped && displayLimit < groupedArray.length) || (!isGrouped && flatDisplayLimit < filteredItems.length)}
+            {#if ($itemGroupMode && groupDisplayLimit < groupedItems.length) || (!$itemGroupMode && flatDisplayLimit < filteredItems.length)}
+
                 <div class="h-10 w-full mt-4 flex items-center justify-center opacity-50">
+
                     <div class="w-8 h-8 animate-spin dark:text-white">
-                        <Icon name="loading" class="w-8 h-8 opacity-100" />
+
+                        <Icon
+                            name="loading"
+                            class="w-8 h-8 opacity-100"
+                        />
+
                     </div>
+
                 </div>
+
             {/if}
 
         </div>
+
     </div>
-        <BottomSheet
-            bind:isOpen={isBottomSheetOpen}
-        >
-            <div class="w-full min-h-[50vh] h-full xl:h-[calc(100vh-64px)] sticky top-8">
-                <FormulaSidebar
-                    currentItemId={selectedItemId}
-                    mode="recipes"
-                    itemsAsLink={true}
-                />
-            </div>
-        </BottomSheet>
+
 </div>
 
-{#if !isBottomSheetOpen}
-    {#if selectedItemId}
-        <button
-            type="button"
-            class="xl:hidden fixed bottom-6 right-6 z-40 w-14 h-14 bg-[#F9B90C] hover:bg-[#FFC01E] text-black rounded-full shadow-lg flex items-center justify-center transition-all active:scale-95 border border-white dark:border-[#1A1A1A] cursor-pointer"
-            on:click={() => (isBottomSheetOpen = true)}
-            title="Results"
-        >
-            <Icon name="inbox" class="w-6 h-6 text-black" />
-        </button>
-    {/if}
+{#if isBottomSheetOpen && data.itemId}
+
+    <button
+        type="button"
+        class="xl:hidden fixed bottom-6 right-6 z-40 w-14 h-14 bg-[#F9B90C] hover:bg-[#FFC01E] text-black rounded-full shadow-lg flex items-center justify-center transition-all active:scale-95 border border-white dark:border-[#1A1A1A] cursor-pointer"
+        on:click={() => (isBottomSheetOpen = true)}
+        title="Results"
+    >
+
+        <Icon
+            name="inbox"
+            class="w-6 h-6 text-black"
+        />
+
+    </button>
+
 {/if}

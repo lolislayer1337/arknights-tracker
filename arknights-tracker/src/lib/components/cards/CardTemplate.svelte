@@ -97,6 +97,8 @@
 
         </div>
 
+        <slot name="overflow"/>
+
     </svelte:element>
 
 </Tooltip>

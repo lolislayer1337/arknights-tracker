@@ -15,6 +15,7 @@
     export let tooltipText: string | null = null;
 
     export let showTooltip: boolean = false;
+    export let showHoverEffect: boolean | undefined = undefined;
     export let size: CardSize = CardSize.DEFAULT;
 
     let textSize: string;
@@ -49,6 +50,7 @@
     url={url}
     highlight={highlight}
     size={size}
+    showHoverEffect={showHoverEffect}
 >
 
     {#key item}
@@ -96,15 +98,15 @@
 
     {/if}
 
-    {#if event}
-
-        <div class="absolute -top-2 -right-2 {eventStarSize} z-[35]">
-            <Icon
-                name="eventStar"
-                class="{eventStarSize}"
-            />
-        </div>
-
-    {/if}
+    <div
+        slot="overflow"
+        class="absolute -top-2 -right-2 {eventStarSize} z-[50]"
+        class:hidden={!event}
+    >
+        <Icon
+            name="eventStar"
+            class="{eventStarSize}"
+        />
+    </div>
 
 </CardTemplate>
