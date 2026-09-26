@@ -16,7 +16,7 @@ export class FoodBuff implements IFoodBuff {
     public static createFromData(data: FoodBuffData): FoodBuff {
         return new FoodBuff(
             data.buffId,
-            this.getBlackboard(data.blackboard, data.buffId)
+            FoodBuff.getBlackboard(data.blackboard, data.buffId)
         );
     }
 
