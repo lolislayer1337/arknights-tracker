@@ -2,7 +2,7 @@ import type { FoodData } from "$lib/data/types/items/FoodData";
 
 export const food: Readonly<Record<string, FoodData>> = {
     "item_agfly_1_agmelee_1_moss_2_1": {
-        "itemId": "item_agfly_1_agmelee_1_moss_2_1",
+        "id": "item_agfly_1_agmelee_1_moss_2_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -30,7 +30,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_agmelee_1_moss_1_lbmob_1_1": {
-        "itemId": "item_agmelee_1_moss_1_lbmob_1_1",
+        "id": "item_agmelee_1_moss_1_lbmob_1_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -50,7 +50,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_agmelee_1_sp_2_slimeml_1_1": {
-        "itemId": "item_agmelee_1_sp_2_slimeml_1_1",
+        "id": "item_agmelee_1_sp_2_slimeml_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -70,7 +70,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_agrange_1_erhound_1_sp_1_1": {
-        "itemId": "item_agrange_1_erhound_1_sp_1_1",
+        "id": "item_agrange_1_erhound_1_sp_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -90,7 +90,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_agrange_1_lbshamman_bottled_1": {
-        "itemId": "item_agrange_1_lbshamman_bottled_1",
+        "id": "item_agrange_1_lbshamman_bottled_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -110,7 +110,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_agrange_1_moss_2_lbmob_1_1": {
-        "itemId": "item_agrange_1_moss_2_lbmob_1_1",
+        "id": "item_agrange_1_moss_2_lbmob_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -130,7 +130,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_flower1spc_1": {
-        "itemId": "item_bottled_flower1spc_1",
+        "id": "item_bottled_flower1spc_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -150,7 +150,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_flower1spc_2": {
-        "itemId": "item_bottled_flower1spc_2",
+        "id": "item_bottled_flower1spc_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -170,7 +170,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_flower1spc_3": {
-        "itemId": "item_bottled_flower1spc_3",
+        "id": "item_bottled_flower1spc_3",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -190,7 +190,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_flower2spc_1": {
-        "itemId": "item_bottled_flower2spc_1",
+        "id": "item_bottled_flower2spc_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -218,7 +218,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_flower2spc_2": {
-        "itemId": "item_bottled_flower2spc_2",
+        "id": "item_bottled_flower2spc_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -246,7 +246,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_flower2spc_3": {
-        "itemId": "item_bottled_flower2spc_3",
+        "id": "item_bottled_flower2spc_3",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -274,7 +274,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_food_1": {
-        "itemId": "item_bottled_food_1",
+        "id": "item_bottled_food_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -298,7 +298,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_food_2": {
-        "itemId": "item_bottled_food_2",
+        "id": "item_bottled_food_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -322,7 +322,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_food_3": {
-        "itemId": "item_bottled_food_3",
+        "id": "item_bottled_food_3",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -346,7 +346,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_food_4": {
-        "itemId": "item_bottled_food_4",
+        "id": "item_bottled_food_4",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -362,7 +362,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_food_5": {
-        "itemId": "item_bottled_food_5",
+        "id": "item_bottled_food_5",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -378,7 +378,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_grass1spc_1": {
-        "itemId": "item_bottled_grass1spc_1",
+        "id": "item_bottled_grass1spc_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -398,7 +398,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_grass1spc_2": {
-        "itemId": "item_bottled_grass1spc_2",
+        "id": "item_bottled_grass1spc_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -418,7 +418,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_grass2spc_1": {
-        "itemId": "item_bottled_grass2spc_1",
+        "id": "item_bottled_grass2spc_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -446,7 +446,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_grass2spc_2": {
-        "itemId": "item_bottled_grass2spc_2",
+        "id": "item_bottled_grass2spc_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -474,7 +474,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_insec1_1": {
-        "itemId": "item_bottled_insec1_1",
+        "id": "item_bottled_insec1_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -490,7 +490,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_insec1_2": {
-        "itemId": "item_bottled_insec1_2",
+        "id": "item_bottled_insec1_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -506,7 +506,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_insec2_1": {
-        "itemId": "item_bottled_insec2_1",
+        "id": "item_bottled_insec2_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -526,7 +526,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_insec2_2": {
-        "itemId": "item_bottled_insec2_2",
+        "id": "item_bottled_insec2_2",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -546,7 +546,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_moss_1_2_1": {
-        "itemId": "item_bottled_moss_1_2_1",
+        "id": "item_bottled_moss_1_2_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -566,7 +566,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_moss_2_animal_1": {
-        "itemId": "item_bottled_moss_2_animal_1",
+        "id": "item_bottled_moss_2_animal_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -586,7 +586,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_rec_hp_1": {
-        "itemId": "item_bottled_rec_hp_1",
+        "id": "item_bottled_rec_hp_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -602,7 +602,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_rec_hp_2": {
-        "itemId": "item_bottled_rec_hp_2",
+        "id": "item_bottled_rec_hp_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -618,7 +618,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_rec_hp_3": {
-        "itemId": "item_bottled_rec_hp_3",
+        "id": "item_bottled_rec_hp_3",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -634,7 +634,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_rec_hp_4": {
-        "itemId": "item_bottled_rec_hp_4",
+        "id": "item_bottled_rec_hp_4",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -658,7 +658,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_bottled_rec_hp_5": {
-        "itemId": "item_bottled_rec_hp_5",
+        "id": "item_bottled_rec_hp_5",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -682,7 +682,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_corp1_animal_1": {
-        "itemId": "item_corp1_animal_1",
+        "id": "item_corp1_animal_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -702,7 +702,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_corp2_animal_1": {
-        "itemId": "item_corp2_animal_1",
+        "id": "item_corp2_animal_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -726,7 +726,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_corp3_animal_1": {
-        "itemId": "item_corp3_animal_1",
+        "id": "item_corp3_animal_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -759,7 +759,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_corp3_grass1_1": {
-        "itemId": "item_corp3_grass1_1",
+        "id": "item_corp3_grass1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -792,7 +792,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_corp4_animal_1": {
-        "itemId": "item_corp4_animal_1",
+        "id": "item_corp4_animal_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -812,7 +812,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_corp4_grass2_1": {
-        "itemId": "item_corp4_grass2_1",
+        "id": "item_corp4_grass2_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -832,7 +832,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_corp4_spc": {
-        "itemId": "item_corp4_spc",
+        "id": "item_corp4_spc",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -848,7 +848,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_dog_1_slimeml_1_1": {
-        "itemId": "item_dog_1_slimeml_1_1",
+        "id": "item_dog_1_slimeml_1_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -864,7 +864,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_dog_hsmob_corp_1": {
-        "itemId": "item_dog_hsmob_corp_1",
+        "id": "item_dog_hsmob_corp_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -884,7 +884,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_erhound_1_agmelee_1_moss_1_1": {
-        "itemId": "item_erhound_1_agmelee_1_moss_1_1",
+        "id": "item_erhound_1_agmelee_1_moss_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -904,7 +904,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_ethillu_1_wgslime_1_wgthorns_1_1": {
-        "itemId": "item_ethillu_1_wgslime_1_wgthorns_1_1",
+        "id": "item_ethillu_1_wgslime_1_wgthorns_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -924,7 +924,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_firebat_1_agrange_1_1": {
-        "itemId": "item_firebat_1_agrange_1_1",
+        "id": "item_firebat_1_agrange_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -970,7 +970,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_hscrane_1_hsmob_1_grass_1_1": {
-        "itemId": "item_hscrane_1_hsmob_1_grass_1_1",
+        "id": "item_hscrane_1_hsmob_1_grass_1_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -990,7 +990,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_hsfly_1_slimeml_1_hsmob_1_1": {
-        "itemId": "item_hsfly_1_slimeml_1_hsmob_1_1",
+        "id": "item_hsfly_1_slimeml_1_hsmob_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1010,7 +1010,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_hshog_1_hsmob_1_slimeml_1_1": {
-        "itemId": "item_hshog_1_hsmob_1_slimeml_1_1",
+        "id": "item_hshog_1_hsmob_1_slimeml_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1043,7 +1043,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_hsmob_1_dog_1_1": {
-        "itemId": "item_hsmob_1_dog_1_1",
+        "id": "item_hsmob_1_dog_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1076,7 +1076,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_hsmob_1_grass_2_1": {
-        "itemId": "item_hsmob_1_grass_2_1",
+        "id": "item_hsmob_1_grass_2_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1104,7 +1104,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_jzmonk_1_hsmob_1_1": {
-        "itemId": "item_jzmonk_1_hsmob_1_1",
+        "id": "item_jzmonk_1_hsmob_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1137,7 +1137,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_klbuds_1_hsfly_1_1": {
-        "itemId": "item_klbuds_1_hsfly_1_1",
+        "id": "item_klbuds_1_hsfly_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1170,7 +1170,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_klcreatures_1_wgthorns_1_1": {
-        "itemId": "item_klcreatures_1_wgthorns_1_1",
+        "id": "item_klcreatures_1_wgthorns_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1190,7 +1190,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_lbmob_1_dog_1_moss_1_1": {
-        "itemId": "item_lbmob_1_dog_1_moss_1_1",
+        "id": "item_lbmob_1_dog_1_moss_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1210,7 +1210,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_lbmob_1_lbshamman_1_sp_1_1": {
-        "itemId": "item_lbmob_1_lbshamman_1_sp_1_1",
+        "id": "item_lbmob_1_lbshamman_1_sp_1_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1238,7 +1238,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_lbmob_1_moss_2_bottled_1": {
-        "itemId": "item_lbmob_1_moss_2_bottled_1",
+        "id": "item_lbmob_1_moss_2_bottled_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1262,7 +1262,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_lbshamman_1_agmelee_1_1": {
-        "itemId": "item_lbshamman_1_agmelee_1_1",
+        "id": "item_lbshamman_1_agmelee_1_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1282,7 +1282,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_lbshield_1_slimeml_1_dog_1_1": {
-        "itemId": "item_lbshield_1_slimeml_1_dog_1_1",
+        "id": "item_lbshield_1_slimeml_1_dog_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1302,7 +1302,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_mimicw_1_moss_1_moss_2_1": {
-        "itemId": "item_mimicw_1_moss_1_moss_2_1",
+        "id": "item_mimicw_1_moss_1_moss_2_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1322,7 +1322,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_plant_grass_powder_1": {
-        "itemId": "item_plant_grass_powder_1",
+        "id": "item_plant_grass_powder_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1338,7 +1338,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_plant_grass_powder_2": {
-        "itemId": "item_plant_grass_powder_2",
+        "id": "item_plant_grass_powder_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1362,7 +1362,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_plant_grass_spc_powder_1": {
-        "itemId": "item_plant_grass_spc_powder_1",
+        "id": "item_plant_grass_spc_powder_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1382,7 +1382,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_plant_grass_spc_powder_2": {
-        "itemId": "item_plant_grass_spc_powder_2",
+        "id": "item_plant_grass_spc_powder_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1410,7 +1410,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_plant_moss_powder_1": {
-        "itemId": "item_plant_moss_powder_1",
+        "id": "item_plant_moss_powder_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1426,7 +1426,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_plant_moss_powder_2": {
-        "itemId": "item_plant_moss_powder_2",
+        "id": "item_plant_moss_powder_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1450,7 +1450,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_plant_moss_spc_powder_1": {
-        "itemId": "item_plant_moss_spc_powder_1",
+        "id": "item_plant_moss_spc_powder_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1470,7 +1470,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_plant_moss_spc_powder_2": {
-        "itemId": "item_plant_moss_spc_powder_2",
+        "id": "item_plant_moss_spc_powder_2",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1498,7 +1498,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_slimeml_1_agrange_1_moss_2_1": {
-        "itemId": "item_slimeml_1_agrange_1_moss_2_1",
+        "id": "item_slimeml_1_agrange_1_moss_2_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1514,7 +1514,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_slimeml_1_erhound_1_agfly_1_1": {
-        "itemId": "item_slimeml_1_erhound_1_agfly_1_1",
+        "id": "item_slimeml_1_erhound_1_agfly_1_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1542,7 +1542,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_slwood_1_hshog_1_1": {
-        "itemId": "item_slwood_1_hshog_1_1",
+        "id": "item_slwood_1_hshog_1_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1566,7 +1566,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_sp_1_moss_1_agmelee_1_1": {
-        "itemId": "item_sp_1_moss_1_agmelee_1_1",
+        "id": "item_sp_1_moss_1_agmelee_1_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1586,7 +1586,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_sp_2_moss_2_agrange_1_1": {
-        "itemId": "item_sp_2_moss_2_agrange_1_1",
+        "id": "item_sp_2_moss_2_agrange_1_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1614,7 +1614,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_wgshoal_1_grass_1_grass_2_1": {
-        "itemId": "item_wgshoal_1_grass_1_grass_2_1",
+        "id": "item_wgshoal_1_grass_1_grass_2_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1647,7 +1647,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_wgslime_1_hsmob_1_grass_2_1": {
-        "itemId": "item_wgslime_1_hsmob_1_grass_2_1",
+        "id": "item_wgslime_1_hsmob_1_grass_2_1",
         "duration": 0.0,
         "stackingKey": null,
         "buffs": [
@@ -1675,7 +1675,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_wgslime_1_wgthorns_1_1": {
-        "itemId": "item_wgslime_1_wgthorns_1_1",
+        "id": "item_wgslime_1_wgthorns_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [
@@ -1721,7 +1721,7 @@ export const food: Readonly<Record<string, FoodData>> = {
         ]
     },
     "item_wgthorns_1_hshog_1_hsmob_1_1": {
-        "itemId": "item_wgthorns_1_hshog_1_hsmob_1_1",
+        "id": "item_wgthorns_1_hshog_1_hsmob_1_1",
         "duration": 300.0,
         "stackingKey": "buff",
         "buffs": [

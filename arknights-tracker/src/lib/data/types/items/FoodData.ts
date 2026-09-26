@@ -1,7 +1,7 @@
-import type { BlackboardData } from "$lib/data/types/BlackboardData";
+import type { IBlackboardEntry } from "$lib/classes/blackboard/IBlackboardEntry";
 
 export interface FoodData {
-    readonly itemId: string;
+    readonly id: string;
     readonly duration: number;
     readonly stackingKey: "buff" | null;
     readonly buffs: readonly FoodBuffData[];
@@ -9,5 +9,5 @@ export interface FoodData {
 
 export interface FoodBuffData {
     readonly buffId: string;
-    readonly blackboard: readonly BlackboardData[];
+    readonly blackboard: readonly IBlackboardEntry[];
 }

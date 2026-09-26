@@ -1,7 +1,7 @@
 import { EquipableItemConditionType } from "$lib/classes/gameData/items/equipable/EquipableItemConditionType";
 
 export interface EquipableItemData {
-    readonly itemId: string;
+    readonly id: string;
     readonly condType: `${EquipableItemConditionType}`;
     readonly condParams: readonly string[];
     readonly castTime: number;
